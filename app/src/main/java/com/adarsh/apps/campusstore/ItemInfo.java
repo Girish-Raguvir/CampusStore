@@ -10,11 +10,13 @@ public class ItemInfo {
     String title;
     String desc;
     Drawable image;
+    String price;
 
-    public ItemInfo(String title, String desc, Drawable image) {
+    public ItemInfo(String title, String desc, Drawable image,String price) {
             this.title = title;
             this.desc = desc;
             this.image = image;
+            this.price=price;
     }
 
     public String getTitle() {
@@ -28,4 +30,5 @@ public class ItemInfo {
     public Drawable getImage() {
         return image;
     }
+    public String getprice(){return price;}
 }

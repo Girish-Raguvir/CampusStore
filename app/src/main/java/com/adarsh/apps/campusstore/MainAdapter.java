@@ -33,6 +33,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             view = v;
             final TextView title = (TextView) v.findViewById(R.id.title);
             final TextView desc = (TextView) v.findViewById(R.id.desc);
+            final TextView price = (TextView) v.findViewById(R.id.price);
             ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,12 +75,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         final TextView title = (TextView) holder.view.findViewById(R.id.title);
         final  TextView desc = (TextView) holder.view.findViewById(R.id.desc);
         final ImageView imageView = (ImageView) holder.view.findViewById(R.id.imageView);
+        final TextView price = (TextView) holder.view.findViewById(R.id.price);
         imageView.buildDrawingCache();
         Bitmap bmap = imageView.getDrawingCache();
 
         title.setText(pojos.get(position).getTitle());
         desc.setText(pojos.get(position).getDesc());
         imageView.setImageDrawable(pojos.get(position).getImage());
+        price.setText(pojos.get(position).getprice());
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,6 +7,7 @@ import com.parse.ParseObject;
 
 /**
  * Created by Adarsh on 13-01-2015.
+ * Modified by Girish on 15-1-15.
  */
 public class CampusApplication extends Application {
     //String  APPLICATION_ID="Bz8UjorQLzSsSWS8yMHziGVeeLykWIZuy8d2il8o";

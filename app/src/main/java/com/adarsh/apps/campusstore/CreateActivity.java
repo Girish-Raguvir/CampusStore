@@ -1,7 +1,10 @@
 package com.adarsh.apps.campusstore;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -18,8 +21,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import android.widget.Toast;
 import android.graphics.BitmapFactory;
-import java.io.InputStream;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.io.InputStream;
+import java.util.Calendar;
 
 
 public class CreateActivity extends Activity {
@@ -29,13 +40,15 @@ public class CreateActivity extends Activity {
     private Bitmap bitmap;
     private ImageView imageView;
     private Button save, capture,submit;
-    private EditText et1,et2;
+    private EditText et1,et2,et3;
+   // private ItemInfo item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
         et1=(EditText)findViewById(R.id.editText4);
         et2=(EditText)findViewById(R.id.editText3);
+        et3=(EditText)findViewById(R.id.editText5);
         imageView = (ImageView) findViewById(R.id.imageView);
         save = (Button) findViewById(R.id.save);
         save.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +100,12 @@ public class CreateActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-                {
+                {   saveitem();
                     Intent i = new Intent(CreateActivity.this,MainActivity.class);
                     i.putExtra("name1", et1.getText().toString());
                     i.putExtra("desc1", et2.getText().toString());
                     startActivity(i);
+
                 }
             }
         });
@@ -213,4 +227,73 @@ public class CreateActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+    private void saveitem() {
+
+        final String name=et1.getText().toString().trim();
+         final String desc=et2.getText().toString().trim();
+        final String price=et3.getText().toString().trim();
+
+        /*name=name.trim();
+        desc=desc.trim();
+        price=price.trim();*/
+
+        // If user doesn't enter a title or content, do nothing
+        // If user enters title, but no content, save
+        // If user enters content with no title, give warning
+        // If user enters both title and content, save
+
+        if (!name.isEmpty()) {
+
+            // Check if post is being created or edited
+
+
+                // create new post
+                //res = getResources();
+                final ParseObject post = new ParseObject("Items");
+
+                //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                //bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                //byte[] data = stream.toByteArray();
+
+                //ParseFile file = new ParseFile("resume.txt", data);
+                //file.saveInBackground();
+
+
+
+                //post.put("mediatype", data);
+            final Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
+                post.put("name",name);
+                post.put("description",desc);
+                post.put("price",price);
+                //post.put("image",null);
+                post.put("postedby", ParseUser.getCurrentUser().getUsername());
+                setProgressBarIndeterminateVisibility(true);
+                post.saveInBackground(new SaveCallback() {
+                    public void done(ParseException e) {
+                        setProgressBarIndeterminateVisibility(false);
+                        if (e == null) {
+                            // Saved successfully.
+                            ItemInfo item = new ItemInfo(name, desc,null,price);
+                            Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            // The save failed.
+                            Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                            Log.d(getClass().getSimpleName(), "User update error: " + e);
+                        }
+                    }
+                });
+
+
+        }
+        else if (name.isEmpty() && !desc.isEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(CreateActivity.this);
+            builder.setMessage("Missing name or description!")
+                    .setTitle(R.string.edit_error_title)
+                    .setPositiveButton(android.R.string.ok, null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
 }

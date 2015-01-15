@@ -31,7 +31,9 @@ import com.parse.ParseUser;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+Modified by Girish on 15-1-15.
+ */
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
@@ -54,7 +56,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         View addButton = (View)findViewById(R.id.imageButton);
-        ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
+        /*ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
                 // Or read size directly from the view's width/height
@@ -63,7 +65,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             }
         };
         addButton.setOutlineProvider(viewOutlineProvider);
-        addButton.setClipToOutline(true);
+        addButton.setClipToOutline(true);*/
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,7 +122,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         // Locate the objectId from the class
 
 
-                   /* for(int i = 0;
+                    /*for(int i = 0;
                     i<3;i++)
 
                     {
@@ -162,7 +164,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
                             }
                         });*/
-                               final Bitmap[] bmp = new Bitmap[1];
+                              /* final Bitmap[] bmp = new Bitmap[1];
                                 ParseQuery<ParseObject> query1 = new ParseQuery<ParseObject>(
                                         "Items");
                                 query1.getInBackground(item.getObjectId(),
@@ -202,14 +204,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                                             }
                                                         });
                                             }
-                                        });
-                                Drawable d = new BitmapDrawable(getResources(), bmp[0]);
-                                //Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
+                                        });*/
+                               // Drawable d = new BitmapDrawable(getResources(), bmp[0]);
+                                Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
                                 iteminfo.add(new ItemInfo(
-                                        item.getString("name"),
+                                        item.getString("name").toUpperCase(),
 
-                                        item.getString("postedby"),
-                                        d
+                                        "Posted by: "+item.getString("postedby").toUpperCase(),
+                                        d,
+                                        "Rs. "+item.getString("price")
 
                                 ));
                                 //Log.e(getClass().getSimpleName(), item.);
