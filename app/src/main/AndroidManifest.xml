@@ -29,8 +29,12 @@
             android:label="@string/title_activity_sign_up" >
         </activity>
         <activity
-            android:name="com.adarsh.apps.materialtests.DetailActivity"
+            android:name=".DetailActivity"
             android:label="@string/title_activity_detail" >
+        </activity>
+        <activity
+            android:name=".CreateActivity"
+            android:label="@string/title_activity_create" >
         </activity>
     </application>
 

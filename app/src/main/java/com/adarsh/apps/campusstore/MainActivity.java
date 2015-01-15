@@ -1,7 +1,9 @@
 package com.adarsh.apps.campusstore;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Outline;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -49,6 +53,24 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        View addButton = (View)findViewById(R.id.imageButton);
+        ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                // Or read size directly from the view's width/height
+                int diameter = getResources().getDimensionPixelSize(R.dimen.diameter);
+                outline.setOval(0, 0, diameter, diameter);
+            }
+        };
+        addButton.setOutlineProvider(viewOutlineProvider);
+        addButton.setClipToOutline(true);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,CreateActivity.class);
+                startActivity(i);
+            }
+        });
 
         iteminfo = new ArrayList<ItemInfo>();
 

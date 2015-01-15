@@ -28,5 +28,6 @@
     <string name="login_error_title">Error!</string>
     <string name="logout_label">Logout</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_create">CreateActivity</string>
 
 </resources>

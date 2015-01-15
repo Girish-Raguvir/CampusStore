@@ -1,4 +1,4 @@
-package com.adarsh.apps.materialtests;
+package com.adarsh.apps.campusstore;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
