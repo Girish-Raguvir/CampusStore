@@ -1,33 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DADADA"
-    tools:context="materialtest.vivz.slidenerd.materialtest.NavigationDrawerFragment">
+    tools:context="com.adarsh.apps.campusstore.NavigationDrawerFragment">
+<LinearLayout
+    android:id="@+id/containerDrawerImage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:id="@+id/containerDrawerImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000">
-
-        <ImageView
-            android:layout_width="280dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/campusstore" />
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@+id/containerDrawerImage"
-        android:id="@+id/drawerList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:divider="#ffffff" android:dividerHeight="0dp"
-        tools:context=".NavigationDrawerFragment">
-    </android.support.v7.widget.RecyclerView>
-
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="140dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/campusstore" />
+</LinearLayout>
+<android.support.v7.widget.RecyclerView
+    android:layout_below="@+id/containerDrawerImage"
+    android:id="@+id/drawerList"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:scrollbars="vertical"
+    android:focusable="true"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent"
+    android:background="@color/myDrawerBackground"/>
 
 </RelativeLayout>

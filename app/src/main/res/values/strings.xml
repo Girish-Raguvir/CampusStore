@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Campus Store</string>
+    <string name="app_name">Material Tests</string>
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Settings</string>
-    <string name="lorem">Purchased in 2011, good running condition, selling because owner going abroad</string>
-    <string name="gnexus">Purchased in 2013, runs now on Android Lollipop, good condition, minor scratches on screen, selling because buying a OnePlus One</string>
-    <string name="adidas">Very sturdy pair of shoes, bought in 2014 November, selling because I m in dislike of the colour, fit for running and football</string>
-    <string name="info_button_description">Show photo information</string>
-    <string name="star_button_description">Fave this photo</string>
-    <string name="photo_description">Photo</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_create">Add A New Item</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="drawer_open">Open</string>
-    <string name="drawer_close">Close</string>
+    <string name="password_hint">Enter Password</string>
+    <string name="login_button_label">Log In!</string>
+    <string name="sign_up_text">SIGN UP!!</string>
+    <string name="username_hint">Enter Roll Number or Smail ID</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="action_new">New Note</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="title_activity_edit_note">Add/Edit</string>
+    <string name="note_title_hint">Title</string>
+    <string name="note_content_hint">Content</string>
+    <string name="save_button">Save</string>
+    <string name="edit_error_title">Error!</string>
+    <string name="edit_error_message">You cannot save a note without a title</string>
+    <string name="email_hint">Email</string>
+    <string name="sign_up_button_label">Sign Up</string>
+    <string name="signup_error_message">Please make sure you enter a username, password, and email address!</string>
+    <string name="signup_error_title">Error!</string>
+    <string name="login_error_message">Please make sure you enter a username and password!</string>
+    <string name="login_error_title">Error!</string>
+    <string name="logout_label">Logout</string>
+    <string name="title_activity_detail">DetailActivity</string>
 
 </resources>

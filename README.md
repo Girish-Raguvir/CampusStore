@@ -1,42 +1,53 @@
-Material Witness
-================
+android-material-drawer-template
+================================
 
-A Google I/O 2014 demo written by Romain Guy [http://www.curious-creature.org](http://www.curious-creature.org)
+An Android template with navigation drawer for material design
 
-Material Witness is a sample application for the new Material Design APIs introduced in the Android L Preview SDK:
+**Customization**
 
-* Custom theme colors
-* Dynamic palette
-* Circular reveal
-* Activity transitions
+ - Change your drawer item on: `drawer_row.xml`
+ - Make sure you change `NavigationDrawerAdapter` to populate the `ViewHolder` with the new xml layout.
+ - If you want to set a different layout for the selected item refer to `onBindViewHolder` method on the `NavigationDrawerAdapter`
+ - If you want to display more information on each row, like an image for example, change the `NavigationItem` and add what you need. Make sure you change it's constructor and edit also the `getMenu()` method on the fragment.
 
-And a few other things such as colored status and navigation bars, path tracing, etc.
 
-The complete video of the Google I/O 2014 talk detailing how this application works can be found on [YouTube](https://www.youtube.com/watch?v=97SWYiRtF0Y&feature=youtu.be).
+**Reminders**
 
-![Material Witness](art/MaterialWitness1.png)
+ - Your activity must implement `NavigationDrawerCallbacks`
+ - You must call `NavigationDrawerFragment.setup()` to setup the drawer.
+ - You must `<include/>` the `toolbar_default.xml` in all your activities's XML and set it to the supportActionBar with `setSupportActionBar()`. Remember to extend the activity to `ActionBarActivity`
 
-![Material Witness](art/MaterialWitness2.png)
 
-How to use this source code
-===========================
 
-The google-io-2014 project can be opened in Android Studio 1.0 or later. It contains a single module
-called **app** in the `app/` folder.
+![NavigationDrawer](https://raw.githubusercontent.com/kanytu/android-material-drawer-template/master/screenshots/screenshot1.gif)
 
-The project can be compiled from the command line using Gradle.
 
-The actual source code and resources can be found in `app/src/main/`. The only dependencies are in `app/lib/`.
+**Note**
+=
 
-Source code license
-===================
+There are three example XML's for you activities. All them with diferent approaches on the navigation drawer pattern:
 
-This project is subject to the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).
 
-Library licenses
-================
+**activity_main.xml** *Navigation drawer bellow the toolbar. (Google Inbox style)*
 
-__androidsvg-1.2.0__ is subject to the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).
-More information on [the official web site](https://code.google.com/p/androidsvg/).
+![NavigationDrawer](https://raw.githubusercontent.com/kanytu/android-material-drawer-template/master/screenshots/drawer_bellow.gif)
 
-__android-support-v7-palette__ is subject to the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).
+
+**activity_main_toolbar** *Navigation drawer bellow the toolbar, toolbar transition to black (Google Play Store style)*
+
+![NavigationDrawer](https://raw.githubusercontent.com/kanytu/android-material-drawer-template/master/screenshots/playstore_style.gif)
+
+
+**activity_main_topdrawer** *Navigation drawer on top of the toolbar (Gmail style)*
+
+![NavigationDrawer](https://raw.githubusercontent.com/kanytu/android-material-drawer-template/master/screenshots/drawer_over_toolbar.gif)
+
+
+
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-android--material--drawer--template-brightgreen.svg?style=flat)](https://android-arsenal.com/details/3/1096)
+
+
+## License
+Copyright (c) 2014 Pedro Oliveira
+
+Licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
