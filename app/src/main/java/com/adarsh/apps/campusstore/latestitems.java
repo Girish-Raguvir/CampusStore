@@ -105,7 +105,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
     {   Calendar cal= Calendar.getInstance();
         int i=0;
         //if(item.getDate("updatedAt").toString().split("")[0].equals(new SimpleDateFormat("MMM").format(cal.getTime()))){++i;}
-        if(item.getCreatedAt().getDate()-(cal.getTime().getDate())==-1){++i;
+        if((cal.getTime().getDate())-item.getCreatedAt().getDate()<=1){++i;
     }
        // Log.d("test"," "+item.getCreatedAt().getDate());
         return i;
