@@ -50,7 +50,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("My Items");
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view1);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
