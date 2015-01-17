@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     List<ItemInfo> iteminfo;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +85,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
-        refreshPostList();
+
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshPostList();
+            }
+        });
+        refreshPostList();
     }
 
     @Override
@@ -110,7 +120,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             super.onBackPressed();
     }
     private void refreshPostList() {
-
+        swipeRefreshLayout.setRefreshing(true);
         //ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
         //query.whereEqualTo("author", ParseUser.getCurrentUser());
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
@@ -183,6 +193,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     mAdapter = new MainAdapter(iteminfo);
                                     mRecyclerView.setAdapter(mAdapter);
                                     // Close progress dialog
+                                    swipeRefreshLayout.setRefreshing(false);
 
                                 } else {
                                     e.printStackTrace();

@@ -48,10 +48,7 @@
             android:name=".latestitems"
             android:label="@string/title_activity_latestitems" >
         </activity>
-        <activity
-            android:name=".MainActivity2"
-            android:label="@string/title_activity_main_activity2" >
-        </activity>
+
     </application>
 
 </manifest>

@@ -28,6 +28,11 @@
             layout="@layout/toolbar_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_actionbar1">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/my_recycler_view1"
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -39,7 +44,8 @@
             android:fitsSystemWindows="true"
             android:layout_height="match_parent"
             android:background="#E3F2FD"
-            android:layout_below="@+id/toolbar_actionbar1" />
+             />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
 
 
