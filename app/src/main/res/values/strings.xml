@@ -29,5 +29,9 @@
     <string name="logout_label">Logout</string>
     <string name="title_activity_detail">DetailActivity</string>
     <string name="title_activity_create">CreateActivity</string>
+    <string name="title_activity_userdetails">userdetails</string>
+    <string name="title_activity_myitems">myitems</string>
+    <string name="title_activity_latestitems">latestitems</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
 
 </resources>

@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.view.View;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import android.os.Environment;
 import java.io.FileOutputStream;
@@ -24,6 +26,7 @@ import android.graphics.BitmapFactory;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -31,6 +34,8 @@ import com.parse.SaveCallback;
 
 import java.io.InputStream;
 import java.util.Calendar;
+
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 
 public class CreateActivity extends Activity {
@@ -41,6 +46,7 @@ public class CreateActivity extends Activity {
     private ImageView imageView;
     private Button save, capture,submit;
     private EditText et1,et2,et3;
+    private ParseFile imagefile;
    // private ItemInfo item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +106,19 @@ public class CreateActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-                {   saveitem();
+                {    BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    ByteArrayOutputStream bs = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+                    byte[] byteArray = bs.toByteArray();
+                    imagefile = new ParseFile("image.png", byteArray);
+
+                    saveitem();
                     Intent i = new Intent(CreateActivity.this,MainActivity.class);
                     i.putExtra("name1", et1.getText().toString());
                     i.putExtra("desc1", et2.getText().toString());
+
+
                     startActivity(i);
 
                 }
@@ -265,7 +280,7 @@ public class CreateActivity extends Activity {
                 post.put("name",name);
                 post.put("description",desc);
                 post.put("price",price);
-                //post.put("image",null);
+                post.put("image",imagefile);
                 post.put("postedby", ParseUser.getCurrentUser().getUsername());
                 setProgressBarIndeterminateVisibility(true);
                 post.saveInBackground(new SaveCallback() {
@@ -273,7 +288,7 @@ public class CreateActivity extends Activity {
                         setProgressBarIndeterminateVisibility(false);
                         if (e == null) {
                             // Saved successfully.
-                            ItemInfo item = new ItemInfo(name, desc,null,price);
+                            ItemInfo item = new ItemInfo(name,null,desc,null,price);
                             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {

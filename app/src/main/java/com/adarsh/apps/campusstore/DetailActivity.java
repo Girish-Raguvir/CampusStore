@@ -7,6 +7,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
@@ -18,23 +20,55 @@ public class DetailActivity extends ActionBarActivity {
     TextView desc;
     byte[] byteArray;
     ImageView imageview;
-
+    TextView price;
+    TextView user;
+    Button contact,addfav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Intent intent = getIntent();
         title=(TextView)findViewById(R.id.textView2);
-        desc=(TextView)findViewById(R.id.textView3);
+        user=(TextView)findViewById(R.id.textView3);
+        desc=(TextView)findViewById(R.id.description1);
+        price=(TextView)findViewById(R.id.price);
+        contact=(Button)findViewById(R.id.contact);
+        addfav=(Button)findViewById(R.id.addfav);
         imageview=(ImageView)findViewById(R.id.imageView2);
         String titletext = intent.getStringExtra("key");
-        String desctext = intent.getStringExtra("key2");
+        String nametext = intent.getStringExtra("key2");
+        String desctext = intent.getStringExtra("key3");
+        String pricetext=intent.getStringExtra("key4");
         title.setText(titletext);
+        user.setText(nametext);
+        price.setText(pricetext);
         desc.setText(desctext);
+        final String owner=nametext.split(" ")[2];
+        /*Bundle extras = getIntent().getExtras();
+        byte[] byteArray = extras.getByteArray("picture");*/
+
+        //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+        ImageView image = (ImageView) findViewById(R.id.imageView2);
+        Bitmap bmp=CommonResources.bmp;
+        image.setImageBitmap(bmp);
         /*byteArray = getIntent().getByteArrayExtra("byteArray");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         BitmapDrawable ob = new BitmapDrawable(getResources(), bmp);
         imageview.setBackgroundDrawable(ob);*/
+       contact.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent i=new Intent(DetailActivity.this,userdetails.class);
+               i.putExtra("owner",owner);
+               startActivity(i);
+           }
+       });
+        addfav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ArrayAdapter;
@@ -76,14 +77,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         iteminfo = new ArrayList<ItemInfo>();
 
-       /* for(int i = 0; i < 3 ; i ++){
-            iteminfo.add(new ItemInfo(
-                    "Item " + i,
-                    "POSTED BY: USER "+ i,
-                    R.drawable.photo1
+        /*Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
+          iteminfo.add(new ItemInfo(
+                    "Item "  ,
+                    "POSTED BY: USER ",
+                    d, "Rs. 5000"
 
-            ));
-        }*/
+            ));*/
+
 
         refreshPostList();
         mAdapter = new MainAdapter(iteminfo);
@@ -101,7 +102,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+
+        if(position==2){startActivity(new Intent(MainActivity.this,myitems.class));}
+        else if(position==1){startActivity(new Intent(MainActivity.this,latestitems.class));}
+       // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}
     }
 
     @Override
@@ -117,7 +121,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         //query.whereEqualTo("author", ParseUser.getCurrentUser());
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
-        final Bitmap[] bmp = new Bitmap[1];
+
         setProgressBarIndeterminateVisibility(true);
         // Locate the objectId from the class
 
@@ -134,8 +138,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         ));
                     }*/
 
-                    setProgressBarIndeterminateVisibility(true);
-
                     query.findInBackground(new FindCallback<ParseObject>()
 
                     {
@@ -148,8 +150,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             // If there are results, update the list of posts
                             // and notify the adapter
                             //iteminfo.clear();
-
-                            for (ParseObject item : itemList) {
+                            iteminfo.clear();
+                            for (final ParseObject item : itemList) {
                                 //String x= post.getUpdatedAt().toString();// post.getString("title")
                         /*ParseFile photoFile = item.getParseFile("image");
                         final Bitmap bitpic = new Bitmap;
@@ -164,6 +166,36 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
                             }
                         });*/
+                        ParseFile imageFile = (ParseFile) item.get("image");
+                        imageFile.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, ParseException e) {
+                                if (e == null) {
+                                    Log.d("test",
+                                            "We've got data in data.");
+                                    Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG);
+                                    // Decode the Byte[] into
+                                    // Bitmap
+                                    CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
+                                    Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                    iteminfo.add(new ItemInfo(
+                                            item.getString("name").toUpperCase(),
+
+                                            "Posted by: "+item.getString("postedby").toUpperCase(), item.getString("description"),
+                                            d,
+                                            "Rs. "+item.getString("price")
+
+                                    ));
+
+                                    // Close progress dialog
+
+                                } else {
+                                    e.printStackTrace();
+                                    Log.d("test",
+                                            "There was a problem downloading the data.");
+                                }
+                            }
+                        });
                               /* final Bitmap[] bmp = new Bitmap[1];
                                 ParseQuery<ParseObject> query1 = new ParseQuery<ParseObject>(
                                         "Items");
@@ -205,23 +237,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                                         });
                                             }
                                         });*/
-                               // Drawable d = new BitmapDrawable(getResources(), bmp[0]);
-                                Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
-                                iteminfo.add(new ItemInfo(
-                                        item.getString("name").toUpperCase(),
+                               /*// Drawable d = new BitmapDrawable(getResources(), bmp[0]);
+                                Drawable d = getResources().getDrawable(R.drawable.ic_launcher);*/
 
-                                        "Posted by: "+item.getString("postedby").toUpperCase(),
-                                        d,
-                                        "Rs. "+item.getString("price")
-
-                                ));
                                 //Log.e(getClass().getSimpleName(), item.);
                             }
                             //((ArrayAdapter<ItemInfo>) getListAdapter())
                             // .notifyDataSetChanged();
 
                         } else {
-
+                            e.printStackTrace();
                             Log.d(getClass().getSimpleName(), "Error");
                         }
 
@@ -232,4 +257,22 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     );
 
                 }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(MainActivity.this,"Refreshed",Toast.LENGTH_LONG);
+            refreshPostList();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
+}
+
+

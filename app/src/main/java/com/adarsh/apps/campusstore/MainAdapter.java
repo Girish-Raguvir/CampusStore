@@ -2,6 +2,9 @@ package com.adarsh.apps.campusstore;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
@@ -34,16 +38,27 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             final TextView title = (TextView) v.findViewById(R.id.title);
             final TextView desc = (TextView) v.findViewById(R.id.desc);
             final TextView price = (TextView) v.findViewById(R.id.price);
-            ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
-            v.setOnClickListener(new View.OnClickListener() {
+            final ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            final Bitmap image = drawable.getBitmap();
+            //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            //image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            //final byte[] byteArray = stream.toByteArray();
+
+            //final Bundle extras = new Bundle();
+            //extras.putParcelable("imagebitmap", image);
+            /*v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(),DetailActivity.class);
                     intent.putExtra("key", title.getText().toString());
                     intent.putExtra("key2", desc.getText().toString());
+                    //intent.putExtra("picture",byteArray);
+                    CommonResources.bmp=image;
+                    //intent.putExtras(extras);
                     view.getContext().startActivity(intent);
                 }
-            });
+            });*/
         }
 
     }
@@ -76,11 +91,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         final  TextView desc = (TextView) holder.view.findViewById(R.id.desc);
         final ImageView imageView = (ImageView) holder.view.findViewById(R.id.imageView);
         final TextView price = (TextView) holder.view.findViewById(R.id.price);
-        imageView.buildDrawingCache();
-        Bitmap bmap = imageView.getDrawingCache();
+        //imageView.buildDrawingCache();
+      //  Bitmap bmap = imageView.getDrawingCache();
 
         title.setText(pojos.get(position).getTitle());
-        desc.setText(pojos.get(position).getDesc());
+        desc.setText(pojos.get(position).getUser());
+
         imageView.setImageDrawable(pojos.get(position).getImage());
         price.setText(pojos.get(position).getprice());
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +104,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(),DetailActivity.class);
                 intent.putExtra("key", title.getText().toString());
-                intent.putExtra("key2", desc.getText().toString());
+                intent.putExtra("key2",desc.getText().toString());
+                intent.putExtra("key3",pojos.get(position).getDesc());
+                intent.putExtra("key4",price.getText().toString());
+                BitmapDrawable d=(BitmapDrawable)imageView.getDrawable();
+                CommonResources.bmp=d.getBitmap();
                 holder.itemView.getContext().startActivity(intent);
             }
         });

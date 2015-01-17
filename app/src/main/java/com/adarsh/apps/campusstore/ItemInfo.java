@@ -8,25 +8,27 @@ import android.graphics.drawable.Drawable;
 public class ItemInfo {
 
     String title;
-    String desc;
+    String user;
     Drawable image;
     String price;
+    String desc;
 
-    public ItemInfo(String title, String desc, Drawable image,String price) {
-            this.title = title;
-            this.desc = desc;
-            this.image = image;
-            this.price=price;
+    public ItemInfo(String title, String user, String desc, Drawable image,String price) {
+        this.title = title;
+        this.user = user;
+        this.image = image;
+        this.price=price;
+        this.desc=desc;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getUser() {
+        return user;
     }
-
+    public String getDesc() { return desc; }
     public Drawable getImage() {
         return image;
     }
