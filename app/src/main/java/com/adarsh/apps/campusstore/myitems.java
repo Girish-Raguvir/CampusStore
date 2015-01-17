@@ -1,9 +1,7 @@
 package com.adarsh.apps.campusstore;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Outline;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,13 +13,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewOutlineProvider;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -29,7 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 /*
@@ -49,9 +42,11 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myitems);
+        NavigationDrawerFragment.mCurrentSelectedPosition=2;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("My Items");
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view1);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -69,10 +64,9 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             ));*/
 
 
-        refreshPostList();
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
-        //refreshPostList();
+        refreshPostList();
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer1);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer1, (DrawerLayout) findViewById(R.id.drawer1), mToolbar);
     }
@@ -85,7 +79,8 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+         if(position==1){startActivity(new Intent(myitems.this,latestitems.class));}
+        else if(position==0){startActivity(new Intent(myitems.this,MainActivity.class));}
     }
 
     @Override
@@ -139,7 +134,8 @@ iteminfo.clear();
                                                                        "Rs. " + item.getString("price")
 
                                                                ));
-
+                                                               mAdapter = new MainAdapter(iteminfo);
+                                                               mRecyclerView.setAdapter(mAdapter);
                                                                // Close progress dialog
 
                                                            } else {

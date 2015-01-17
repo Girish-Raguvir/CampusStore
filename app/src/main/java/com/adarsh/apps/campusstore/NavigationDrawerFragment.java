@@ -33,7 +33,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private boolean mUserLearnedDrawer;
     private boolean mFromSavedInstanceState;
-    private int mCurrentSelectedPosition;
+    public static int mCurrentSelectedPosition;
 
 
     @Nullable

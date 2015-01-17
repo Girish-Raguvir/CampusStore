@@ -42,9 +42,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_topdrawer);
+        NavigationDrawerFragment.mCurrentSelectedPosition=0;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Trending Items");
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
