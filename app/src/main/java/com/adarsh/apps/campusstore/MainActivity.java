@@ -202,7 +202,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     // Bitmap
                                     CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
                                     Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                    iteminfo.add(new ItemInfo(
+                                    iteminfo.add(new ItemInfo(item.getObjectId(),
                                             item.getString("name").toUpperCase(),
 
                                             "Posted by: "+item.getString("postedby").toUpperCase(), item.getString("description"),

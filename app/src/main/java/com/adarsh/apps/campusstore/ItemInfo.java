@@ -9,13 +9,15 @@ public class ItemInfo {
 
     String title;
     String user;
+    String id;
     Drawable image;
     String price;
     String desc;
 
-    public ItemInfo(String title, String user, String desc, Drawable image,String price) {
+    public ItemInfo(String id,String title, String user, String desc, Drawable image,String price) {
         this.title = title;
         this.user = user;
+        this.id=id;
         this.image = image;
         this.price=price;
         this.desc=desc;
@@ -24,7 +26,7 @@ public class ItemInfo {
     public String getTitle() {
         return title;
     }
-
+    public String getId(){return id;}
     public String getUser() {
         return user;
     }

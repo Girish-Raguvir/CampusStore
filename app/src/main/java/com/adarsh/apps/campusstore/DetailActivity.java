@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ public class DetailActivity extends ActionBarActivity {
         final String nametext = intent.getStringExtra("key2");
         final String desctext = intent.getStringExtra("key3");
         final String pricetext=intent.getStringExtra("key4");
+        final String idtext=intent.getStringExtra("noteId");
         title.setText(titletext);
         user.setText(nametext);
         price.setText(pricetext);
@@ -52,7 +54,7 @@ public class DetailActivity extends ActionBarActivity {
         //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         ImageView image = (ImageView) findViewById(R.id.imageView2);
         ImageButton edit=(ImageButton)findViewById(R.id.edit);
-        Bitmap bmp=CommonResources.bmp;
+        final Bitmap bmp=CommonResources.bmp;
         image.setImageBitmap(bmp);
         /*byteArray = getIntent().getByteArrayExtra("byteArray");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -82,8 +84,10 @@ public class DetailActivity extends ActionBarActivity {
                 i.putExtra("key",titletext);
                 i.putExtra("key2",nametext);
                 i.putExtra("key3",desctext);
-                i.putExtra("key4",pricetext);
-
+                i.putExtra("key4",pricetext.trim().split(" ")[1]);
+                i.putExtra("noteId",idtext);
+                CommonResources.bmp=bmp;
+                Log.d("test","Editing");
                 startActivity(i);
             }
         });
