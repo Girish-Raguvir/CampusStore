@@ -9,11 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
 
 import com.adarsh.apps.campusstore.R;
+import com.parse.ParseUser;
 
 public class DetailActivity extends ActionBarActivity {
     TextView title;
@@ -35,10 +37,10 @@ public class DetailActivity extends ActionBarActivity {
         contact=(Button)findViewById(R.id.contact);
         addfav=(Button)findViewById(R.id.addfav);
         imageview=(ImageView)findViewById(R.id.imageView2);
-        String titletext = intent.getStringExtra("key");
-        String nametext = intent.getStringExtra("key2");
-        String desctext = intent.getStringExtra("key3");
-        String pricetext=intent.getStringExtra("key4");
+        final String titletext = intent.getStringExtra("key");
+        final String nametext = intent.getStringExtra("key2");
+        final String desctext = intent.getStringExtra("key3");
+        final String pricetext=intent.getStringExtra("key4");
         title.setText(titletext);
         user.setText(nametext);
         price.setText(pricetext);
@@ -49,12 +51,16 @@ public class DetailActivity extends ActionBarActivity {
 
         //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         ImageView image = (ImageView) findViewById(R.id.imageView2);
+        ImageButton edit=(ImageButton)findViewById(R.id.edit);
         Bitmap bmp=CommonResources.bmp;
         image.setImageBitmap(bmp);
         /*byteArray = getIntent().getByteArrayExtra("byteArray");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         BitmapDrawable ob = new BitmapDrawable(getResources(), bmp);
         imageview.setBackgroundDrawable(ob);*/
+        if (ParseUser.getCurrentUser().getUsername().toUpperCase().equals(owner)){
+            edit.setVisibility(View.VISIBLE);
+        }
        contact.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -67,6 +73,18 @@ public class DetailActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
+            }
+        });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(DetailActivity.this,CreateActivity.class);
+                i.putExtra("key",titletext);
+                i.putExtra("key2",nametext);
+                i.putExtra("key3",desctext);
+                i.putExtra("key4",pricetext);
+
+                startActivity(i);
             }
         });
 

@@ -57,6 +57,13 @@ public class CreateActivity extends Activity {
         et3=(EditText)findViewById(R.id.editText5);
         imageView = (ImageView) findViewById(R.id.imageView);
         save = (Button) findViewById(R.id.save);
+        Intent intent=getIntent();
+        final String titletext = intent.getStringExtra("key");
+        final String desctext = intent.getStringExtra("key3");
+        final String pricetext=intent.getStringExtra("key4");
+        et1.setText(titletext);
+        et2.setText(desctext);
+        et3.setText(pricetext);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

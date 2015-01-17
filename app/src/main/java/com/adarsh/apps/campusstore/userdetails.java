@@ -1,13 +1,17 @@
 package com.adarsh.apps.campusstore;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ public class userdetails extends ActionBarActivity {
     TextView hostel;
     TextView email;
     String oname,ophno,ohostel,oemail;
+    ImageButton call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +43,7 @@ public class userdetails extends ActionBarActivity {
         phno=(TextView)findViewById(R.id.textView2);
         hostel=(TextView)findViewById(R.id.textView3);
         email=(TextView)findViewById(R.id.textView4);
+
         display(oname);
 
 
@@ -91,6 +97,17 @@ public class userdetails extends ActionBarActivity {
                                                phno.setText(user.getString("phonenumber"));
                                                    email.setText(user.getString("email"));
                                                    hostel.setText(user.getString("hostel"));
+                                                   call=(ImageButton)findViewById(R.id.call);
+
+                                                   call.setOnClickListener(new View.OnClickListener() {
+                                                       @Override
+                                                       public void onClick(View v) {
+
+                                                           Intent i = new Intent(Intent.ACTION_DIAL);
+                                                           i.setData(Uri.parse("tel:"+user.getString("phonenumber")));
+                                                           startActivity(i);
+                                                       }
+                                                   });
                                                break;
                                                }
 

@@ -76,21 +76,34 @@
         android:textColor="#FFFFFF"
 
         android:id="@+id/price" />
-        <Button
-            android:layout_width="200dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"><Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="60dp"
             android:id="@+id/contact"
-            android:text="Contact Owner"
-            android:layout_gravity="center"
+            android:text="View Owner Profile"
             android:layout_marginTop="20dp"/>
-        <Button
-            android:layout_width="200dp"
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher"
+                android:id="@+id/edit"
+                android:visibility="invisible"
+                android:layout_weight="1" />
+
+            <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="60dp"
             android:id="@+id/addfav"
             android:text="Add to favourites"
-            android:layout_gravity="center"
             android:layout_marginTop="20dp"/>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
+
 </LinearLayout>
