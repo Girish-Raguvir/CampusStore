@@ -79,10 +79,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             ));*/
 
 
-        refreshPostList();
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
-        //refreshPostList();
+        refreshPostList();
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
     }
@@ -179,7 +178,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                             "Rs. "+item.getString("price")
 
                                     ));
-
+                                    mAdapter = new MainAdapter(iteminfo);
+                                    mRecyclerView.setAdapter(mAdapter);
                                     // Close progress dialog
 
                                 } else {

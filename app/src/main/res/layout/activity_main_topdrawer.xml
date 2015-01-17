@@ -34,8 +34,6 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:scrollbars="vertical"
-            android:focusable="true"
-            android:fitsSystemWindows="true"
             android:layout_height="match_parent"
             android:background="#E3F2FD"
             android:layout_below="@+id/toolbar_actionbar" />
