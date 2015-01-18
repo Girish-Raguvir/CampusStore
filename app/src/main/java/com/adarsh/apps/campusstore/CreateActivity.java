@@ -47,6 +47,7 @@ public class CreateActivity extends Activity {
     private Button save, capture,submit;
     private EditText et1,et2,et3;
     private ParseFile imagefile;
+    ItemInfo olditem=null;
    // private ItemInfo item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +59,18 @@ public class CreateActivity extends Activity {
         imageView = (ImageView) findViewById(R.id.imageView);
         save = (Button) findViewById(R.id.save);
         Intent intent=getIntent();
-        final String titletext = intent.getStringExtra("key");
+        if(intent.getExtras()!=null)
+        { final String titletext = intent.getStringExtra("key");
         final String desctext = intent.getStringExtra("key3");
         final String pricetext=intent.getStringExtra("key4");
+            final String nametext=intent.getStringExtra("key2");
+            Log.d("test","Olditem found");
         et1.setText(titletext);
         et2.setText(desctext);
         et3.setText(pricetext);
+        imageView.setImageBitmap(CommonResources.bmp);
+            olditem=new ItemInfo(intent.getStringExtra("noteId"),titletext,nametext,desctext,new BitmapDrawable(getResources(), CommonResources.bmp),pricetext);
+        }
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -251,9 +258,9 @@ public class CreateActivity extends Activity {
     }
     private void saveitem() {
 
-        final String name=et1.getText().toString().trim();
-         final String desc=et2.getText().toString().trim();
-        final String price=et3.getText().toString().trim();
+        final String name = et1.getText().toString().trim();
+        final String desc = et2.getText().toString().trim();
+        final String price = et3.getText().toString().trim();
 
         /*name=name.trim();
         desc=desc.trim();
@@ -265,8 +272,8 @@ public class CreateActivity extends Activity {
         // If user enters both title and content, save
 
         if (!name.isEmpty()) {
-
-            // Check if post is being created or edited
+            if (olditem == null) {
+                // Check if post is being created or edited
 
 
                 // create new post
@@ -281,13 +288,12 @@ public class CreateActivity extends Activity {
                 //file.saveInBackground();
 
 
-
                 //post.put("mediatype", data);
-            final Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
-                post.put("name",name);
-                post.put("description",desc);
-                post.put("price",price);
-                post.put("image",imagefile);
+                final Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
+                post.put("name", name);
+                post.put("description", desc);
+                post.put("price", price);
+                post.put("image", imagefile);
                 post.put("postedby", ParseUser.getCurrentUser().getUsername());
                 setProgressBarIndeterminateVisibility(true);
                 post.saveInBackground(new SaveCallback() {
@@ -295,7 +301,7 @@ public class CreateActivity extends Activity {
                         setProgressBarIndeterminateVisibility(false);
                         if (e == null) {
                             // Saved successfully.
-                            ItemInfo item = new ItemInfo(name,null,desc,null,price);
+                            olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),price);
                             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {
@@ -307,15 +313,48 @@ public class CreateActivity extends Activity {
                 });
 
 
+            }else{ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
+                          Log.d("test","Modifing Old item"+olditem.getId());
+                // Retrieve the object by id
+                query.getInBackground(olditem.getId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject post, ParseException e) {
+                        if (e == null) {
+                            // Now let's update it with some new data.
+                            post.put("name", name);
+                            post.put("description", desc);
+                            post.put("price", price);
+                            post.put("image", imagefile);
+                            post.put("postedby", ParseUser.getCurrentUser().getUsername());
+                            setProgressBarIndeterminateVisibility(true);
+                            post.saveInBackground(new SaveCallback() {
+                                public void done(ParseException e) {
+                                    setProgressBarIndeterminateVisibility(false);
+                                    if (e == null) {
+                                        //ItemInfo olditem = new ItemInfo(name, null, desc, null, price);
+                                        Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                                        Log.d("test","Saved");
+                                    } else {
+                                        // The save failed.
+                                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                                    }
+                                }
+                            });
+                        }else{Log.d("test","no item found");}
+                    }
+                });
+            }
+
+            }
+            else if (name.isEmpty() && !desc.isEmpty()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CreateActivity.this);
+                builder.setMessage("Missing name or description!")
+                        .setTitle(R.string.edit_error_title)
+                        .setPositiveButton(android.R.string.ok, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         }
-        else if (name.isEmpty() && !desc.isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(CreateActivity.this);
-            builder.setMessage("Missing name or description!")
-                    .setTitle(R.string.edit_error_title)
-                    .setPositiveButton(android.R.string.ok, null);
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        }
+
     }
 
-}

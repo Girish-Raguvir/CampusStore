@@ -140,11 +140,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
                 intent.putExtra("key", title.getText().toString());
+<<<<<<< HEAD
                 intent.putExtra("key2", desc.getText().toString());
                 intent.putExtra("key3", pojos.get(position).getDesc());
                 intent.putExtra("key4", price.getText().toString());
                 BitmapDrawable d = (BitmapDrawable) imageView.getDrawable();
                 CommonResources.bmp = d.getBitmap();
+=======
+                intent.putExtra("key2",desc.getText().toString());
+                intent.putExtra("key3",pojos.get(position).getDesc());
+                intent.putExtra("key4",price.getText().toString());
+                intent.putExtra("noteId",pojos.get(position).getId());
+                BitmapDrawable d=(BitmapDrawable)imageView.getDrawable();
+                CommonResources.bmp=d.getBitmap();
+>>>>>>> origin/master
                 holder.itemView.getContext().startActivity(intent);
             }
         });

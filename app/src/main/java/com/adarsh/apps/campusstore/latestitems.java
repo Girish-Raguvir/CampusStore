@@ -50,7 +50,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Latest Items");
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view1);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -105,7 +105,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
     {   Calendar cal= Calendar.getInstance();
         int i=0;
         //if(item.getDate("updatedAt").toString().split("")[0].equals(new SimpleDateFormat("MMM").format(cal.getTime()))){++i;}
-        if(item.getCreatedAt().getDate()-(cal.getTime().getDate())==-1){++i;
+        if((cal.getTime().getDate())-item.getCreatedAt().getDate()<=1){++i;
     }
        // Log.d("test"," "+item.getCreatedAt().getDate());
         return i;
@@ -146,7 +146,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                                                // Bitmap
                                                                CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                                Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                                               iteminfo.add(new ItemInfo(
+                                                               iteminfo.add(new ItemInfo(item.getObjectId(),
                                                                        item.getString("name").toUpperCase(),
 
                                                                        "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),

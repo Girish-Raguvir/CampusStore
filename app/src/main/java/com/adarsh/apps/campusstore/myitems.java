@@ -50,7 +50,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("My Items");
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view1);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -137,7 +137,7 @@ iteminfo.clear();
                                                                // Bitmap
                                                                CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                                                Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                                               iteminfo.add(new ItemInfo(
+                                                               iteminfo.add(new ItemInfo(item.getObjectId(),
                                                                        item.getString("name").toUpperCase(),
 
                                                                        "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
