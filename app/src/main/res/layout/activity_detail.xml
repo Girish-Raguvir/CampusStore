@@ -33,18 +33,18 @@
             android:paddingLeft="10dp"
             android:layout_below="@+id/imageView2"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_gravity="center_horizontal" />
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
+            android:layout_gravity="center_horizontal"
             android:id="@+id/textView3"
             android:paddingRight="10dp"
             android:layout_below="@+id/description1"
-            android:layout_gravity="right"
-            android:gravity="right"/>
+            android:gravity="right" />
 
 
     </LinearLayout>
@@ -78,7 +78,8 @@
         android:id="@+id/price" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"><Button
+            android:layout_height="wrap_content">
+            <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="60dp"
@@ -87,12 +88,13 @@
             android:layout_marginTop="20dp"/>
 
             <ImageButton
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_launcher"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@android:drawable/ic_menu_edit"
                 android:id="@+id/edit"
+                android:layout_margin="40dp"
                 android:visibility="invisible"
-                android:layout_weight="1" />
+                android:background="@drawable/edit_back" />
 
             <Button
             android:layout_width="0dp"

@@ -1,6 +1,7 @@
 package com.adarsh.apps.campusstore;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,9 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -32,6 +37,9 @@ public class userdetails extends ActionBarActivity {
     TextView email;
     String oname,ophno,ohostel,oemail;
     ImageButton call;
+    ImageButton emailbutton;
+    ImageView contact;
+    URL url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +104,9 @@ public class userdetails extends ActionBarActivity {
                                                if(x.equals(s)){name.setText(s);
                                                phno.setText(user.getString("phonenumber"));
                                                    email.setText(user.getString("email"));
-                                                   hostel.setText(user.getString("hostel"));
+                                                   hostel.setText("HOSTEL: " + user.getString("hostel"));
                                                    call=(ImageButton)findViewById(R.id.call);
-
+                                                    contact=(ImageView)findViewById(R.id.contact);
                                                    call.setOnClickListener(new View.OnClickListener() {
                                                        @Override
                                                        public void onClick(View v) {
@@ -108,7 +116,27 @@ public class userdetails extends ActionBarActivity {
                                                            startActivity(i);
                                                        }
                                                    });
-                                               break;
+                                                   emailbutton=(ImageButton)findViewById(R.id.email);
+                                                   emailbutton.setOnClickListener(new View.OnClickListener() {
+                                                       @Override
+                                                       public void onClick(View v) {
+                                                           Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                                                   "mailto",user.getString("email"), null));
+
+                                                           intent.putExtra(Intent.EXTRA_SUBJECT, "Campus Store Enquiry....");
+                                                           intent.putExtra(Intent.EXTRA_TEXT, "Sent From IITM Campus Store App");
+
+                                                           startActivity(Intent.createChooser(intent, "Send Email"));
+                                                       }
+                                                   });
+                                                   /*try {
+                                                       String args="http://photos.iitm.ac.in/byroll.php?roll=MM14B001";
+                                                       Bitmap bmp = BitmapFactory.decodeStream((InputStream)new URL(args).getContent());
+                                                       contact.setImageBitmap(bmp);
+                                                   } catch (java.io.IOException e1) {
+                                                       e1.printStackTrace();
+                                                   }*/
+                                                   break;
                                                }
 
                                            }

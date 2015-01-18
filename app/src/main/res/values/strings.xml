@@ -35,5 +35,6 @@
     <string name="title_activity_main_activity2">MainActivity2</string>
     <string name="search_title">Search</string>
     <string name="description_search">Search</string>
+    <string name="title_activity_searchable">SearchableActivity</string>
 
 </resources>

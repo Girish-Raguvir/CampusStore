@@ -1,6 +1,8 @@
 package com.adarsh.apps.campusstore;
-
+import com.adarsh.apps.campusstore.MainAdapter;
 import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -20,8 +22,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
+import android.widget.Filterable;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -35,21 +38,23 @@ import java.util.List;
 Modified by Girish on 15-1-15.
  */
 
-public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
+public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks, SearchView.OnQueryTextListener {
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SearchView searchView;
     List<ItemInfo> iteminfo;
+    ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_topdrawer);
-        NavigationDrawerFragment.mCurrentSelectedPosition=0;
+        NavigationDrawerFragment.mCurrentSelectedPosition = 0;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -58,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        View addButton = (View)findViewById(R.id.imageButton);
+        View addButton = (View) findViewById(R.id.imageButton);
         /*ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
@@ -72,12 +77,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,CreateActivity.class);
+                Intent i = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(i);
             }
         });
 
         iteminfo = new ArrayList<ItemInfo>();
+
 
         /*Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
           iteminfo.add(new ItemInfo(
@@ -90,10 +96,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
+        //itemAdapter = new ArrayAdapter<ItemInfo>(this,R.layout.list_item_layout,"");
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
-        swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.myPrimaryColor);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -110,19 +117,115 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        Intent intent  = getIntent();
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("Start typing to search...");
+        setupSearchView(searchItem);
+        /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+        {
+            searchItem.setOnActionExpandListener(new MenuItemCompat.OnActionExpandListener()
+            {
 
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-                    MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE);
-            suggestions.saveRecentQuery(query, null);
-        }
-            return super.onCreateOptionsMenu(menu);
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem item)
+                {
+                    // Do something when collapsed
+                    Log.i("test", "onMenuItemActionCollapse " + item.getItemId());
+                    return true; // Return true to collapse action view
+                }
+
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem item)
+                {
+                    // TODO Auto-generated method stub
+                    Log.i("test", "onMenuItemActionExpand " + item.getItemId());
+                    return true;
+                }
+            });
+        } else
+        {
+            // do something for phones running an SDK before froyo
+            searchView.setOnCloseListener(new SearchView.OnCloseListener()
+            {
+
+                @Override
+                public boolean onClose()
+                {
+                    Log.i("test", "mSearchView on close ");
+                    // TODO Auto-generated method stub
+                    return false;
+                }
+            });
+        }*/
+
+        return super.onCreateOptionsMenu(menu);
+
 
 
     }
+
+    private void setupSearchView(MenuItem searchItem) {
+
+        if (isAlwaysExpanded()) {
+            searchView.setIconifiedByDefault(false);
+        } else {
+            searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM
+                    | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        if (searchManager != null) {
+            List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
+
+            SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+            for (SearchableInfo inf : searchables) {
+                if (inf.getSuggestAuthority() != null
+                        && inf.getSuggestAuthority().startsWith("d")) {
+                    info = inf;
+                }
+            }
+            searchView.setSearchableInfo(info);
+        }
+
+        searchView.setOnQueryTextListener(this);
+    }
+
+    public boolean onQueryTextChange(String newText) {
+        final int size = iteminfo.size();
+        Log.d("test","SIZE IS" + size);
+        for (int i = size - 1; i >= 0; i--) {
+            if ((iteminfo.get(i).getUser().contains(newText)== false) && (iteminfo.get(i).getTitle().contains(newText)==false) && (iteminfo.get(i).getprice().contains(newText) == false) && (iteminfo.get(i).getDesc().contains(newText) == false)) {
+                iteminfo.remove(i);
+                //notifyItemRemoved(i);
+            }
+        }
+
+        return false;
+    }
+
+    public boolean onQueryTextSubmit(String query) {
+        final int size = iteminfo.size();
+        Log.d("test","SIZE IS" + size);
+        for (int i = size - 1; i >= 0; i--) {
+            if ((iteminfo.get(i).getUser().contains(query) == false) && (iteminfo.get(i).getTitle().contains(query) == false) && (iteminfo.get(i).getprice().contains(query) == false) && (iteminfo.get(i).getDesc().contains(query) == false)) {
+                iteminfo.remove(i);
+                //notifyItemRemoved(i);
+            }
+        }
+
+        return false;
+    }
+
+    public boolean onClose() {
+
+        return false;
+    }
+
+    protected boolean isAlwaysExpanded() {
+        return false;
+    }
+
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -300,6 +403,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         {}
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 
 

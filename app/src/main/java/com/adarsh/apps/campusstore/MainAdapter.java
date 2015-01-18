@@ -9,21 +9,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.FilterQueryProvider;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Adarsh on 14-01-2015.
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
-    private List<ItemInfo> pojos;
+    public List<ItemInfo> pojos;
     private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
     private int mSelectedPosition;
     private String intented;
     private int mTouchedPosition = -1;
+    protected FilterQueryProvider mFilterQueryProvider;
+    protected CursorFilter mCursorFilter;
+    private List<ItemInfo> originaldata;
+    private List<ItemInfo> filtereddata;
+    //private DataFilter filter;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -66,12 +74,38 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     // Provide a suitable constructor (depends on the kind of dataset)
     public MainAdapter(List<ItemInfo> pojos) {
         this.pojos = pojos;
+
+    }
+
+    public int getCount() {
+        return filtereddata.size();
+    }
+
+    //This should return a data object, not an int
+    public Object getItem(int position) {
+        return filtereddata.get(position);
+    }
+
+    public long getItemId(int position) {
+        return position;
     }
 
     // Create new views (invoked by the layout manager)
+    /*public Filter getFilter() {
+        if (filter == null) {
+            filter = new DataFilter();
+        }
+        return mCursorFilter;
+    }
+    public FilterQueryProvider getFilterQueryProvider() {
+        return mFilterQueryProvider;
+    }
+    public void setFilterQueryProvider(FilterQueryProvider filterQueryProvider) {
+        mFilterQueryProvider = filterQueryProvider;
+    }*/
     @Override
     public MainAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+                                                     int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_layout, parent, false);
@@ -88,11 +122,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final TextView title = (TextView) holder.view.findViewById(R.id.title);
-        final  TextView desc = (TextView) holder.view.findViewById(R.id.desc);
+        final TextView desc = (TextView) holder.view.findViewById(R.id.desc);
         final ImageView imageView = (ImageView) holder.view.findViewById(R.id.imageView);
         final TextView price = (TextView) holder.view.findViewById(R.id.price);
+        //ItemInfo i = new ItemInfo(null, null, null, null, null);
+        //i = filtereddata.get(position);
         //imageView.buildDrawingCache();
-      //  Bitmap bmap = imageView.getDrawingCache();
+        //  Bitmap bmap = imageView.getDrawingCache();
 
         title.setText(pojos.get(position).getTitle());
         desc.setText(pojos.get(position).getUser());
@@ -102,13 +138,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(holder.itemView.getContext(),DetailActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), DetailActivity.class);
                 intent.putExtra("key", title.getText().toString());
-                intent.putExtra("key2",desc.getText().toString());
-                intent.putExtra("key3",pojos.get(position).getDesc());
-                intent.putExtra("key4",price.getText().toString());
-                BitmapDrawable d=(BitmapDrawable)imageView.getDrawable();
-                CommonResources.bmp=d.getBitmap();
+                intent.putExtra("key2", desc.getText().toString());
+                intent.putExtra("key3", pojos.get(position).getDesc());
+                intent.putExtra("key4", price.getText().toString());
+                BitmapDrawable d = (BitmapDrawable) imageView.getDrawable();
+                CommonResources.bmp = d.getBitmap();
                 holder.itemView.getContext().startActivity(intent);
             }
         });
@@ -170,4 +206,70 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public int getItemCount() {
         return pojos.size();
     }
+
+    public void filterOut(String filter) {
+        final int size = pojos.size();
+        for (int i = size - 1; i >= 0; i--) {
+            if ((pojos.get(i).getUser().equals(filter) == false) && (pojos.get(i).getTitle().equals(filter) == false) && (pojos.get(i).getprice().equals(filter) == false) && (pojos.get(i).getDesc().equals(filter) == false)) {
+                pojos.remove(i);
+                notifyItemRemoved(i);
+            }
+        }
+    }
 }
+
+/*private class DataFilter extends Filter {
+
+    @Override
+    protected void publishResults(CharSequence constraint, FilterResults results) {
+        // TODO Auto-generated method stub
+
+        pojos = (List<ItemInfo>) results.values;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    protected FilterResults performFiltering(CharSequence constraint) {
+
+        FilterResults r = new FilterResults();
+
+        if (datavalues == null) {
+
+            synchronized (data) {
+                datavalues = new ArrayList<Info>(data);
+            }
+
+        }
+
+        if (constraint== null || constraint.length() == 0) {
+
+            synchronized (data) {
+                ArrayList<Info> list = new ArrayList<Info>(datavalues);
+                results.values = list;
+                results.count = list.size();
+            }
+
+        }
+        else {
+
+            ArrayList<Info> values = (ArrayList<Info>)datavalues;
+            int count = values.size();
+            ArrayList<Info> list = new ArrayList<Info>();
+            String prefix = constraint.toString().toLowerCase();
+
+            for (int i=0; i<count; i++) {
+
+                if( values.get(i).appName.toLowerCase().contains(prefix) ) {
+                    list.add(data.get(i));
+                }
+
+            }
+
+            r.values = list;
+            r.count  = list.size();
+
+        }
+
+        return r;
+
+    }*/
