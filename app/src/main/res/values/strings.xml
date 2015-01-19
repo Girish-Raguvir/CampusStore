@@ -36,5 +36,6 @@
     <string name="search_title">Search</string>
     <string name="description_search">Search</string>
     <string name="title_activity_searchable">SearchableActivity</string>
+    <string name="Rs">\u20B9</string>
 
 </resources>

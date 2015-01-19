@@ -173,19 +173,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        if (searchManager != null) {
-            List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
 
-            SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-            for (SearchableInfo inf : searchables) {
-                if (inf.getSuggestAuthority() != null
-                        && inf.getSuggestAuthority().startsWith("d")) {
-                    info = inf;
-                }
-            }
-            searchView.setSearchableInfo(info);
-        }
 
         searchView.setOnQueryTextListener(this);
     }
@@ -197,6 +185,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             if ((iteminfo.get(i).getUser().contains(newText)== false) && (iteminfo.get(i).getTitle().contains(newText)==false) && (iteminfo.get(i).getprice().contains(newText) == false) && (iteminfo.get(i).getDesc().contains(newText) == false)) {
                 iteminfo.remove(i);
                 //notifyItemRemoved(i);
+                mAdapter = new MainAdapter(iteminfo);
+                mRecyclerView.setAdapter(mAdapter);
             }
         }
 
@@ -206,10 +196,22 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     public boolean onQueryTextSubmit(String query) {
         final int size = iteminfo.size();
         Log.d("test","SIZE IS" + size);
+        List<ItemInfo> temp=new ArrayList<ItemInfo>();
         for (int i = size - 1; i >= 0; i--) {
-            if ((iteminfo.get(i).getUser().contains(query) == false) && (iteminfo.get(i).getTitle().contains(query) == false) && (iteminfo.get(i).getprice().contains(query) == false) && (iteminfo.get(i).getDesc().contains(query) == false)) {
+            temp.set(i,iteminfo.get(i));
+            if ((iteminfo.get(i).getUser().toLowerCase().contains(query.toLowerCase()) == false) && (iteminfo.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) == false) && (iteminfo.get(i).getprice().toLowerCase().contains(query.toLowerCase()) == false) && (iteminfo.get(i).getDesc().toLowerCase().contains(query.toLowerCase()) == false)) {
+
+
                 iteminfo.remove(i);
                 //notifyItemRemoved(i);
+                mAdapter = new MainAdapter(iteminfo);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+            else if ((temp.get(i).getUser().toLowerCase().contains(query.toLowerCase())) || (temp.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) || (temp.get(i).getprice().toLowerCase().contains(query.toLowerCase())) || (temp.get(i).getDesc().toLowerCase().contains(query.toLowerCase())))
+            {
+                iteminfo.add(temp.get(i));
+                mAdapter = new MainAdapter(iteminfo);
+                mRecyclerView.setAdapter(mAdapter);
             }
         }
 

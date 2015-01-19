@@ -14,6 +14,9 @@ import android.widget.FilterQueryProvider;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.parse.ParseImageView;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             final TextView title = (TextView) v.findViewById(R.id.title);
             final TextView desc = (TextView) v.findViewById(R.id.desc);
             final TextView price = (TextView) v.findViewById(R.id.price);
-            final ImageView imageView = (ImageView) v.findViewById(R.id.imageView);
+            final ParseImageView imageView = (ParseImageView)v.findViewById(R.id.imageView);
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
             final Bitmap image = drawable.getBitmap();
             //ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -123,7 +126,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         // - replace the contents of the view with that element
         final TextView title = (TextView) holder.view.findViewById(R.id.title);
         final TextView desc = (TextView) holder.view.findViewById(R.id.desc);
-        final ImageView imageView = (ImageView) holder.view.findViewById(R.id.imageView);
+        final ParseImageView imageView = (ParseImageView) holder.view.findViewById(R.id.imageView);
         final TextView price = (TextView) holder.view.findViewById(R.id.price);
         //ItemInfo i = new ItemInfo(null, null, null, null, null);
         //i = filtereddata.get(position);

@@ -120,7 +120,7 @@ public class CreateActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-                {    BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                {   BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
