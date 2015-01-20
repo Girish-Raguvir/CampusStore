@@ -82,6 +82,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
         } else {
             viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            viewHolder.textView.setTextColor(viewHolder.itemView.getContext().getResources().getColor(R.color.abc_primary_text_disable_only_material_light));
+            viewHolder.textView.setTypeface(null, Typeface.NORMAL);
         }
     }
 
@@ -105,6 +107,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     public int getItemCount() {
         return mData != null ? mData.size() : 0;
     }
+
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;

@@ -25,7 +25,7 @@ public class DetailActivity extends ActionBarActivity {
     ImageView imageview;
     TextView price;
     TextView user;
-    Button contact,addfav;
+    ImageButton contact,addfav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +35,8 @@ public class DetailActivity extends ActionBarActivity {
         user=(TextView)findViewById(R.id.textView3);
         desc=(TextView)findViewById(R.id.description1);
         price=(TextView)findViewById(R.id.price);
-        contact=(Button)findViewById(R.id.contact);
-        addfav=(Button)findViewById(R.id.addfav);
+        contact=(ImageButton)findViewById(R.id.contact);
+        addfav=(ImageButton)findViewById(R.id.addfav);
         imageview=(ImageView)findViewById(R.id.imageView2);
         final String titletext = intent.getStringExtra("key");
         final String nametext = intent.getStringExtra("key2");

@@ -234,6 +234,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         if(position==2){startActivity(new Intent(MainActivity.this,myitems.class));}
         else if(position==1){startActivity(new Intent(MainActivity.this,latestitems.class));}
+        else if(position==3){startActivity(new Intent(MainActivity.this,AboutActivity.class));}
        // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}
     }
 

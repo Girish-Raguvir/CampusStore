@@ -1,111 +1,164 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="0dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="0dp"
+    android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
-    android:paddingBottom="0dp"
-    android:orientation="vertical"
     tools:context="com.adarsh.apps.campusstore.DetailActivity">
 
-
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/imageView2"
-        android:scaleType="centerCrop"
-        android:layout_alignParentTop="true" />
+        android:layout_height="350dp"
+        android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#77000000"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/textView2"
-            android:paddingLeft="10dp"
-            android:layout_below="@+id/imageView2"
+            android:layout_above="@+id/whiteline"
             android:layout_alignParentLeft="true"
-            android:layout_gravity="center_horizontal" />
-        <TextView
-            android:layout_width="0dp"
+            android:layout_alignParentStart="true"
             android:layout_weight="1"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="New Text"
+            android:textColor="#FFFFFF"
+            android:textSize="25dp" />
+
+        <LinearLayout
+            android:id="@+id/whiteline"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_above="@+id/blackoverlay"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"></LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/blackoverlay"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/textView3"
-            android:paddingRight="10dp"
-            android:layout_below="@+id/description1"
-            android:gravity="right" />
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/black_overlay"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+
+            >
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/price"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/title"
+                android:layout_alignStart="@+id/title"
+                android:layout_below="@+id/title"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+
+                android:text="Small Text"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
 
 
-    </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
 
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:id="@+id/description1"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:textSize="25dp"
-        android:textColor="#FFFFFF"
-
-        android:id="@+id/price" />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="60dp"
-            android:id="@+id/contact"
-            android:text="View Owner Profile"
-            android:layout_marginTop="20dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@android:drawable/ic_menu_edit"
-                android:id="@+id/edit"
-                android:layout_margin="40dp"
-                android:visibility="invisible"
-                android:background="@drawable/edit_back" />
+            <TextView
+                android:id="@+id/description1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
 
-            <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="60dp"
-            android:id="@+id/addfav"
-            android:text="Add to favourites"
-            android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+
+                android:textColor="#FFFFFF" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/contact"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="20dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:src="@drawable/userface"
+                    android:background="@drawable/user_back"
+                    android:text="User Profile"
+                    android:tint="#ffffff"
+                     />
+
+                <ImageButton
+                    android:id="@+id/edit"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="20dp"
+                    android:tint="#ffffff"
+
+                    android:background="@drawable/edit_back"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:visibility="invisible" />
+
+                <ImageButton
+                    android:id="@+id/addfav"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="20dp"
+                    android:clickable="true"
+                    android:background="@drawable/star_back"
+                    android:src="@android:drawable/btn_star"
+                    android:text="User Profile"
+                    android:tint="#ffffff"
+                    />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 
 </LinearLayout>

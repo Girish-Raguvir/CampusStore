@@ -34,7 +34,8 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:theme="@style/LoginTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,8 +72,14 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@layout/activity_searchable"/>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@layout/activity_searchable" />
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about" >
         </activity>
     </application>
 

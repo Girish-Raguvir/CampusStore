@@ -38,12 +38,12 @@
         android:layout_alignParentLeft="true" />
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/imageView"
         android:layout_below="@+id/editText5"
-        android:layout_alignParentLeft="true"
-
+        android:layout_gravity="center"
+        android:gravity="center"
         android:src="@drawable/header"/>
 
     <Button
@@ -85,14 +85,6 @@
         android:layout_toRightOf="@+id/editText5"
         android:layout_toEndOf="@+id/editText5"
         android:checked="false" />
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_below="@+id/imageView"
-        android:layout_toRightOf="@+id/submit"
-        android:layout_toEndOf="@+id/submit" />
 
 
 </RelativeLayout>

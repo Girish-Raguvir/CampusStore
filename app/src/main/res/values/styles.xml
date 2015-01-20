@@ -21,4 +21,14 @@
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
+    <style name="LoginTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#DEDEDE</item>
+        <item name="colorPrimaryDark">#DEDEDE</item>
+        <item name="colorAccent">#dd0000</item>
+        <item name="android:textColorPrimary">#dd0000</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <item name="android:windowBackground">@color/LoginBackground</item>
+    </style>
 </resources>
