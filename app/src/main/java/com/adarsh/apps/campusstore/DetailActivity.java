@@ -1,5 +1,6 @@
 package com.adarsh.apps.campusstore;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,10 +27,15 @@ public class DetailActivity extends ActionBarActivity {
     TextView price;
     TextView user;
     ImageButton contact,addfav;
+    ProgressDialog ringProgressDialog= null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
+        ringProgressDialog= ProgressDialog.show(DetailActivity.this, "Please wait ...", "Loading details..", true);
+        ringProgressDialog.show();
         Intent intent = getIntent();
         title=(TextView)findViewById(R.id.textView2);
         user=(TextView)findViewById(R.id.textView3);
@@ -56,6 +62,7 @@ public class DetailActivity extends ActionBarActivity {
         ImageButton edit=(ImageButton)findViewById(R.id.edit);
         final Bitmap bmp=CommonResources.bmp;
         image.setImageBitmap(bmp);
+        ringProgressDialog.dismiss();
         /*byteArray = getIntent().getByteArrayExtra("byteArray");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         BitmapDrawable ob = new BitmapDrawable(getResources(), bmp);

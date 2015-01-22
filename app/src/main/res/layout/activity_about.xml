@@ -19,7 +19,7 @@
             android:id="@+id/webops"
             android:src="@drawable/webops"
              />
-        <TextView android:text="IIT Madras Campus Store\nCreated by The Webops Club, IIT Madras\n\nThe Webops Club reserves the right to collect anonymous user data from the user.\n\nCopyright © 2015 IIT Madras Campus Store\nAll Rights Reserved."
+        <TextView android:text="IIT Madras Campus Store\n\nCreated by\n B.Adarsh (MM),Girish Raguvir.J (CS) and Srivatsan Ramesh (EE)\n\n Under\n The Webops Club, IIT Madras\n\nThe Webops Club reserves the right to collect anonymous user data from the user.\n\nCopyright © 2015 IIT Madras Campus Store\nAll Rights Reserved."
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -1,5 +1,6 @@
 package com.adarsh.apps.campusstore;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,13 +41,16 @@ public class userdetails extends ActionBarActivity {
     ImageButton emailbutton;
     ImageView contact;
     URL url;
+    ProgressDialog ring=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         oname=getIntent().getStringExtra("owner").toUpperCase();
-        Toast.makeText(userdetails.this,oname, Toast.LENGTH_LONG).show();
+        //Toast.makeText(userdetails.this,oname, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_userdetails);
+        ring= ProgressDialog.show(userdetails.this, "Please wait ...", "Loading details..", true);
+        ring.show();
         name=(TextView)findViewById(R.id.textView1);
         phno=(TextView)findViewById(R.id.textView2);
         hostel=(TextView)findViewById(R.id.textView3);
@@ -80,7 +84,7 @@ public class userdetails extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
     public void display(final String s)
-    {
+    { ring.show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Users");
         setProgressBarIndeterminateVisibility(true);
@@ -105,8 +109,10 @@ public class userdetails extends ActionBarActivity {
                                                phno.setText(user.getString("phonenumber"));
                                                    email.setText(user.getString("email"));
                                                    hostel.setText("HOSTEL: " + user.getString("hostel"));
+                                                   ring.dismiss();
                                                    call=(ImageButton)findViewById(R.id.call);
                                                     contact=(ImageView)findViewById(R.id.contact);
+
                                                    call.setOnClickListener(new View.OnClickListener() {
                                                        @Override
                                                        public void onClick(View v) {
@@ -136,7 +142,7 @@ public class userdetails extends ActionBarActivity {
                                                    } catch (java.io.IOException e1) {
                                                        e1.printStackTrace();
                                                    }*/
-                                                   break;
+                                                   ring.dismiss(); break;
                                                }
 
                                            }

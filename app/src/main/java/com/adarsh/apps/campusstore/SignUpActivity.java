@@ -40,9 +40,7 @@ public class SignUpActivity extends ActionBarActivity {
 
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+
 
     setContentView(R.layout.activity_sign_up);
 

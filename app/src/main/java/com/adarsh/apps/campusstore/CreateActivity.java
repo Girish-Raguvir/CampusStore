@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.graphics.Bitmap;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.view.View;
@@ -47,6 +48,7 @@ public class CreateActivity extends Activity {
     private Button save, capture,submit;
     private EditText et1,et2,et3;
     private ParseFile imagefile;
+    private CheckBox neg;
     ItemInfo olditem=null;
    // private ItemInfo item;
     @Override
@@ -56,6 +58,7 @@ public class CreateActivity extends Activity {
         et1=(EditText)findViewById(R.id.editText4);
         et2=(EditText)findViewById(R.id.editText3);
         et3=(EditText)findViewById(R.id.editText5);
+        neg=(CheckBox)findViewById(R.id.checkBox);
         imageView = (ImageView) findViewById(R.id.imageView);
         save = (Button) findViewById(R.id.save);
         Intent intent=getIntent();
@@ -64,6 +67,7 @@ public class CreateActivity extends Activity {
         final String desctext = intent.getStringExtra("key3");
         final String pricetext=intent.getStringExtra("key4");
             final String nametext=intent.getStringExtra("key2");
+
             Log.d("test","Olditem found");
         et1.setText(titletext);
         et2.setText(desctext);
@@ -325,6 +329,8 @@ public class CreateActivity extends Activity {
                             post.put("price", price);
                             post.put("image", imagefile);
                             post.put("postedby", ParseUser.getCurrentUser().getUsername());
+                            if(neg.isChecked()==true)post.put("negotiable","yes");
+                            else post.put("negotiable","no");
                             setProgressBarIndeterminateVisibility(true);
                             post.saveInBackground(new SaveCallback() {
                                 public void done(ParseException e) {

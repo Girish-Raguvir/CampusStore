@@ -1,5 +1,6 @@
 package com.adarsh.apps.campusstore;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -39,11 +40,14 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     private RecyclerView.LayoutManager mLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
     List<ItemInfo> iteminfo;
+    ProgressDialog s=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myitems);
+        s= ProgressDialog.show(myitems.this, "Please wait ...", "Loading items..", true);
+        s.show();
         NavigationDrawerFragment.mCurrentSelectedPosition=2;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
@@ -89,9 +93,23 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     }
 
     @Override
+
     public void onNavigationDrawerItemSelected(int position) {
-         if(position==1){startActivity(new Intent(myitems.this,latestitems.class));}
+
+        if(position==1){startActivity(new Intent(myitems.this,latestitems.class));}
+
+        else if(position==3){startActivity(new Intent(myitems.this,AboutActivity.class));}
+        else if(position==4){
+            ParseUser.logOut();
+
+            loadLoginView();}
         else if(position==0){startActivity(new Intent(myitems.this,MainActivity.class));}
+    }
+    private void loadLoginView() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -102,8 +120,9 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             super.onBackPressed();
     }
     private void refreshPostList() {
-
+       s.show();
        swipeRefreshLayout.setRefreshing(true);
+        s.show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
 
@@ -148,6 +167,7 @@ iteminfo.clear();
                                                                mAdapter = new MainAdapter(iteminfo);
                                                                mRecyclerView.setAdapter(mAdapter);
                                                                // Close progress dialog
+                                                               s.dismiss();
                                                                swipeRefreshLayout.setRefreshing(false);
 
                                                            } else {
@@ -171,7 +191,7 @@ iteminfo.clear();
                                }
 
         );
-
+  s.dismiss();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

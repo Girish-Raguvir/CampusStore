@@ -1,5 +1,6 @@
 package com.adarsh.apps.campusstore;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,6 +23,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,11 +41,15 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
     private RecyclerView.LayoutManager mLayoutManager;
     List<ItemInfo> iteminfo;
     SwipeRefreshLayout swipeRefreshLayout;
+    ProgressDialog ringProgressDialog= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_myitems);
+        ringProgressDialog= ProgressDialog.show(latestitems.this, "Please wait ...", "Loading details..", true);
+        ringProgressDialog.show();
         NavigationDrawerFragment.mCurrentSelectedPosition=1;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
@@ -89,9 +95,23 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
     }
 
     @Override
+
     public void onNavigationDrawerItemSelected(int position) {
+
         if(position==2){startActivity(new Intent(latestitems.this,myitems.class));}
+
+        else if(position==3){startActivity(new Intent(latestitems.this,AboutActivity.class));}
+        else if(position==4){
+            ParseUser.logOut();
+
+            loadLoginView();}
         else if(position==0){startActivity(new Intent(latestitems.this,MainActivity.class));}
+    }
+    private void loadLoginView() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -111,8 +131,9 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         return i;
     }
     private void refreshPostList() {
-
+       ringProgressDialog.show();
         swipeRefreshLayout.setRefreshing(true);
+        ringProgressDialog.show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
 
@@ -157,6 +178,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                                                mAdapter = new MainAdapter(iteminfo);
                                                                mRecyclerView.setAdapter(mAdapter);
                                                                // Close progress dialog
+                                                               ringProgressDialog.dismiss();
                                                                swipeRefreshLayout.setRefreshing(false);
 
                                                            } else {
@@ -180,7 +202,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                }
 
         );
-
+     ringProgressDialog.dismiss();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

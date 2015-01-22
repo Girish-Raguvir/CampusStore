@@ -1,5 +1,7 @@
 package com.adarsh.apps.campusstore;
 import com.adarsh.apps.campusstore.MainAdapter;
+
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
@@ -54,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     SwipeRefreshLayout swipeRefreshLayout;
     String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
     String CLIENT_KEY="nZ8M2KeOBWCBgcOdFCcX4MSqz9AwlM8mQMjqtQn0";
+    ProgressDialog ringProgressDialog=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         ParseUser user = ParseUser.getCurrentUser();
         if(user==null){loadLoginView();}
         else{
+
             setContentView(R.layout.activity_main_topdrawer);
+            ringProgressDialog= ProgressDialog.show(MainActivity.this, "Please wait ...", "Loading items..", true);
+            ringProgressDialog.show();
         NavigationDrawerFragment.mCurrentSelectedPosition = 0;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
@@ -268,12 +274,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     }
     private void refreshPostList() {
         swipeRefreshLayout.setRefreshing(true);
+
         //ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
         //query.whereEqualTo("author", ParseUser.getCurrentUser());
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
 
-        setProgressBarIndeterminateVisibility(true);
+
+        ringProgressDialog.show();
         // Locate the objectId from the class
 
 
@@ -296,7 +304,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         @SuppressWarnings("unchecked")
                         @Override
                         public void done (List < ParseObject > itemList, ParseException e){
-                        setProgressBarIndeterminateVisibility(false);
+
                         if (e == null) {
                             // If there are results, update the list of posts
                             // and notify the adapter
@@ -339,6 +347,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     ));
                                     mAdapter = new MainAdapter(iteminfo);
                                     mRecyclerView.setAdapter(mAdapter);
+                                    ringProgressDialog.dismiss();
                                     // Close progress dialog
                                     swipeRefreshLayout.setRefreshing(false);
 
