@@ -22,15 +22,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.Filterable;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +52,20 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     List<ItemInfo> iteminfo;
     ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
+    String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
+    String CLIENT_KEY="nZ8M2KeOBWCBgcOdFCcX4MSqz9AwlM8mQMjqtQn0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_topdrawer);
+        Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
+
+
+        ParseUser user = ParseUser.getCurrentUser();
+        if(user==null){loadLoginView();}
+        else{
+            setContentView(R.layout.activity_main_topdrawer);
         NavigationDrawerFragment.mCurrentSelectedPosition = 0;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
@@ -64,6 +76,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         View addButton = (View) findViewById(R.id.imageButton);
+
         /*ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
@@ -110,8 +123,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         });
 
         refreshPostList();
+    }}
+    private void loadLoginView() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -235,6 +253,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         if(position==2){startActivity(new Intent(MainActivity.this,myitems.class));}
         else if(position==1){startActivity(new Intent(MainActivity.this,latestitems.class));}
         else if(position==3){startActivity(new Intent(MainActivity.this,AboutActivity.class));}
+        else if(position==4){ParseUser.logOut();
+
+            loadLoginView();}
        // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}
     }
 

@@ -36,9 +36,9 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
 
-        ParseObject testObject = new ParseObject("TestObject");
+       /* ParseObject testObject = new ParseObject("TestObject");
         testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        testObject.saveInBackground();*/
 
         setContentView(R.layout.activity_login);
 
