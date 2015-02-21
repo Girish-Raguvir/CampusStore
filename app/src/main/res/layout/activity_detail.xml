@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_dark_material_light"
     android:orientation="vertical"
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
@@ -11,7 +12,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
         android:orientation="vertical">
 
         <ImageView
@@ -94,71 +96,83 @@
     </RelativeLayout>
 
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+
+            android:layout_weight="4">
+
 
             <TextView
                 android:id="@+id/description1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#ffffff"
 
-                android:textColor="#FFFFFF" />
+                />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
 
-                <ImageButton
-                    android:id="@+id/contact"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="20dp"
-                    android:gravity="center"
-                    android:clickable="true"
-                    android:src="@drawable/userface"
-                    android:background="@drawable/user_back"
-                    android:text="User Profile"
-                    android:tint="#ffffff"
-                     />
+        </ScrollView>
 
-                <ImageButton
-                    android:id="@+id/edit"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="20dp"
-                    android:tint="#ffffff"
+        <LinearLayout
+            android:id="@+id/optionbuttons"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
+            android:gravity="center"
 
-                    android:background="@drawable/edit_back"
-                    android:src="@android:drawable/ic_menu_edit"
-                    android:visibility="invisible" />
+            android:padding="0dp">
 
-                <ImageButton
-                    android:id="@+id/addfav"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="20dp"
-                    android:clickable="true"
-                    android:background="@drawable/star_back"
-                    android:src="@android:drawable/btn_star"
-                    android:text="User Profile"
-                    android:tint="#ffffff"
-                    />
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/contact"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+
+                android:background="#0000ffff"
+                android:clickable="true"
+                android:layout_marginRight="1dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/profile" />
+
+            <ImageButton
+                android:id="@+id/edit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+
+                android:layout_weight="1"
+                android:background="#0000ffff"
+                android:gravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/edit"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/addfav"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:background="#0000ffff"
+                android:clickable="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/fav"
+
+                />
         </LinearLayout>
 
-    </ScrollView>
 
+    </LinearLayout>
 </LinearLayout>

@@ -7,17 +7,6 @@
     android:layout_height="match_parent"
     android:background="#E3F2FD"    >
 
-    <com.adarsh.apps.campusstore.ScrimInsetsFrameLayout
-        android:id="@+id/scrimInsetsFrameLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:insetForeground="#29000000"
-        android:elevation="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-    </com.adarsh.apps.campusstore.ScrimInsetsFrameLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

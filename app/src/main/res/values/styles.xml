@@ -25,10 +25,20 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#DEDEDE</item>
         <item name="colorPrimaryDark">#DEDEDE</item>
-        <item name="colorAccent">#dd0000</item>
-        <item name="android:textColorPrimary">#dd0000</item>
+        <item name="colorAccent">#8A0707</item>
+        <item name="android:textColorPrimary">#8A0707</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
         <item name="android:windowBackground">@color/LoginBackground</item>
+    </style>
+
+    <style name="DetailTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#8A0707</item>
+        <item name="android:textColorPrimary">#8A0707</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
     </style>
 </resources>

@@ -42,7 +42,6 @@
             android:layout_gravity="right|bottom"
             android:background="@drawable/plus_back"
             android:adjustViewBounds="true"
-            android:padding="16dp"
             android:scaleType="fitCenter"
             android:elevation="@dimen/elevation_low"
             android:paddingBottom="@dimen/activity_vertical_margin"

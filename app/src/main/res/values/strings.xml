@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Material Tests</string>
+    <string name="app_name">IITM Campus Store</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Settings</string>
@@ -10,7 +10,7 @@
     <string name="password_hint">Enter Password</string>
     <string name="login_button_label">Log In!</string>
     <string name="sign_up_text">SIGN UP!!</string>
-    <string name="username_hint">Enter Roll Number or Smail ID</string>
+    <string name="username_hint">Enter a username</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="action_new">New Note</string>
     <string name="action_refresh">Refresh</string>

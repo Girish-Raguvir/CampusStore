@@ -53,4 +53,15 @@
         android:layout_centerHorizontal="true"
         android:text="@string/sign_up_text" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="130dp"
+        android:id="@+id/imageView3"
+        android:src="@drawable/campusstore"
+        android:layout_above="@+id/usernameField"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="20dp"/>
+
+
 </RelativeLayout>
