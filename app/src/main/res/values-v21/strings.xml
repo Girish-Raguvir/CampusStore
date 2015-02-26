@@ -2,6 +2,17 @@
 <resources>
     <string name="password_hint">Enter Password</string>
     <string name="login_button_label">Log In!</string>
-    <string name="sign_up_text">SIGN UP!!</string>
+    <string name="sign_up_text"><u>New to Campus Store?? SIGN UP!!</u></string>
     <string name="Rs">\u20B9</string>
+
+    <string name="category_prompt">Choose a country</string>
+
+    <string-array name="category_arrays">
+        <item>Electronic Gadgets</item>
+        <item>Books and Stationery</item>
+        <item>Cycles and automotive</item>
+        <item>Musical Instruments</item>
+        <item>Tickets, Gift vouchers, OPO invites</item>
+        <item>Others</item>
+    </string-array>
 </resources>

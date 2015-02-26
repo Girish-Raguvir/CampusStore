@@ -48,7 +48,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
         setContentView(R.layout.activity_myitems);
         s= ProgressDialog.show(myitems.this, "Please wait ...", "Loading items..", true);
         s.show();
-        NavigationDrawerFragment.mCurrentSelectedPosition=2;
+        NavigationDrawerFragment.mCurrentSelectedPosition=3;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -96,14 +96,15 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
 
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==1){startActivity(new Intent(myitems.this,latestitems.class));}
+        if(position==2){startActivity(new Intent(myitems.this,latestitems.class));}
 
-        else if(position==3){startActivity(new Intent(myitems.this,AboutActivity.class));}
-        else if(position==4){
+        else if(position==4){startActivity(new Intent(myitems.this,AboutActivity.class));}
+        else if(position==0){startActivity(new Intent(myitems.this,categories.class));}
+        else if(position==5){
             ParseUser.logOut();
 
             loadLoginView();}
-        else if(position==0){startActivity(new Intent(myitems.this,MainActivity.class));}
+        else if(position==1){startActivity(new Intent(myitems.this,MainActivity.class));}
     }
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);

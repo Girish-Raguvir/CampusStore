@@ -129,10 +129,21 @@
 
         android:layout_height="240dp"
         android:id="@+id/contact"
-        android:src="@android:drawable/stat_sys_upload"
+        android:src="@drawable/campusstore"
         android:layout_width="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:visibility="gone"
         android:background="#1976D2"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/userprofile"
+        android:id="@+id/imageView4"
+        android:background="@color/primary_material_light"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/textView1" />
 </RelativeLayout>

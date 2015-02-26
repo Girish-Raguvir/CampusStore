@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.adarsh.apps.campusstore.AboutActivity"
-    android:background="@color/myWindowBackground"
+    android:background="@color/LoginBackground"
     android:orientation="vertical">
     <include
         android:id="@+id/toolbar_actionbar"
@@ -14,17 +14,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
+            android:layout_margin="30dp"
+            android:layout_gravity="center"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
             android:id="@+id/webops"
-            android:src="@drawable/webops"
+            android:src="@drawable/campusstore"
              />
-        <TextView android:text="IIT Madras Campus Store\n\nCreated by\n B.Adarsh (MM),Girish Raguvir.J (CS), Srivatsan Ramesh (EE) and Aravind Shankar (EE)\n\n Under\n The Webops Club, IIT Madras\n\nThe Webops Club reserves the right to collect anonymous user data from the user.\n\nCopyright © 2015 IIT Madras Campus Store\nAll Rights Reserved."
+        <TextView android:text="IIT Madras Campus Store\n\nCreated by\n B.Adarsh (MM),Girish Raguvir.J (CS), Srivatsan Ramesh (EE) and Aravind Shankar (EE)\n\n Copyright © 2015 IIT Madras Campus Store\nAll Rights Reserved."
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/LoginBackground"/>
+            android:textColor="@color/primary_material_light"/>
     </LinearLayout>
 
 

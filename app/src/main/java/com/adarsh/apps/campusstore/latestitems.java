@@ -50,7 +50,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         setContentView(R.layout.activity_myitems);
         ringProgressDialog= ProgressDialog.show(latestitems.this, "Please wait ...", "Loading details..", true);
         ringProgressDialog.show();
-        NavigationDrawerFragment.mCurrentSelectedPosition=1;
+        NavigationDrawerFragment.mCurrentSelectedPosition=2;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -98,14 +98,14 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
 
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(latestitems.this,myitems.class));}
-
-        else if(position==3){startActivity(new Intent(latestitems.this,AboutActivity.class));}
-        else if(position==4){
+        if(position==3){startActivity(new Intent(latestitems.this,myitems.class));}
+        else if(position==0){startActivity(new Intent(latestitems.this,categories.class));}
+        else if(position==4){startActivity(new Intent(latestitems.this,AboutActivity.class));}
+        else if(position==5){
             ParseUser.logOut();
 
             loadLoginView();}
-        else if(position==0){startActivity(new Intent(latestitems.this,MainActivity.class));}
+        else if(position==1){startActivity(new Intent(latestitems.this,MainActivity.class));}
     }
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
