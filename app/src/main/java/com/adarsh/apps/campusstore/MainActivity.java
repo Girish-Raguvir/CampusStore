@@ -1,6 +1,7 @@
 package com.adarsh.apps.campusstore;
 import com.adarsh.apps.campusstore.MainAdapter;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.MenuItemCompat;
@@ -54,9 +56,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private SearchView searchView;
     List<ItemInfo> iteminfo, allItems;
     // on scroll
-    private static int current_page = 1;
-    private int ival = 1;
-    private int loadLimit = 10;
+    //private static int current_page = 1;
+    private int ival = 0;
+    private int loadLimit = 3;  // TODO make these 10
+    private final int ITEMS_PER_PAGE = 2;
 
     ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -90,7 +93,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mRecyclerView.setOnScrollListener(new MainAdapter.EndlessRecyclerOnScrollListener((LinearLayoutManager)mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                loadMoreItems(current_page);
+                loadMoreItems();
             }
         });
         View addButton = (View) findViewById(R.id.imageButton);
@@ -195,13 +198,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return super.onCreateOptionsMenu(menu);
     }
 
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setupSearchView(MenuItem searchItem) {
 
         if (isAlwaysExpanded()) {
             searchView.setIconifiedByDefault(false);
         } else {
-            searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM
-                    | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM |
+                                            MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
         searchView.setOnQueryTextListener(this);
     }
@@ -236,7 +240,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 mAdapter = new MainAdapter(iteminfo);
                 mRecyclerView.setAdapter(mAdapter);
             }
-            else if ((temp.get(i).getUser().toLowerCase().contains(query.toLowerCase())) ||
+            /*else if ((temp.get(i).getUser().toLowerCase().contains(query.toLowerCase())) ||
                      (temp.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) ||
                      (temp.get(i).getprice().toLowerCase().contains(query.toLowerCase())) ||
                      (temp.get(i).getDesc().toLowerCase().contains(query.toLowerCase())))
@@ -244,7 +248,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 iteminfo.add(temp.get(i));
                 mAdapter = new MainAdapter(iteminfo);
                 mRecyclerView.setAdapter(mAdapter);
-            }
+            }*/
         }
 
         return false;
@@ -286,27 +290,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         //ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
         //query.whereEqualTo("author", ParseUser.getCurrentUser());
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
-                "Items");
-
-
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Items");
         ringProgressDialog.show();
-        // Locate the objectId from the class
-
-
-                    /*for(int i = 0;
-                    i<3;i++)
-
-                    {
-                        iteminfo.add(new ItemInfo(
-                                "Item " + i,
-                                "POSTED BY: USER " + i,
-                                null
-
-                        ));
-                    }*/
-
-                    query.findInBackground(new FindCallback<ParseObject>()
+        //mRecyclerView.setVerticalScrollBarEnabled(false);
+        query.findInBackground(new FindCallback<ParseObject>()
 
                     {
 
@@ -319,7 +306,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             // and notify the adapter
                             //iteminfo.clear();
                             iteminfo.clear();
-                            for (final ParseObject item : itemList) {
+                            allItems.clear();
+                            //allItems = new ArrayList<ItemInfo>(itemList.size());
+                            ival = 0;
+                            loadLimit = 3;
+                            for (int i = 0; i < itemList.size(); ++i) {
                                 //String x= post.getUpdatedAt().toString();// post.getString("title")
                         /*ParseFile photoFile = item.getParseFile("image");
                         final Bitmap bitpic = new Bitmap;
@@ -334,6 +325,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
                             }
                         });*/
+                        final int index = i;
+                        final ParseObject item = itemList.get(index);
                         ParseFile imageFile = (ParseFile) item.get("image");
                         imageFile.getDataInBackground(new GetDataCallback() {
                             @Override
@@ -345,45 +338,54 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     // Decode the Byte[] into Bitmap
                                     CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
                                     Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                    iteminfo.add(new ItemInfo(item.getObjectId(),
+                                    ItemInfo newItem = new ItemInfo(item.getObjectId(),
                                             item.getString("name").toUpperCase(),
 
-                                            "Posted by: "+item.getString("postedby").toUpperCase(), item.getString("description"),
+                                            "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
                                             d,
-                                            "Rs. "+item.getString("price")
+                                            "Rs. " + item.getString("price")
 
-                                    ));
+                                    );
+                                    if (index < allItems.size()) allItems.set(index, newItem);
+                                    else allItems.add(newItem);
+
+                                    if (index < loadLimit)
+                                        if (index < iteminfo.size()) iteminfo.set(index, newItem);
+                                        else iteminfo.add(newItem);
+                                    /*if (index < loadLimit)
+                                        iteminfo.add(allItems.get(index));*/
                                     /*mAdapter = new MainAdapter(iteminfo);
                                     mRecyclerView.setAdapter(mAdapter);*/
                                     ringProgressDialog.dismiss();
                                     // Close progress dialog
                                     swipeRefreshLayout.setRefreshing(false);
-
+                                    //mRecyclerView.setVerticalScrollBarEnabled(true);
                                 } else {
                                     e.printStackTrace();
-                                    Log.d("test",
-                                            "There was a problem downloading the data.");
+                                    Log.d("test", "There was a problem downloading the data.");
                                 }
                             }
                         });
 
                             }
-                            //((ArrayAdapter<ItemInfo>) getListAdapter())
+                            //((ArrayAdapter<
+                            // ItemInfo>) getListAdapter())
                             // .notifyDataSetChanged();
-                            mAdapter = new MainAdapter(iteminfo);
-                            mRecyclerView.setAdapter(mAdapter);
+
                         } else {
                             e.printStackTrace();
                             Log.d(getClass().getSimpleName(), "Error");
+                            return ;
                         }
 
                     }
 
                     }
 
-                    );
-
-                }
+        );
+        mAdapter = new MainAdapter(iteminfo);
+        mRecyclerView.setAdapter(mAdapter);
+    }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -402,11 +404,19 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadMoreItems(int current_page) {
+    private void loadMoreItems() {
         // TODO do something
         /*ItemInfo item = new ItemInfo();
         iteminfo.add(item);*/
-        Toast.makeText(this, "Going to load more items", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
+        loadLimit += ITEMS_PER_PAGE;
+        if (loadLimit > allItems.size()) loadLimit = allItems.size();
+        ival += ITEMS_PER_PAGE;
+        for (int i = ival; i < loadLimit; ++i)
+            iteminfo.add(allItems.get(i));
+        mAdapter = new MainAdapter(iteminfo);
+        mRecyclerView.setAdapter(mAdapter);
+        //mAdapter.notifyDataSetChanged();
     }
 }
 
