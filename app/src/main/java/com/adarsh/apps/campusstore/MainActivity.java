@@ -6,6 +6,8 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
+import android.view.ViewGroup.LayoutParams;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,14 +22,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 import android.widget.Filterable;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
@@ -57,14 +65,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
     String CLIENT_KEY="nZ8M2KeOBWCBgcOdFCcX4MSqz9AwlM8mQMjqtQn0";
     ProgressDialog ringProgressDialog=null;
+    PopupWindow popupMessage;
+    LinearLayout layoutOfPopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
-
-
         ParseUser user = ParseUser.getCurrentUser();
         if(user==null){loadLoginView();}
         else{
@@ -72,7 +80,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             setContentView(R.layout.activity_main_topdrawer);
             ringProgressDialog= ProgressDialog.show(MainActivity.this, "Please wait ...", "Loading items..", true);
             ringProgressDialog.show();
-        NavigationDrawerFragment.mCurrentSelectedPosition = 0;
+        NavigationDrawerFragment.mCurrentSelectedPosition = 1;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -81,7 +89,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        View addButton = (View) findViewById(R.id.imageButton);
+        //View addButton = (View) findViewById(R.id.imageButton);
 
         /*ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
             @Override
@@ -93,13 +101,48 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         };
         addButton.setOutlineProvider(viewOutlineProvider);
         addButton.setClipToOutline(true);*/
-        addButton.setOnClickListener(new View.OnClickListener() {
+        /*addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
+
+            final FloatingActionButton additem = (FloatingActionButton) findViewById(R.id.additem);
+            additem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(MainActivity.this, CreateActivity.class);
+                    startActivity(i);
+                }
+            });
+
+            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            feedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LayoutInflater layoutInflater
+                            = (LayoutInflater)getBaseContext()
+                            .getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+                    final PopupWindow popupWindow = new PopupWindow(
+                            popupView,
+                            LayoutParams.WRAP_CONTENT,
+                            LayoutParams.WRAP_CONTENT);
+                    popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+                    Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
+                    btnDismiss.setOnClickListener(new Button.OnClickListener(){
+
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
+                            popupWindow.dismiss();
+                        }});
+                    popupWindow.setFocusable(true);
+                    popupWindow.update();
+                }
+            });
 
         iteminfo = new ArrayList<ItemInfo>();
 
@@ -129,7 +172,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         });
 
         refreshPostList();
-    }}
+
+
+    }
+    }
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -256,10 +302,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(MainActivity.this,myitems.class));}
-        else if(position==1){startActivity(new Intent(MainActivity.this,latestitems.class));}
-        else if(position==3){startActivity(new Intent(MainActivity.this,AboutActivity.class));}
-        else if(position==4){ParseUser.logOut();
+        if(position==3){startActivity(new Intent(MainActivity.this,myitems.class));}
+        else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));}
+        else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));}
+        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));}
+        else if(position==5){ParseUser.logOut();
 
             loadLoginView();}
        // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}

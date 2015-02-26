@@ -22,6 +22,8 @@ import android.os.Environment;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.graphics.BitmapFactory;
 
@@ -47,6 +49,7 @@ public class CreateActivity extends Activity {
     private ImageView imageView;
     private Button save, capture,submit;
     private EditText et1,et2,et3;
+    private Spinner spinner1;
     private ParseFile imagefile;
     private CheckBox neg;
     ItemInfo olditem=null;
@@ -61,6 +64,8 @@ public class CreateActivity extends Activity {
         neg=(CheckBox)findViewById(R.id.checkBox);
         imageView = (ImageView) findViewById(R.id.imageView);
         save = (Button) findViewById(R.id.save);
+        spinner1 = (Spinner) findViewById(R.id.spinner);
+        spinner1.setOnItemSelectedListener(new OnCategorySelected());
         Intent intent=getIntent();
         if(intent.getExtras()!=null)
         { final String titletext = intent.getStringExtra("key");
@@ -143,6 +148,8 @@ public class CreateActivity extends Activity {
             }
         });
     }
+
+
 
 
     public void captureImage() {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@drawable/border"
+    android:id="@+id/popupview"
+    android:weightSum="1">
+
+
+    <TextView
+
+        android:padding="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"
+        android:textColor="@color/myPrimaryColor"
+        android:text="Please tell us features you would like to see in this app:"
+        android:id="@+id/textView" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:minLines="3"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+
+        android:background="@drawable/border"
+        android:textColor="@color/LoginBackground"
+        android:hint="Type here"
+        android:id="@+id/editText" >
+
+        </EditText>
+
+    <Button
+        android:id="@+id/sendfeed"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:text="SEND FEEDBACK"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
