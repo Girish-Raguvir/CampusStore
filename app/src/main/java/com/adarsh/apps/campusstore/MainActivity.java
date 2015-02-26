@@ -4,6 +4,7 @@ import com.adarsh.apps.campusstore.MainAdapter;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -51,7 +52,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SearchView searchView;
-    List<ItemInfo> iteminfo;
+    List<ItemInfo> iteminfo, allItems;
+    // on scroll
+    private static int current_page = 1;
+    private int ival = 1;
+    private int loadLimit = 10;
+
     ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
@@ -81,6 +87,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setOnScrollListener(new MainAdapter.EndlessRecyclerOnScrollListener((LinearLayoutManager)mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                loadMoreItems(current_page);
+            }
+        });
         View addButton = (View) findViewById(R.id.imageButton);
 
         /*ViewOutlineProvider viewOutlineProvider = new ViewOutlineProvider() {
@@ -102,6 +114,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         });
 
         iteminfo = new ArrayList<ItemInfo>();
+        allItems = new ArrayList<ItemInfo>();
 
 
         /*Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
@@ -161,7 +174,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 @Override
                 public boolean onMenuItemActionExpand(MenuItem item)
                 {
-                    // TODO Auto-generated method stub
                     Log.i("test", "onMenuItemActionExpand " + item.getItemId());
                     return true;
                 }
@@ -176,16 +188,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 public boolean onClose()
                 {
                     Log.i("test", "mSearchView on close ");
-                    // TODO Auto-generated method stub
                     return false;
                 }
             });
         }*/
-
         return super.onCreateOptionsMenu(menu);
-
-
-
     }
 
     private void setupSearchView(MenuItem searchItem) {
@@ -196,12 +203,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM
                     | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
         }
-
-
-
         searchView.setOnQueryTextListener(this);
     }
-
+    // TODO modify this function to include the 'allItems' field.
     public boolean onQueryTextChange(String newText) {
         final int size = iteminfo.size();
         Log.d("test","SIZE IS" + size);
@@ -216,22 +220,26 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         return false;
     }
-
+    // TODO modify this function to include the 'allItems' field.
     public boolean onQueryTextSubmit(String query) {
         final int size = iteminfo.size();
         Log.d("test","SIZE IS" + size);
         List<ItemInfo> temp=new ArrayList<ItemInfo>();
         for (int i = size - 1; i >= 0; i--) {
             temp.set(i,iteminfo.get(i));
-            if ((iteminfo.get(i).getUser().toLowerCase().contains(query.toLowerCase()) == false) && (iteminfo.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) == false) && (iteminfo.get(i).getprice().toLowerCase().contains(query.toLowerCase()) == false) && (iteminfo.get(i).getDesc().toLowerCase().contains(query.toLowerCase()) == false)) {
-
-
+            if ((iteminfo.get(i).getUser().toLowerCase().contains(query.toLowerCase()) == false) &&
+                (iteminfo.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) == false) &&
+                (iteminfo.get(i).getprice().toLowerCase().contains(query.toLowerCase()) == false) &&
+                (iteminfo.get(i).getDesc().toLowerCase().contains(query.toLowerCase()) == false)) {
                 iteminfo.remove(i);
                 //notifyItemRemoved(i);
                 mAdapter = new MainAdapter(iteminfo);
                 mRecyclerView.setAdapter(mAdapter);
             }
-            else if ((temp.get(i).getUser().toLowerCase().contains(query.toLowerCase())) || (temp.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) || (temp.get(i).getprice().toLowerCase().contains(query.toLowerCase())) || (temp.get(i).getDesc().toLowerCase().contains(query.toLowerCase())))
+            else if ((temp.get(i).getUser().toLowerCase().contains(query.toLowerCase())) ||
+                     (temp.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) ||
+                     (temp.get(i).getprice().toLowerCase().contains(query.toLowerCase())) ||
+                     (temp.get(i).getDesc().toLowerCase().contains(query.toLowerCase())))
             {
                 iteminfo.add(temp.get(i));
                 mAdapter = new MainAdapter(iteminfo);
@@ -272,6 +280,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else
             super.onBackPressed();
     }
+    // TODO modify this function to include the 'allItems' field.
     private void refreshPostList() {
         swipeRefreshLayout.setRefreshing(true);
 
@@ -332,9 +341,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 if (e == null) {
                                     Log.d("test",
                                             "We've got data in data.");
-                                    Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG);
-                                    // Decode the Byte[] into
-                                    // Bitmap
+                                    // Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG).show();
+                                    // Decode the Byte[] into Bitmap
                                     CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
                                     Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
                                     iteminfo.add(new ItemInfo(item.getObjectId(),
@@ -345,8 +353,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                             "Rs. "+item.getString("price")
 
                                     ));
-                                    mAdapter = new MainAdapter(iteminfo);
-                                    mRecyclerView.setAdapter(mAdapter);
+                                    /*mAdapter = new MainAdapter(iteminfo);
+                                    mRecyclerView.setAdapter(mAdapter);*/
                                     ringProgressDialog.dismiss();
                                     // Close progress dialog
                                     swipeRefreshLayout.setRefreshing(false);
@@ -358,55 +366,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 }
                             }
                         });
-                              /* final Bitmap[] bmp = new Bitmap[1];
-                                ParseQuery<ParseObject> query1 = new ParseQuery<ParseObject>(
-                                        "Items");
-                                query1.getInBackground(item.getObjectId(),
-                                        new GetCallback<ParseObject>() {
 
-                                            public void done(ParseObject object,
-                                                             ParseException e) {
-                                                // TODO Auto-generated method stub
-
-                                                // Locate the column named "ImageName" and set
-                                                // the string
-                                                ParseFile fileObject = (ParseFile) object
-                                                        .get("image");
-                                                fileObject
-                                                        .getDataInBackground(new GetDataCallback() {
-
-                                                            public void done(byte[] data,
-                                                                             ParseException e) {
-                                                                if (e == null) {
-                                                                    Log.d("test",
-                                                                            "We've got data in data.");
-                                                                    Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG);
-                                                                    // Decode the Byte[] into
-                                                                    // Bitmap
-                                                                    bmp[0] = BitmapFactory
-                                                                            .decodeByteArray(
-                                                                                    data, 0,
-                                                                                    data.length);
-
-
-                                                                    // Close progress dialog
-
-                                                                } else {
-                                                                    Log.d("test",
-                                                                            "There was a problem downloading the data.");
-                                                                }
-                                                            }
-                                                        });
-                                            }
-                                        });*/
-                               /*// Drawable d = new BitmapDrawable(getResources(), bmp[0]);
-                                Drawable d = getResources().getDrawable(R.drawable.ic_launcher);*/
-
-                                //Log.e(getClass().getSimpleName(), item.);
                             }
                             //((ArrayAdapter<ItemInfo>) getListAdapter())
                             // .notifyDataSetChanged();
-
+                            mAdapter = new MainAdapter(iteminfo);
+                            mRecyclerView.setAdapter(mAdapter);
                         } else {
                             e.printStackTrace();
                             Log.d(getClass().getSimpleName(), "Error");
@@ -427,7 +392,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(MainActivity.this,"Refreshed",Toast.LENGTH_LONG);
+            //Toast.makeText(MainActivity.this,"Refreshed",Toast.LENGTH_LONG).show();
             refreshPostList();
 
             return true;
@@ -437,7 +402,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return super.onOptionsItemSelected(item);
     }
 
-
+    private void loadMoreItems(int current_page) {
+        // TODO do something
+        /*ItemInfo item = new ItemInfo();
+        iteminfo.add(item);*/
+        Toast.makeText(this, "Going to load more items", Toast.LENGTH_SHORT).show();
+    }
 }
 
 
