@@ -1,12 +1,6 @@
 package com.adarsh.apps.campusstore;
-import com.adarsh.apps.campusstore.MainAdapter;
-
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
 import android.view.ViewGroup.LayoutParams;
@@ -15,7 +9,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -36,7 +29,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
-import android.widget.Filterable;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
@@ -98,7 +90,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setOnScrollListener(new MainAdapter.EndlessRecyclerOnScrollListener((LinearLayoutManager)mLayoutManager) {
+        mRecyclerView.setOnScrollListener(new MainAdapter.EndlessRecyclerOnScrollListener(
+                                          (LinearLayoutManager)mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 loadMoreItems();
@@ -273,18 +266,18 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     }
     // TODO modify this function to include the 'allItems' field.
     public boolean onQueryTextSubmit(String query) {
-        final int size = iteminfo.size();
+        final int size = allItems.size();
         Log.d("test","SIZE IS" + size);
         List<ItemInfo> temp=new ArrayList<ItemInfo>();
         for (int i = size - 1; i >= 0; i--) {
-            temp.set(i,iteminfo.get(i));
-            if ((iteminfo.get(i).getUser().toLowerCase().contains(query.toLowerCase()) == false) &&
-                (iteminfo.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) == false) &&
-                (iteminfo.get(i).getprice().toLowerCase().contains(query.toLowerCase()) == false) &&
-                (iteminfo.get(i).getDesc().toLowerCase().contains(query.toLowerCase()) == false)) {
-                iteminfo.remove(i);
+            temp.set(i,allItems.get(i));
+            if (!(allItems.get(i).getUser().toLowerCase().contains(query.toLowerCase())) &&
+                !(allItems.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) &&
+                !(allItems.get(i).getprice().toLowerCase().contains(query.toLowerCase())) &&
+                !(allItems.get(i).getDesc().toLowerCase().contains(query.toLowerCase()))) {
+                allItems.remove(i);
                 //notifyItemRemoved(i);
-                mAdapter = new MainAdapter(iteminfo);
+                mAdapter = new MainAdapter(allItems);
                 mRecyclerView.setAdapter(mAdapter);
             }
             /*else if ((temp.get(i).getUser().toLowerCase().contains(query.toLowerCase())) ||
@@ -292,8 +285,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                      (temp.get(i).getprice().toLowerCase().contains(query.toLowerCase())) ||
                      (temp.get(i).getDesc().toLowerCase().contains(query.toLowerCase())))
             {
-                iteminfo.add(temp.get(i));
-                mAdapter = new MainAdapter(iteminfo);
+                allItems.add(temp.get(i));
+                mAdapter = new MainAdapter(allItems);
                 mRecyclerView.setAdapter(mAdapter);
             }*/
         }
@@ -456,15 +449,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         // TODO do something
         /*ItemInfo item = new ItemInfo();
         iteminfo.add(item);*/
-        //Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
-        loadLimit += ITEMS_PER_PAGE;
-        if (loadLimit > allItems.size()) loadLimit = allItems.size();
-        ival += ITEMS_PER_PAGE;
-        for (int i = ival; i < loadLimit; ++i)
-            iteminfo.add(allItems.get(i));
-        mAdapter = new MainAdapter(iteminfo);
-        mRecyclerView.setAdapter(mAdapter);
-        //mAdapter.notifyDataSetChanged();
+        if (loadLimit < allItems.size()) {
+            Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
+            loadLimit += ITEMS_PER_PAGE;
+            if (loadLimit > allItems.size()) loadLimit = allItems.size();
+            ival += ITEMS_PER_PAGE;
+            for (int i = ival; i < loadLimit; ++i)
+                iteminfo.add(allItems.get(i));
+            /*mAdapter = new MainAdapter(iteminfo);
+            mRecyclerView.setAdapter(mAdapter);*/
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
 
