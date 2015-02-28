@@ -68,6 +68,8 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("test",
+                "oncreate in categories");
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         ParseUser user = ParseUser.getCurrentUser();
@@ -107,9 +109,6 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
 
             categories = new ArrayList<CategoryItemInfo>();
-            categories.add(new CategoryItemInfo("Trending Items",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("Latest Items",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("My Items",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Electronic Gadgets",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Books and Stationery",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Cycles and automotive",getResources().getDrawable(R.drawable.ic_menu_check)));
@@ -216,7 +215,31 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
         else if(position==1){startActivity(new Intent(categories.this,MainActivity.class));}
 
         else if(position==4){startActivity(new Intent(categories.this,AboutActivity.class));}
-        else if(position==5){ParseUser.logOut();
+        else if(position==5) {
+            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            LayoutInflater layoutInflater
+                    = (LayoutInflater)getBaseContext()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final PopupWindow popupWindow = new PopupWindow(
+                    popupView,
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
+            btnDismiss.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    popupWindow.dismiss();
+                }});
+            popupWindow.setFocusable(true);
+            popupWindow.update();
+            mNavigationDrawerFragment.closeDrawer();
+        }
+
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
         // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}

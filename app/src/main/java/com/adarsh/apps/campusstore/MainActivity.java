@@ -48,6 +48,7 @@ Modified by Girish on 15-1-15.
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks, SearchView.OnQueryTextListener {
 
+
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private RecyclerView mRecyclerView;
@@ -71,6 +72,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("mainactivity",
+                "We're inside oncreate");
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
@@ -131,25 +134,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             feedback.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LayoutInflater layoutInflater
-                            = (LayoutInflater)getBaseContext()
-                            .getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
-                    final PopupWindow popupWindow = new PopupWindow(
-                            popupView,
-                            LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT);
-                    popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
-                    Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
-                    btnDismiss.setOnClickListener(new Button.OnClickListener(){
-
-                        @Override
-                        public void onClick(View v) {
-                            // TODO Auto-generated method stub
-                            popupWindow.dismiss();
-                        }});
-                    popupWindow.setFocusable(true);
-                    popupWindow.update();
                 }
             });
 
@@ -307,15 +291,49 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        Log.d("mainactivity",
+                "We're inside onnavigationdraweritemselected");
 
-        if(position==3){startActivity(new Intent(MainActivity.this,myitems.class));}
-        else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));}
-        else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));}
-        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));}
-        else if(position==5){ParseUser.logOut();
+        if(position==3){startActivity(new Intent(MainActivity.this,myitems.class));
+            Log.d("test",
+                    "3");}
+        else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));
+            Log.d("test",
+                    "0");}
+        else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));
+            Log.d("test",
+                    "2");}
+        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));
+            Log.d("test",
+                    "4");}
+        else if(position==5) {
+            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            LayoutInflater layoutInflater
+                    = (LayoutInflater)getBaseContext()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final PopupWindow popupWindow = new PopupWindow(
+                    popupView,
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
+            btnDismiss.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    popupWindow.dismiss();
+                }});
+            popupWindow.setFocusable(true);
+            popupWindow.update();
+            mNavigationDrawerFragment.closeDrawer();
+            }
+
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
-       // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}
+
     }
 
     @Override
@@ -350,7 +368,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             allItems.clear();
                             //allItems = new ArrayList<ItemInfo>(itemList.size());
                             ival = 0;
-                            loadLimit = 3;
+                            loadLimit = 10;
                             for (int i = 0; i < itemList.size(); ++i) {
                                 //String x= post.getUpdatedAt().toString();// post.getString("title")
                         /*ParseFile photoFile = item.getParseFile("image");

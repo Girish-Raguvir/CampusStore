@@ -43,7 +43,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             final TextView title = (TextView) v.findViewById(R.id.title);
             final TextView desc = (TextView) v.findViewById(R.id.desc);
             final TextView price = (TextView) v.findViewById(R.id.price);
-            final ParseImageView imageView = (ParseImageView)v.findViewById(R.id.imageView);
+            final ParseImageView imageView = (ParseImageView) v.findViewById(R.id.imageView);
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
             final Bitmap image = drawable.getBitmap();
             //ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -93,7 +93,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             totalItemCount = mLinearLayoutManager.getItemCount();
             lastVisibleItem = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
-            /*if (loading) {
+            if (loading) {
                 if (totalItemCount > previousTotal) {
                     loading = false;
                     previousTotal = totalItemCount;
@@ -105,7 +105,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 current_page++;
                 onLoadMore(current_page);
                 loading = true;
-            }*/
+            }
             if (totalItemCount == lastVisibleItem + 1) onLoadMore(current_page);
         }
 
@@ -187,12 +187,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 BitmapDrawable d = (BitmapDrawable) imageView.getDrawable();
                 CommonResources.bmp = d.getBitmap();
 
-                intent.putExtra("key2",desc.getText().toString());
-                intent.putExtra("key3",pojos.get(position).getDesc());
-                intent.putExtra("key4",price.getText().toString());
-                intent.putExtra("noteId",pojos.get(position).getId());
-                BitmapDrawable de=(BitmapDrawable)imageView.getDrawable();
-                CommonResources.bmp=de.getBitmap();
+                intent.putExtra("key2", desc.getText().toString());
+                intent.putExtra("key3", pojos.get(position).getDesc());
+                intent.putExtra("key4", price.getText().toString());
+                intent.putExtra("noteId", pojos.get(position).getId());
+                BitmapDrawable de = (BitmapDrawable) imageView.getDrawable();
+                CommonResources.bmp = de.getBitmap();
                 holder.itemView.getContext().startActivity(intent);
             }
         });
