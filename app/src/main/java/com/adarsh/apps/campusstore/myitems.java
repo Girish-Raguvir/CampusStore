@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +114,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -124,6 +126,8 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+                    String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
+                    postfeed(s);
                     popupWindow.dismiss();
                 }});
             popupWindow.setFocusable(true);
@@ -136,6 +140,38 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             loadLoginView();}
         else if(position==1){startActivity(new Intent(myitems.this,MainActivity.class));}
     }
+    private void postfeed(String s)
+    {
+        if (!s.isEmpty()) {
+
+
+            final ParseObject post = new ParseObject("Feedback");
+
+
+            post.put("Feedback", s);
+            post.put("User",ParseUser.getCurrentUser().getUsername());
+
+            setProgressBarIndeterminateVisibility(true);
+            post.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    setProgressBarIndeterminateVisibility(false);
+                    if (e == null) {
+                        // Saved successfully.
+
+                        Toast.makeText(getApplicationContext(), "Thank you for your time!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // The save failed.
+                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                    }
+                }
+            });
+
+
+        }
+    }
+
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -153,6 +189,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     private void refreshPostList() {
        s.show();
        swipeRefreshLayout.setRefreshing(true);
+
         s.show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
@@ -192,7 +229,8 @@ iteminfo.clear();
 
                                                                        "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
                                                                        d,
-                                                                       "Rs. " + item.getString("price")
+                                                                       "Rs. " + item.getString("price"),
+                                                                       item.getString("category")
 
                                                                ));
                                                                mAdapter = new MainAdapter(iteminfo);

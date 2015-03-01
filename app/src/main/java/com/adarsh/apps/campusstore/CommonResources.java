@@ -7,4 +7,5 @@ import android.graphics.Bitmap;
 
 public class CommonResources {
     public static Bitmap bmp=null;
+
 }

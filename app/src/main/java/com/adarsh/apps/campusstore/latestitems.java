@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -113,7 +115,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -125,6 +127,8 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+                    String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
+                    postfeed(s);
                     popupWindow.dismiss();
                 }});
             popupWindow.setFocusable(true);
@@ -142,6 +146,37 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+    private void postfeed(String s)
+    {
+        if (!s.isEmpty()) {
+
+
+            final ParseObject post = new ParseObject("Feedback");
+
+
+            post.put("Feedback", s);
+            post.put("User",ParseUser.getCurrentUser().getUsername());
+
+            setProgressBarIndeterminateVisibility(true);
+            post.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    setProgressBarIndeterminateVisibility(false);
+                    if (e == null) {
+                        // Saved successfully.
+
+                        Toast.makeText(getApplicationContext(), "Thank you for your time!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // The save failed.
+                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                    }
+                }
+            });
+
+
+        }
     }
 
     @Override
@@ -202,7 +237,8 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
 
                                                                        "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
                                                                        d,
-                                                                       "Rs. " + item.getString("price")
+                                                                       "Rs. " + item.getString("price"),
+                                                                       item.getString("category")
 
                                                                ));
                                                                mAdapter = new MainAdapter(iteminfo);

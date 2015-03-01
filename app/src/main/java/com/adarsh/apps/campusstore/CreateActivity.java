@@ -53,6 +53,7 @@ public class CreateActivity extends Activity {
     private ParseFile imagefile;
     private CheckBox neg;
     ItemInfo olditem=null;
+    static String cat;
    // private ItemInfo item;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class CreateActivity extends Activity {
         et2.setText(desctext);
         et3.setText(pricetext);
         imageView.setImageBitmap(CommonResources.bmp);
-            olditem=new ItemInfo(intent.getStringExtra("noteId"),titletext,nametext,desctext,new BitmapDrawable(getResources(), CommonResources.bmp),pricetext);
+            olditem=new ItemInfo(intent.getStringExtra("noteId"),titletext,nametext,desctext,new BitmapDrawable(getResources(), CommonResources.bmp),pricetext,cat);
         }
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,7 +313,7 @@ public class CreateActivity extends Activity {
                         setProgressBarIndeterminateVisibility(false);
                         if (e == null) {
                             // Saved successfully.
-                            olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),price);
+                            olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),price,cat);
                             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {

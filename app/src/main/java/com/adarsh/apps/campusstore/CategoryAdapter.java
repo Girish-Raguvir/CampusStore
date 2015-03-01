@@ -139,6 +139,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(holder.itemView.getContext(), MainActivity.class);
                 NavigationDrawerFragment.mCurrentSelectedPosition = 1;
+                intent.putExtra("cat",pojos.get(position).getTitle().toString());
                 holder.itemView.getContext().startActivity(intent);
             }
         });

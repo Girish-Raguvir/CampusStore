@@ -1,6 +1,7 @@
 package com.adarsh.apps.campusstore;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
 import android.view.ViewGroup.LayoutParams;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private int loadLimit = 3;  // TODO make these 10
     private final int ITEMS_PER_PAGE = 2;
 
+
     ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
@@ -69,6 +73,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     ProgressDialog ringProgressDialog=null;
     PopupWindow popupMessage;
     LinearLayout layoutOfPopup;
+    String cat;static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +83,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         ParseUser user = ParseUser.getCurrentUser();
+        Intent i=getIntent();
+        cat=i.getStringExtra("cat");
+        context=this.getApplicationContext();
         if(user==null){loadLoginView();}
         else{
 
@@ -88,7 +96,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+            if(cat==null)
         getSupportActionBar().setTitle("Trending Items");
+            else
+                getSupportActionBar().setTitle(cat);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -311,7 +322,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+           final  View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
                     LayoutParams.WRAP_CONTENT,
@@ -323,6 +334,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+                    String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
+                    postfeed(s);
                     popupWindow.dismiss();
                 }});
             popupWindow.setFocusable(true);
@@ -335,6 +348,37 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             loadLoginView();}
 
     }
+    private void postfeed(String s)
+    {
+        if (!s.isEmpty()) {
+
+
+            final ParseObject post = new ParseObject("Feedback");
+
+
+            post.put("Feedback", s);
+            post.put("User",ParseUser.getCurrentUser().getUsername());
+
+            setProgressBarIndeterminateVisibility(true);
+            post.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    setProgressBarIndeterminateVisibility(false);
+                    if (e == null) {
+                        // Saved successfully.
+
+                        Toast.makeText(getApplicationContext(), "Thank you for your time!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // The save failed.
+                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                    }
+                }
+            });
+
+
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -343,10 +387,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else
             super.onBackPressed();
     }
+    int county=0;
     // TODO modify this function to include the 'allItems' field.
     private void refreshPostList() {
         swipeRefreshLayout.setRefreshing(true);
-
+        county=0;
         //ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
         //query.whereEqualTo("author", ParseUser.getCurrentUser());
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Items");
@@ -385,40 +430,48 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             }
                         });*/
                         final int index = i;
+
                         final ParseObject item = itemList.get(index);
                         ParseFile imageFile = (ParseFile) item.get("image");
                         imageFile.getDataInBackground(new GetDataCallback() {
                             @Override
                             public void done(byte[] bytes, ParseException e) {
                                 if (e == null) {
-                                    Log.d("test",
-                                            "We've got data in data.");
-                                    // Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG).show();
-                                    // Decode the Byte[] into Bitmap
-                                    CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
-                                    Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                    ItemInfo newItem = new ItemInfo(item.getObjectId(),
-                                            item.getString("name").toUpperCase(),
+                                    if(item.getString("category").equals(cat) || cat==null) {
+                                        Log.d("test",
+                                                "We've got data in data."+cat);
+                                        county=county+1;
+                                        // Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG).show();
+                                        // Decode the Byte[] into Bitmap
+                                        CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                        ItemInfo newItem = new ItemInfo(item.getObjectId(),
+                                                item.getString("name").toUpperCase(),
 
-                                            "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
-                                            d,
-                                            "Rs. " + item.getString("price")
+                                                "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
+                                                d,
+                                                "Rs. " + item.getString("price"),
+                                                item.getString("category")
 
-                                    );
-                                    if (index < allItems.size()) allItems.set(index, newItem);
-                                    else allItems.add(newItem);
+                                        );
+                                        if (index < allItems.size()) allItems.set(index, newItem);
+                                        else allItems.add(newItem);
 
-                                    if (index < loadLimit)
-                                        if (index < iteminfo.size()) iteminfo.set(index, newItem);
-                                        else iteminfo.add(newItem);
+                                        if (index < loadLimit)
+                                            if (index < iteminfo.size())
+                                                iteminfo.set(index, newItem);
+                                            else iteminfo.add(newItem);
                                     /*if (index < loadLimit)
                                         iteminfo.add(allItems.get(index));*/
                                     /*mAdapter = new MainAdapter(iteminfo);
                                     mRecyclerView.setAdapter(mAdapter);*/
+
+                                        //mRecyclerView.setVerticalScrollBarEnabled(true);
+                                    }
+
                                     ringProgressDialog.dismiss();
                                     // Close progress dialog
                                     swipeRefreshLayout.setRefreshing(false);
-                                    //mRecyclerView.setVerticalScrollBarEnabled(true);
                                 } else {
                                     e.printStackTrace();
                                     Log.d("test", "There was a problem downloading the data.");
@@ -442,8 +495,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     }
 
         );
+        ringProgressDialog.dismiss();
+
+        // Close progress dialog
+        swipeRefreshLayout.setRefreshing(false);
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
+
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
