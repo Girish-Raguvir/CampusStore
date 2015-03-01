@@ -401,7 +401,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     iteminfo.clear();
                     allItems.clear();
                     ival = 0;
-                    loadLimit = 10;
+                    loadLimit = 4;
                     for (int i = 0; i < itemList.size(); ++i) {
                         final int index = i;
 
