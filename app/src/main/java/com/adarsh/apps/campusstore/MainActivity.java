@@ -58,8 +58,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     // on scroll
     //private static int current_page = 1;
     private int ival = 0;
-    private int loadLimit = 3;  // TODO make these 10
-    private final int ITEMS_PER_PAGE = 2;
+    private int loadLimit = 4;  // TODO make these 10
+    private final int ITEMS_PER_PAGE = 3;
 
     ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -325,47 +325,22 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else
             super.onBackPressed();
     }
-    // TODO modify this function to include the 'allItems' field.
+
     private void refreshPostList() {
         swipeRefreshLayout.setRefreshing(true);
-
-        //ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
-        //query.whereEqualTo("author", ParseUser.getCurrentUser());
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Items");
         ringProgressDialog.show();
-        //mRecyclerView.setVerticalScrollBarEnabled(false);
-        query.findInBackground(new FindCallback<ParseObject>()
-
-                    {
-
-                        @SuppressWarnings("unchecked")
-                        @Override
-                        public void done (List < ParseObject > itemList, ParseException e){
-
-                        if (e == null) {
-                            // If there are results, update the list of posts
-                            // and notify the adapter
-                            //iteminfo.clear();
-                            iteminfo.clear();
-                            allItems.clear();
-                            //allItems = new ArrayList<ItemInfo>(itemList.size());
-                            ival = 0;
-                            loadLimit = 3;
-                            for (int i = 0; i < itemList.size(); ++i) {
-                                //String x= post.getUpdatedAt().toString();// post.getString("title")
-                        /*ParseFile photoFile = item.getParseFile("image");
-                        final Bitmap bitpic = new Bitmap;
-                        photoFile.getDataInBackground(new GetDataCallback() {
-
-                            @Override
-                            public void done(byte[] data, ParseException e) {
-                                bitpic = BitmapFactory.decodeByteArray(data, 0, data.length);
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                bitpic.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-
-                            }
-                        });*/
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void done (final List<ParseObject> itemList, ParseException e){
+                if (e == null) {
+                    // If there are results, update the list of posts and notify the adapter
+                    iteminfo.clear();
+                    allItems.clear();
+                    ival = 0;
+                    loadLimit = 4;
+                    for (int i = 0; i < itemList.size(); ++i) {
                         final int index = i;
                         final ParseObject item = itemList.get(index);
                         ParseFile imageFile = (ParseFile) item.get("image");
@@ -375,58 +350,50 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 if (e == null) {
                                     Log.d("test",
                                             "We've got data in data.");
-                                    // Toast.makeText(MainActivity.this,"Loaded",Toast.LENGTH_LONG).show();
                                     // Decode the Byte[] into Bitmap
                                     CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
                                     Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                    ItemInfo newItem = new ItemInfo(item.getObjectId(),
-                                            item.getString("name").toUpperCase(),
-
-                                            "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
-                                            d,
-                                            "Rs. " + item.getString("price")
-
+                                    ItemInfo newItem = new ItemInfo(
+                                        item.getObjectId(),
+                                        item.getString("name").toUpperCase(),
+                                        "Posted by: " + item.getString("postedby").toUpperCase(),
+                                        item.getString("description"),
+                                        d,
+                                        "Rs. " + item.getString("price")
                                     );
                                     if (index < allItems.size()) allItems.set(index, newItem);
                                     else allItems.add(newItem);
 
-                                    if (index < loadLimit)
-                                        if (index < iteminfo.size()) iteminfo.set(index, newItem);
-                                        else iteminfo.add(newItem);
                                     /*if (index < loadLimit)
-                                        iteminfo.add(allItems.get(index));*/
-                                    /*mAdapter = new MainAdapter(iteminfo);
-                                    mRecyclerView.setAdapter(mAdapter);*/
-                                    ringProgressDialog.dismiss();
-                                    // Close progress dialog
-                                    swipeRefreshLayout.setRefreshing(false);
-                                    //mRecyclerView.setVerticalScrollBarEnabled(true);
+                                        if (index < iteminfo.size()) iteminfo.set(index, newItem);
+                                        else iteminfo.add(newItem);*/
+
+                                    // At the end of loading give the values from allItems into iteminfo
+                                    if (allItems.size() == itemList.size()) {
+                                        iteminfo = allItems.subList(ival,
+                                                Math.min(loadLimit, allItems.size()));
+                                        ringProgressDialog.dismiss();
+                                        // Close progress dialog
+                                        swipeRefreshLayout.setRefreshing(false);
+                                    }
                                 } else {
                                     e.printStackTrace();
                                     Log.d("test", "There was a problem downloading the data.");
                                 }
                             }
                         });
-
-                            }
-                            //((ArrayAdapter<
-                            // ItemInfo>) getListAdapter())
-                            // .notifyDataSetChanged();
-
-                        } else {
-                            e.printStackTrace();
-                            Log.d(getClass().getSimpleName(), "Error");
-                            return ;
-                        }
-
                     }
-
-                    }
-
-        );
+                } else {
+                    e.printStackTrace();
+                    Log.d(getClass().getSimpleName(), "Error");
+                    return ;
+                }
+            }
+        });
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
     }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -446,18 +413,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     }
 
     private void loadMoreItems() {
-        // TODO do something
-        /*ItemInfo item = new ItemInfo();
-        iteminfo.add(item);*/
-        if (loadLimit < allItems.size()) {
+        if (iteminfo.size() < allItems.size()) {
             Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
             loadLimit += ITEMS_PER_PAGE;
             if (loadLimit > allItems.size()) loadLimit = allItems.size();
             ival += ITEMS_PER_PAGE;
             for (int i = ival; i < loadLimit; ++i)
                 iteminfo.add(allItems.get(i));
-            /*mAdapter = new MainAdapter(iteminfo);
-            mRecyclerView.setAdapter(mAdapter);*/
             mAdapter.notifyDataSetChanged();
         }
     }
