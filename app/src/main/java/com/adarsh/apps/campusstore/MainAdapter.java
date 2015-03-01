@@ -1,5 +1,7 @@
 package com.adarsh.apps.campusstore;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FilterQueryProvider;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseImageView;
 
@@ -19,7 +22,7 @@ import java.util.List;
  * Created by Adarsh on 14-01-2015.
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
-    public List<ItemInfo> pojos;
+    public static List<ItemInfo> pojos;
     private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
     private int mSelectedPosition;
     private String intented;
@@ -43,9 +46,11 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             final TextView title = (TextView) v.findViewById(R.id.title);
             final TextView desc = (TextView) v.findViewById(R.id.desc);
             final TextView price = (TextView) v.findViewById(R.id.price);
-            final ParseImageView imageView = (ParseImageView)v.findViewById(R.id.imageView);
+            final ParseImageView imageView = (ParseImageView) v.findViewById(R.id.imageView);
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
             final Bitmap image = drawable.getBitmap();
+            if(pojos.size()==0)
+            Toast.makeText(MainActivity.context, "Sorry.There are currently no items available in this category.", Toast.LENGTH_LONG).show();
             //ByteArrayOutputStream stream = new ByteArrayOutputStream();
             //image.compress(Bitmap.CompressFormat.PNG, 100, stream);
             //final byte[] byteArray = stream.toByteArray();
@@ -93,7 +98,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
             totalItemCount = mLinearLayoutManager.getItemCount();
             lastVisibleItem = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
-            /*if (loading) {
+            if (loading) {
                 if (totalItemCount > previousTotal) {
                     loading = false;
                     previousTotal = totalItemCount;
@@ -105,7 +110,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 current_page++;
                 onLoadMore(current_page);
                 loading = true;
-            }*/
+            }
             if (totalItemCount == lastVisibleItem + 1) onLoadMore(current_page);
         }
 
@@ -114,6 +119,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public MainAdapter(List<ItemInfo> pojos) {
+
+
+
+
         this.pojos = pojos;
 
     }
@@ -166,6 +175,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         final TextView desc = (TextView) holder.view.findViewById(R.id.desc);
         final ParseImageView imageView = (ParseImageView) holder.view.findViewById(R.id.imageView);
         final TextView price = (TextView) holder.view.findViewById(R.id.price);
+        final TextView cat = (TextView) holder.view.findViewById(R.id.cat);
         //ItemInfo i = new ItemInfo(null, null, null, null, null);
         //i = filtereddata.get(position);
         //imageView.buildDrawingCache();
@@ -173,6 +183,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
         title.setText(pojos.get(position).getTitle());
         desc.setText(pojos.get(position).getUser());
+        cat.setText(pojos.get(position).getCat());
 
         imageView.setImageDrawable(pojos.get(position).getImage());
         price.setText(pojos.get(position).getprice());
@@ -187,12 +198,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 BitmapDrawable d = (BitmapDrawable) imageView.getDrawable();
                 CommonResources.bmp = d.getBitmap();
 
-                intent.putExtra("key2",desc.getText().toString());
-                intent.putExtra("key3",pojos.get(position).getDesc());
-                intent.putExtra("key4",price.getText().toString());
-                intent.putExtra("noteId",pojos.get(position).getId());
-                BitmapDrawable de=(BitmapDrawable)imageView.getDrawable();
-                CommonResources.bmp=de.getBitmap();
+                intent.putExtra("key2", desc.getText().toString());
+                intent.putExtra("key3", pojos.get(position).getDesc());
+                intent.putExtra("key4", price.getText().toString());
+                intent.putExtra("noteId", pojos.get(position).getId());
+                BitmapDrawable de = (BitmapDrawable) imageView.getDrawable();
+                CommonResources.bmp = de.getBitmap();
                 holder.itemView.getContext().startActivity(intent);
             }
         });

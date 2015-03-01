@@ -1,6 +1,7 @@
 package com.adarsh.apps.campusstore;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
 import android.view.ViewGroup.LayoutParams;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,7 @@ Modified by Girish on 15-1-15.
  */
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerCallbacks, SearchView.OnQueryTextListener {
+
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -61,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private int loadLimit = 4;  // TODO make these 10
     private final int ITEMS_PER_PAGE = 3;
 
+
     ArrayAdapter<ItemInfo> itemAdapter;
     SwipeRefreshLayout swipeRefreshLayout;
     String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
@@ -68,13 +73,19 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     ProgressDialog ringProgressDialog=null;
     PopupWindow popupMessage;
     LinearLayout layoutOfPopup;
+    String cat;static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("mainactivity",
+                "We're inside oncreate");
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         ParseUser user = ParseUser.getCurrentUser();
+        Intent i=getIntent();
+        cat=i.getStringExtra("cat");
+        context=this.getApplicationContext();
         if(user==null){loadLoginView();}
         else{
 
@@ -85,7 +96,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+            if(cat==null)
         getSupportActionBar().setTitle("Trending Items");
+            else
+                getSupportActionBar().setTitle(cat);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         //mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
@@ -131,25 +145,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             feedback.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    LayoutInflater layoutInflater
-                            = (LayoutInflater)getBaseContext()
-                            .getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
-                    final PopupWindow popupWindow = new PopupWindow(
-                            popupView,
-                            LayoutParams.WRAP_CONTENT,
-                            LayoutParams.WRAP_CONTENT);
-                    popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
-                    Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
-                    btnDismiss.setOnClickListener(new Button.OnClickListener(){
-
-                        @Override
-                        public void onClick(View v) {
-                            // TODO Auto-generated method stub
-                            popupWindow.dismiss();
-                        }});
-                    popupWindow.setFocusable(true);
-                    popupWindow.update();
                 }
             });
 
@@ -307,15 +302,82 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        Log.d("mainactivity",
+                "We're inside onnavigationdraweritemselected");
 
-        if(position==3){startActivity(new Intent(MainActivity.this,myitems.class));}
-        else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));}
-        else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));}
-        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));}
-        else if(position==5){ParseUser.logOut();
+        if(position==3){startActivity(new Intent(MainActivity.this,myitems.class));
+            Log.d("test",
+                    "3");}
+        else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));
+            Log.d("test",
+                    "0");}
+        else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));
+            Log.d("test",
+                    "2");}
+        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));
+            Log.d("test",
+                    "4");}
+        else if(position==5) {
+            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            LayoutInflater layoutInflater
+                    = (LayoutInflater)getBaseContext()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+           final  View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final PopupWindow popupWindow = new PopupWindow(
+                    popupView,
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
+            btnDismiss.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
+                    postfeed(s);
+                    popupWindow.dismiss();
+                }});
+            popupWindow.setFocusable(true);
+            popupWindow.update();
+            mNavigationDrawerFragment.closeDrawer();
+            }
+
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
-       // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}
+
+    }
+    private void postfeed(String s)
+    {
+        if (!s.isEmpty()) {
+
+
+            final ParseObject post = new ParseObject("Feedback");
+
+
+            post.put("Feedback", s);
+            post.put("User",ParseUser.getCurrentUser().getUsername());
+
+            setProgressBarIndeterminateVisibility(true);
+            post.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    setProgressBarIndeterminateVisibility(false);
+                    if (e == null) {
+                        // Saved successfully.
+
+                        Toast.makeText(getApplicationContext(), "Thank you for your time!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // The save failed.
+                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                    }
+                }
+            });
+
+
+        }
     }
 
     @Override
@@ -325,7 +387,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else
             super.onBackPressed();
     }
-
+    int county=0;
     private void refreshPostList() {
         swipeRefreshLayout.setRefreshing(true);
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Items");
@@ -339,43 +401,49 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     iteminfo.clear();
                     allItems.clear();
                     ival = 0;
-                    loadLimit = 4;
+                    loadLimit = 10;
                     for (int i = 0; i < itemList.size(); ++i) {
                         final int index = i;
+
                         final ParseObject item = itemList.get(index);
                         ParseFile imageFile = (ParseFile) item.get("image");
                         imageFile.getDataInBackground(new GetDataCallback() {
                             @Override
                             public void done(byte[] bytes, ParseException e) {
                                 if (e == null) {
-                                    Log.d("test",
-                                            "We've got data in data.");
-                                    // Decode the Byte[] into Bitmap
-                                    CommonResources.bmp = BitmapFactory.decodeByteArray( bytes, 0, bytes.length );
-                                    Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                    ItemInfo newItem = new ItemInfo(
-                                        item.getObjectId(),
-                                        item.getString("name").toUpperCase(),
-                                        "Posted by: " + item.getString("postedby").toUpperCase(),
-                                        item.getString("description"),
-                                        d,
-                                        "Rs. " + item.getString("price")
-                                    );
-                                    if (index < allItems.size()) allItems.set(index, newItem);
-                                    else allItems.add(newItem);
+                                    if(item.getString("category").equals(cat) || cat==null) {
+                                        Log.d("test",
+                                                "We've got data in data.");
+                                        ++county;
+                                        // Decode the Byte[] into Bitmap
+                                        CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                        ItemInfo newItem = new ItemInfo(
+                                                item.getObjectId(),
+                                                item.getString("name").toUpperCase(),
+                                                "Posted by: " + item.getString("postedby").toUpperCase(),
+                                                item.getString("description"),
+                                                d,
+                                                "Rs. " + item.getString("price"),
+                                                item.getString("category")
+                                        );
+                                        if (index < allItems.size()) allItems.set(index, newItem);
+                                        else allItems.add(newItem);
 
-                                    /*if (index < loadLimit)
-                                        if (index < iteminfo.size()) iteminfo.set(index, newItem);
-                                        else iteminfo.add(newItem);*/
+                                        if (index < loadLimit)
+                                            if (index < iteminfo.size()) iteminfo.set(index, newItem);
+                                            else iteminfo.add(newItem);
 
-                                    // At the end of loading give the values from allItems into iteminfo
-                                    if (allItems.size() == itemList.size()) {
-                                        iteminfo = allItems.subList(ival,
-                                                Math.min(loadLimit, allItems.size()));
-                                        ringProgressDialog.dismiss();
-                                        // Close progress dialog
-                                        swipeRefreshLayout.setRefreshing(false);
+                                        /*// At the end of loading give the values from allItems into iteminfo
+                                        if (allItems.size() == itemList.size()) {
+                                            iteminfo = allItems.subList(ival,
+                                                    Math.min(loadLimit, allItems.size()));
+                                            ringProgressDialog.dismiss();
+                                            // Close progress dialog
+                                            swipeRefreshLayout.setRefreshing(false);
+                                        }*/
                                     }
+
                                 } else {
                                     e.printStackTrace();
                                     Log.d("test", "There was a problem downloading the data.");
@@ -390,6 +458,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 }
             }
         });
+        ringProgressDialog.dismiss();
+        swipeRefreshLayout.setRefreshing(false);
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);
     }

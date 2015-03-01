@@ -21,6 +21,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v4.app.ActivityCompat.startActivity;
+
 /**
  * Created by Adarsh on 14-01-2015.
  */
@@ -29,7 +31,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
     private int mSelectedPosition;
     private String intented;
-    private int mTouchedPosition = -1;
     protected FilterQueryProvider mFilterQueryProvider;
     protected CursorFilter mCursorFilter;
     private List<ItemInfo> originaldata;
@@ -136,7 +137,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ENTER THE APPROPRIATE CODE HERE
+                Intent intent = new Intent(holder.itemView.getContext(), MainActivity.class);
+                NavigationDrawerFragment.mCurrentSelectedPosition = 1;
+                intent.putExtra("cat",pojos.get(position).getTitle().toString());
+                holder.itemView.getContext().startActivity(intent);
             }
         });
        /* holder.itemView.setOnTouchListener(new View.OnTouchListener() {
@@ -182,15 +186,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             holder.itemView.getContext().startActivity(intent);
         }*/
 
-    }
-
-    private void touchPosition(int position) {
-        int lastPosition = mTouchedPosition;
-        mTouchedPosition = position;
-        if (lastPosition >= 0)
-            notifyItemChanged(lastPosition);
-        if (position >= 0)
-            notifyItemChanged(position);
     }
 
     @Override

@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -44,6 +45,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,8 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("test",
+                "oncreate in categories");
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         ParseUser user = ParseUser.getCurrentUser();
@@ -107,9 +111,6 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
 
             categories = new ArrayList<CategoryItemInfo>();
-            categories.add(new CategoryItemInfo("Trending Items",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("Latest Items",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("My Items",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Electronic Gadgets",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Books and Stationery",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Cycles and automotive",getResources().getDrawable(R.drawable.ic_menu_check)));
@@ -216,12 +217,68 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
         else if(position==1){startActivity(new Intent(categories.this,MainActivity.class));}
 
         else if(position==4){startActivity(new Intent(categories.this,AboutActivity.class));}
-        else if(position==5){ParseUser.logOut();
+        else if(position==5) {
+            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            LayoutInflater layoutInflater
+                    = (LayoutInflater)getBaseContext()
+                    .getSystemService(LAYOUT_INFLATER_SERVICE);
+            final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final PopupWindow popupWindow = new PopupWindow(
+                    popupView,
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT);
+            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
+            btnDismiss.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+                    String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
+                    postfeed(s);
+                    popupWindow.dismiss();
+                }});
+            popupWindow.setFocusable(true);
+            popupWindow.update();
+            mNavigationDrawerFragment.closeDrawer();
+        }
+
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
         // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}
     }
+    private void postfeed(String s)
+    {
+        if (!s.isEmpty()) {
 
+
+            final ParseObject post = new ParseObject("Feedback");
+
+
+            post.put("Feedback", s);
+            post.put("User",ParseUser.getCurrentUser().getUsername());
+
+            setProgressBarIndeterminateVisibility(true);
+            post.saveInBackground(new SaveCallback() {
+                public void done(ParseException e) {
+                    setProgressBarIndeterminateVisibility(false);
+                    if (e == null) {
+                        // Saved successfully.
+
+                        Toast.makeText(getApplicationContext(), "Thank you for your time!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        // The save failed.
+                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                    }
+                }
+            });
+
+
+        }
+    }
     @Override
     public void onBackPressed() {
         if (mNavigationDrawerFragment.isDrawerOpen())

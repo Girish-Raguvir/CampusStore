@@ -27,7 +27,7 @@
         android:background="@drawable/border"
         android:textColor="@color/LoginBackground"
         android:hint="Type here"
-        android:id="@+id/editText" >
+        android:id="@+id/editTextfeed" >
 
         </EditText>
 
