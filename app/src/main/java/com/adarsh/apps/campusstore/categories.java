@@ -117,7 +117,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
             categories.add(new CategoryItemInfo("Musical Instruments",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Tickets, Gift vouchers, OPO invites",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Others",getResources().getDrawable(R.drawable.ic_menu_check)));
-        }
+
 
 
         /*Drawable d = getResources().getDrawable(R.drawable.ic_launcher);
@@ -138,7 +138,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
 
 
-        }
+        }}
 
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
