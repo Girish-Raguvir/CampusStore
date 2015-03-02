@@ -411,9 +411,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             @Override
                             public void done(byte[] bytes, ParseException e) {
                                 if (e == null) {
-                                    if(item.getString("category").equals(cat) || cat==null) {
+                                    if(cat==null){cat="";}
+                                    if(item.getString("category").equals(cat) || cat=="") {
                                         Log.d("test",
-                                                "We've got data in data.");
+                                                item.getString("category"));
                                         ++county;
                                         // Decode the Byte[] into Bitmap
                                         CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -442,9 +443,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                             // Close progress dialog
                                             swipeRefreshLayout.setRefreshing(false);
                                         }*/
-                                    }
+                                    }}
 
-                                } else {
+                                 else {
                                     e.printStackTrace();
                                     Log.d("test", "There was a problem downloading the data.");
                                 }
