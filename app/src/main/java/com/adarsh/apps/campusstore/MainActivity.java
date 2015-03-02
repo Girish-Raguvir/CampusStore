@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     // on scroll
     //private static int current_page = 1;
     private int ival = 0;
-    private int loadLimit = 4;  // TODO make these 10
+    private int loadLimit = 3;  // TODO make these 10
     private final int ITEMS_PER_PAGE = 3;
 
 
@@ -411,7 +411,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             @Override
                             public void done(byte[] bytes, ParseException e) {
                                 if (e == null) {
-                                    if(item.getString("category").equals(cat) || cat==null) {
+                                    if(cat==null || item.getString("category").equals(cat)) {
                                         Log.d("test",
                                                 "We've got data in data.");
                                         ++county;
@@ -442,6 +442,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                             // Close progress dialog
                                             swipeRefreshLayout.setRefreshing(false);
                                         }*/
+                                        if (ringProgressDialog.isShowing()) {
+                                            ringProgressDialog.dismiss();
+                                            swipeRefreshLayout.setRefreshing(false);
+                                        }
+                                        mAdapter.notifyDataSetChanged();
                                     }
 
                                 } else {
@@ -458,10 +463,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 }
             }
         });
-        ringProgressDialog.dismiss();
+        /*ringProgressDialog.dismiss();
         swipeRefreshLayout.setRefreshing(false);
         mAdapter = new MainAdapter(iteminfo);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);*/
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -485,9 +490,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private void loadMoreItems() {
         if (iteminfo.size() < allItems.size()) {
             Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
+            ival = loadLimit;
             loadLimit += ITEMS_PER_PAGE;
             if (loadLimit > allItems.size()) loadLimit = allItems.size();
-            ival += ITEMS_PER_PAGE;
             for (int i = ival; i < loadLimit; ++i)
                 iteminfo.add(allItems.get(i));
             mAdapter.notifyDataSetChanged();
