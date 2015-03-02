@@ -62,7 +62,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     // on scroll
     //private static int current_page = 1;
     private int ival = 0;
-    private int loadLimit = 4;  // TODO make these 10
+    private int loadLimit = 3;  // TODO make these 10
     private final int ITEMS_PER_PAGE = 3;
 
 
@@ -401,7 +401,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     iteminfo.clear();
                     allItems.clear();
                     ival = 0;
-                    loadLimit = 4;
+                    loadLimit = 3;
                     for (int i = 0; i < itemList.size(); ++i) {
                         final int index = i;
 
@@ -411,8 +411,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             @Override
                             public void done(byte[] bytes, ParseException e) {
                                 if (e == null) {
+
                                     if(cat==null){cat="";}
                                     if(item.getString("category").equals(cat) || cat=="") {
+
+
                                         Log.d("test",
                                                 item.getString("category"));
                                         ++county;
@@ -432,7 +435,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                         else allItems.add(newItem);
 
                                         if (index < loadLimit)
-                                            if (index < iteminfo.size()) iteminfo.set(index, newItem);
+                                            if (index < iteminfo.size())
+                                                iteminfo.set(index, newItem);
                                             else iteminfo.add(newItem);
 
                                         /*// At the end of loading give the values from allItems into iteminfo
@@ -443,7 +447,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                             // Close progress dialog
                                             swipeRefreshLayout.setRefreshing(false);
                                         }*/
-                                    }}
+
+                                    }
+                                        if (ringProgressDialog.isShowing()) {
+                                            ringProgressDialog.dismiss();
+                                            swipeRefreshLayout.setRefreshing(false);
+                                        }
+                                        mAdapter.notifyDataSetChanged();
+                                    }
+
 
                                  else {
                                     e.printStackTrace();
@@ -459,10 +471,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 }
             }
         });
-        ringProgressDialog.dismiss();
+        /*ringProgressDialog.dismiss();
         swipeRefreshLayout.setRefreshing(false);
         mAdapter = new MainAdapter(iteminfo);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);*/
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -486,9 +498,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private void loadMoreItems() {
         if (iteminfo.size() < allItems.size()) {
             Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
+            ival = loadLimit;
             loadLimit += ITEMS_PER_PAGE;
             if (loadLimit > allItems.size()) loadLimit = allItems.size();
-            ival += ITEMS_PER_PAGE;
             for (int i = ival; i < loadLimit; ++i)
                 iteminfo.add(allItems.get(i));
             mAdapter.notifyDataSetChanged();
