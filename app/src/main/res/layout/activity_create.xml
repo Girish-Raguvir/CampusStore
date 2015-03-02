@@ -67,9 +67,13 @@
         android:layout_gravity="center_horizontal"
         android:entries="@array/category_arrays"
         android:prompt="@string/category_prompt" />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal">
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content">
 
 
@@ -81,11 +85,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="center"
-
+            android:background="#fff"
 
             android:gravity="center"
             android:paddingTop="20dp"
-            android:src="@drawable/header" />
+            android:src="@drawable/ic_camera" />
 
         <Button
             android:id="@+id/capture"
@@ -102,10 +106,89 @@
             android:layout_gravity="center_horizontal"
             android:background="#00000000"
             android:text="TAKE/CHANGE PHOTO"
-            android:textColor="#ffffff" />
+            android:textColor="@color/bloodred" />
 
 
     </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:background="#fff"
+
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:src="@drawable/ic_camera" />
+
+            <Button
+                android:id="@+id/capture1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignBottom="@+id/imageView1"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:background="#00000000"
+                android:text="TAKE/CHANGE PHOTO"
+                android:textColor="@color/bloodred" />
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center"
+                android:background="#fff"
+
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:src="@drawable/ic_camera" />
+
+            <Button
+                android:id="@+id/capture2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignBottom="@+id/imageView2"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:background="#00000000"
+                android:text="TAKE/CHANGE PHOTO"
+                android:textColor="@color/bloodred" />
+
+
+        </RelativeLayout>
+        </LinearLayout>
 
     <Button
         android:id="@+id/save"
@@ -118,7 +201,7 @@
 
     <Button
         android:id="@+id/submit"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center_horizontal"

@@ -1,33 +1,38 @@
 package com.adarsh.apps.campusstore;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.Intent;
 
-import com.adarsh.apps.campusstore.R;
 import com.parse.ParseUser;
 
-public class DetailActivity extends ActionBarActivity {
+public class DetailActivity extends FragmentActivity{
     TextView title;
     TextView desc;
     byte[] byteArray;
-    ImageView imageview;
+    //ImageView imageview;
     TextView price;
     TextView user;
     ImageButton contact,addfav;
     ProgressDialog ringProgressDialog= null;
+    private static final int NUM_PAGES = 3;
+    private ViewPager mPager;
+    int i=0;
+    private PagerAdapter mPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -43,7 +48,7 @@ public class DetailActivity extends ActionBarActivity {
         price=(TextView)findViewById(R.id.price);
         contact=(ImageButton)findViewById(R.id.contact);
         addfav=(ImageButton)findViewById(R.id.addfav);
-        imageview=(ImageView)findViewById(R.id.imageView2);
+        //imageview=(ImageView)findViewById(R.id.imageView2);
         final String titletext = intent.getStringExtra("key");
         final String nametext = intent.getStringExtra("key2");
         final String desctext = intent.getStringExtra("key3");
@@ -58,10 +63,10 @@ public class DetailActivity extends ActionBarActivity {
         byte[] byteArray = extras.getByteArray("picture");*/
 
         //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-        ImageView image = (ImageView) findViewById(R.id.imageView2);
+        //ImageView image = (ImageView) findViewById(R.id.imageView2);
         ImageButton edit=(ImageButton)findViewById(R.id.edit);
         final Bitmap bmp=CommonResources.bmp;
-        image.setImageBitmap(bmp);
+        //image.setImageBitmap(bmp);
         ringProgressDialog.dismiss();
         /*byteArray = getIntent().getByteArrayExtra("byteArray");
         Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -98,7 +103,30 @@ public class DetailActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+        change();
 
+    }
+
+    public void change(){
+        new CountDownTimer(3000, 3000) {
+
+            public void onTick(long millisUntilFinished) {
+                slideToImage(i);
+            }
+
+            public void onFinish() {
+                ++i;
+                if(i==3)
+                    i=0;
+                change();
+
+
+            }
+        }.start();
     }
 
 
@@ -123,4 +151,24 @@ public class DetailActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return ScreenSlidePageFragment.create(position);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+    }
+    public void slideToImage(int position){
+        mPager.setCurrentItem(position);
+    }
+
 }

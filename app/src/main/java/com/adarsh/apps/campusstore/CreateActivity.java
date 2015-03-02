@@ -2,30 +2,23 @@ package com.adarsh.apps.campusstore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
-import android.graphics.Bitmap;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.view.View;
-import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import android.os.Environment;
-import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.graphics.BitmapFactory;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -35,10 +28,12 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
-
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 
 public class CreateActivity extends Activity {
@@ -130,7 +125,7 @@ public class CreateActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-                {   BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+                {   BitmapDrawable drawable = (BitmapDrawable)imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
