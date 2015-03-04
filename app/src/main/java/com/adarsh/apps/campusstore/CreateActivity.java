@@ -41,8 +41,8 @@ public class CreateActivity extends Activity {
     private static final int REQUEST_CODE = 1;
     private static final int CAMERA_PIC_REQUEST = 1337;
     private Bitmap bitmap;
-    private ImageView imageView;
-    private Button save, capture,submit;
+    private ImageView imageView,imageView1,imageView2;
+    private Button save, capture,capture1,capture2,submit;
     private EditText et1,et2,et3;
     private Spinner spinner1;
     private ParseFile imagefile;
@@ -114,6 +114,24 @@ public class CreateActivity extends Activity {
         });
         capture = (Button) findViewById(R.id.capture);
         capture.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View v){
+                {
+                    captureImage();
+                }
+            }
+        });
+        capture2 = (Button) findViewById(R.id.capture2);
+        capture2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View v){
+                {
+                    captureImage();
+                }
+            }
+        });
+        capture1 = (Button) findViewById(R.id.capture1);
+        capture1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
                 {

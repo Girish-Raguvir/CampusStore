@@ -407,7 +407,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     for (int i = 0; i < itemList.size(); ++i) allItems.add(null);
                     ival = 0;
                     loadLimit = 3;
-                    //Toast.makeText(MainActivity.this, "no. of items = " + itemList.size(), Toast.LENGTH_SHORT).show();
                     for (int i = 0; i < itemList.size(); ++i) {
                         final int index = i;
 
