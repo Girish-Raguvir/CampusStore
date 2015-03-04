@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 /**
  * Created by Adarsh on 14-01-2015.
  */
-public class ItemInfo {
+public class ItemInfo implements Comparable<ItemInfo>{
 
     String title;
     String user;
@@ -38,4 +38,9 @@ public class ItemInfo {
     }
     public String getprice(){return price;}
     public String getCat(){return cat;}
+
+    @Override
+    public int compareTo(ItemInfo o) {
+        return this.id.compareTo(o.id);
+    }
 }
