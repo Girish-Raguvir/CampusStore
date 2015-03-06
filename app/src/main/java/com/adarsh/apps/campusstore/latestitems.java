@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -118,7 +119,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
             final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
@@ -127,10 +128,25 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+
                     String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
-                    postfeed(s);
+                    if(!s.isEmpty())
+                    {postfeed(s); popupWindow.dismiss();}
+                    else
+                        Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
+
+                }});
+            ImageButton btnclose=(ImageButton)popupView.findViewById(R.id.close);
+            btnclose.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
                     popupWindow.dismiss();
                 }});
+
+
             popupWindow.setFocusable(true);
             popupWindow.update();
             mNavigationDrawerFragment.closeDrawer();
@@ -196,13 +212,13 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         return i;
     }
     private void refreshPostList() {
-       ringProgressDialog.show();
+       //ringProgressDialog.show();
         swipeRefreshLayout.setRefreshing(true);
-        ringProgressDialog.show();
+
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
-
-        setProgressBarIndeterminateVisibility(true);
+        ringProgressDialog.show();
+        //setProgressBarIndeterminateVisibility(true);
 
 
         query.findInBackground(new FindCallback<ParseObject>()
@@ -212,7 +228,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                    @SuppressWarnings("unchecked")
                                    @Override
                                    public void done (List < ParseObject > itemList, ParseException e){
-                                       setProgressBarIndeterminateVisibility(false);
+                                       //setProgressBarIndeterminateVisibility(false);
                                        if (e == null) {
 
                                            iteminfo.clear();
@@ -268,7 +284,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                }
 
         );
-     ringProgressDialog.dismiss();
+     //ringProgressDialog.dismiss();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

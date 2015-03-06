@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,6 +29,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -317,11 +319,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
-           final  View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
-                    LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT);
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
             btnDismiss.setOnClickListener(new Button.OnClickListener(){
@@ -329,10 +331,25 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+
                     String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
-                    postfeed(s);
+                    if(!s.isEmpty())
+                    {postfeed(s); popupWindow.dismiss();}
+                    else
+                        Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
+
+                }});
+            ImageButton btnclose=(ImageButton)popupView.findViewById(R.id.close);
+            btnclose.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
                     popupWindow.dismiss();
                 }});
+
+
             popupWindow.setFocusable(true);
             popupWindow.update();
             mNavigationDrawerFragment.closeDrawer();
