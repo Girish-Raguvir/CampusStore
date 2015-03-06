@@ -109,7 +109,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mRecyclerView.setOnScrollListener(new MainAdapter.EndlessRecyclerOnScrollListener(
                                           (LinearLayoutManager)mLayoutManager) {
             @Override
-            public void onLoadMore(int current_page) {
+            public void onLoadMore() {
                 loadMoreItems();
             }
         });
