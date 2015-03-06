@@ -75,6 +75,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
         super.onCreate(savedInstanceState);
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         ParseUser user = ParseUser.getCurrentUser();
+        //Toast.makeText(getApplicationContext(),user.getObjectId(), Toast.LENGTH_LONG).show();
         if(user==null){loadLoginView();}
         else{
 
