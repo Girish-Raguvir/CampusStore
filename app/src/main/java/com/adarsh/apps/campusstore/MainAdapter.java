@@ -94,7 +94,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
 
-            //visibleItemCount = recyclerView.getChildCount();
+            visibleItemCount = recyclerView.getChildCount();
             totalItemCount = mLinearLayoutManager.getItemCount();
             lastVisibleItem = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
