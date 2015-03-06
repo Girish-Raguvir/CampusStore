@@ -73,6 +73,16 @@ public class SignUpActivity extends ActionBarActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
+            // TODO change this regex if we need to check for branch also (CS, EE etc)
+            // and year of joining > 2020. Or take a list of roll numbers from a server or something.
+            else if (!username.matches("[a-zA-Z]{2}[01]\\d[bBdD][01](\\d){2}")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
+                builder.setMessage(R.string.signup_invalid_message)
+                        .setTitle(R.string.signup_error_title)
+                        .setPositiveButton(android.R.string.ok, null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
             else {
                 setProgressBarIndeterminateVisibility(true);
 
