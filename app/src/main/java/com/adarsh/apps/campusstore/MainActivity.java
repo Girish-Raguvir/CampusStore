@@ -291,20 +291,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return false;
     }
 
-    // THIS IS JUST TO WORKAROUND THE ERROR WHEN THE APP CLOSES
-    // For some reason the app is attempting to use the Parse library again when stopping;
-    // this is causing the error as per Logcat. We need to investigate and find out why.
-    @Override
-    public void onStop() {
-        Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
-        super.onStop();
-    }
-
     protected boolean isAlwaysExpanded() {
         return false;
     }
-
-
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
