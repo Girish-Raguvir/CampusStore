@@ -222,7 +222,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
         else if(position==4){startActivity(new Intent(categories.this,AboutActivity.class));}
         else if(position==5) {
             mNavigationDrawerFragment.closeDrawer();
-            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            View parentView = findViewById(R.id.drawer);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -231,7 +231,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
                     popupView,
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
             btnDismiss.setOnClickListener(new Button.OnClickListener(){
 
