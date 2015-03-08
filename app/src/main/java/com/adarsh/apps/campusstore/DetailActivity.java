@@ -52,6 +52,7 @@ public class DetailActivity extends FragmentActivity{
         ringProgressDialog= ProgressDialog.show(DetailActivity.this, "Please wait ...", "Loading details..", true);
         ringProgressDialog.show();
         Intent intent = getIntent();
+        Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         title=(TextView)findViewById(R.id.textView2);
         user=(TextView)findViewById(R.id.textView3);
         desc=(TextView)findViewById(R.id.description1);
@@ -97,26 +98,37 @@ public class DetailActivity extends FragmentActivity{
         addfav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(getApplicationContext(),idtext,Toast.LENGTH_LONG).show();
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+//                Toast.makeText(getApplicationContext(),idtext,Toast.LENGTH_LONG).show();
+//                ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+//
+//                // Retrieve the object by id
+//                query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+//                    public void done(ParseObject post, ParseException e) {
+//                        if (e == null) {
+//                            // Now let's update it with some new data.
+//                            fav=post.getString("favourites");
+//                            if(fav==null)fav="";
+                /*ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
 
                 // Retrieve the object by id
-                query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+                query.getInBackground("kQGHxFHj0f", new GetCallback<ParseObject>() {
                     public void done(ParseObject post, ParseException e) {
                         if (e == null) {
                             // Now let's update it with some new data.
-                            fav=post.getString("favourites");
-                            if(fav==null)fav="";
-                            post.put("favourites",fav + " "+idtext);
-                            Toast.makeText(getApplicationContext(),fav+"hello "+idtext,Toast.LENGTH_LONG).show();
+                            String fav=post.getString("favourites");
+                           post.put("favourites",fav+" "+idtext);
+>>>>>>> origin/master
                             setProgressBarIndeterminateVisibility(true);
                             post.saveInBackground(new SaveCallback() {
                                 public void done(ParseException e) {
                                     setProgressBarIndeterminateVisibility(false);
                                     if (e == null) {
                                         //ItemInfo olditem = new ItemInfo(name, null, desc, null, price);
+<<<<<<< HEAD
                                         Toast.makeText(getApplicationContext(), "Saved as favourite!", Toast.LENGTH_SHORT).show();
+=======
+                                        Toast.makeText(getApplicationContext(), "Saved as favourite", Toast.LENGTH_SHORT).show();
+>>>>>>> origin/master
                                         Log.d("test","Saved");
                                     } else {
                                         // The save failed.
@@ -126,6 +138,27 @@ public class DetailActivity extends FragmentActivity{
                                 }
                             });
                         }else{Log.d("test","no item found");}
+                    }
+<<<<<<< HEAD
+=======
+                });*/
+                final ParseObject u = new ParseObject("Favourites");
+                u.put("UserId",ParseUser.getCurrentUser().getObjectId());
+                u.put("ItemId",idtext);
+                //u.put("objectId",Pa);
+                u.saveInBackground(new SaveCallback() {
+                    public void done(ParseException e) {
+                        setProgressBarIndeterminateVisibility(false);
+                        if (e == null) {
+                            // Saved successfully.
+                            //ItemInfo item = new ItemInfo(name,null,desc,null,price);
+                            Toast.makeText(getApplicationContext(), "Saved as favourite!", Toast.LENGTH_SHORT).show();
+                            //finish();
+                        } else {
+                            // The save failed.
+                            Toast.makeText(getApplicationContext(), "Failed to Save.Try again later.", Toast.LENGTH_SHORT).show();
+                            Log.d(getClass().getSimpleName(), "User update error: " + e);
+                        }
                     }
                 });
             }

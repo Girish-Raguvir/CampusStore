@@ -21,12 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -50,13 +52,17 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     SwipeRefreshLayout swipeRefreshLayout;
     List<ItemInfo> iteminfo;
     ProgressDialog s=null;
+    String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
+    String CLIENT_KEY="nZ8M2KeOBWCBgcOdFCcX4MSqz9AwlM8mQMjqtQn0";
+    ProgressDialog ringProgressDialog=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myitems);
-        s= ProgressDialog.show(myitems.this, "Please wait ...", "Loading items..", true);
-        s.show();
+        ringProgressDialog= ProgressDialog.show(myitems.this, "Please wait ...", "Loading items..", true);
+        ringProgressDialog.show();
+        Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         NavigationDrawerFragment.mCurrentSelectedPosition=3;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
@@ -92,7 +98,8 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                 refreshPostList();
             }
         });
-        refreshPostList();
+       // refreshPostList();
+        favload();
     }
 
     @Override
@@ -117,7 +124,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
@@ -126,10 +133,25 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+
                     String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
-                    postfeed(s);
+                    if(!s.isEmpty())
+                    {postfeed(s); popupWindow.dismiss();}
+                    else
+                    Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
+
+                }});
+            ImageButton btnclose=(ImageButton)popupView.findViewById(R.id.close);
+            btnclose.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
                     popupWindow.dismiss();
                 }});
+
+
             popupWindow.setFocusable(true);
             popupWindow.update();
             mNavigationDrawerFragment.closeDrawer();
@@ -186,17 +208,77 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
         else
             super.onBackPressed();
     }
-    private void refreshPostList() {
-       s.show();
-       swipeRefreshLayout.setRefreshing(true);
+    String [] a=new String[10000];
+    int fl,count;
+     public int found(String s)
+     {int i;
+         for(i=0;i<count;i++)
+             if(a[i].equals(s)){Log.d("fav","found");break;}
+         if(i>=count)
+      return 0;
+         else return 1;
+     }
+    public void favload()
+    { //s.show();
+        Log.d("fav","favload");
+        swipeRefreshLayout.setRefreshing(true);
 
-        s.show();
+        //s.show();
+
+        ParseQuery<ParseObject> queryfav = new ParseQuery<ParseObject>(
+            "Favourites");
+        ringProgressDialog.show();
+        //setProgressBarIndeterminateVisibility(true);
+        fl=0;
+        queryfav.findInBackground(new FindCallback<ParseObject>()
+
+                                  {
+
+                                      @SuppressWarnings("unchecked")
+                                      @Override
+                                      public void done (List < ParseObject > itemList, ParseException e){
+                                          //setProgressBarIndeterminateVisibility(false);
+
+                                          if (e == null) {
+
+                                              iteminfo.clear();
+                                              for (final ParseObject item : itemList) {
+                                                  Log.d("test","inside");
+                                                  Log.d("fav",ParseUser.getCurrentUser().getObjectId().toString());
+                                                  Log.d("fav",item.getString("UserId"));
+                                                  if (ParseUser.getCurrentUser().getObjectId().toString().equals(item.getString("UserId"))) {
+                                                      Log.d("fav","success");
+                                                      a[fl]=item.getString("ItemId");
+                                                      fl=fl+1;
+
+
+                                                  }
+                                              }
+                                              //s.dismiss();
+                                              //swipeRefreshLayout.setRefreshing(false);
+                                          } else {
+                                              e.printStackTrace();
+                                              Log.d(getClass().getSimpleName(), "Error");
+                                          }
+                                          Log.d("fav","favloadi"+fl);
+                                          count=fl;
+                                          Log.d("fav","favload"+count);
+                                          /*for(fl=0;fl<count;fl++)
+                                          {
+                                              Toast.makeText(
+                                                      getApplicationContext(),a[fl], Toast.LENGTH_SHORT
+                                              ).show();
+                                              Log.d("fav",a[fl]);
+                                          }
+                                          Log.d("fav","favload1");*/
+                                      }
+
+                                  }
+
+        );
+
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
-
-        setProgressBarIndeterminateVisibility(true);
-
-
         query.findInBackground(new FindCallback<ParseObject>()
 
                                {
@@ -204,7 +286,85 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                    @SuppressWarnings("unchecked")
                                    @Override
                                    public void done (List < ParseObject > itemList, ParseException e){
-                                       setProgressBarIndeterminateVisibility(false);
+                                      // setProgressBarIndeterminateVisibility(false);
+                                       if (e == null) {
+
+                                           iteminfo.clear();
+                                           for (final ParseObject item : itemList) {
+                                               Log.d("test","inside");
+                                               if (found(item.getObjectId().toString())==1) {
+                                                   Log.d("test","success");
+                                                   ParseFile imageFile = (ParseFile) item.get("image");
+                                                   imageFile.getDataInBackground(new GetDataCallback() {
+                                                       @Override
+                                                       public void done(byte[] bytes, ParseException e) {
+                                                           if (e == null) {
+                                                               Log.d("test",
+                                                                       "We've got data in data.");
+                                                               Toast.makeText(myitems.this, "Loaded", Toast.LENGTH_LONG);
+                                                               // Decode the Byte[] into
+                                                               // Bitmap
+                                                               CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                               Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                                               iteminfo.add(new ItemInfo(item.getObjectId(),
+                                                                       item.getString("name").toUpperCase(),
+
+                                                                       "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
+                                                                       d,
+                                                                       "Rs. " + item.getString("price"),
+                                                                       item.getString("category")
+
+                                                               ));
+                                                               mAdapter = new MainAdapter(iteminfo);
+                                                               mRecyclerView.setAdapter(mAdapter);
+                                                               // Close progress dialog
+                                                               ringProgressDialog.dismiss();
+                                                               swipeRefreshLayout.setRefreshing(false);
+
+                                                           } else {
+                                                               e.printStackTrace();
+                                                               Log.d("test",
+                                                                       "There was a problem downloading the data.");
+                                                           }
+                                                       }
+                                                   });
+
+                                               }
+                                           }
+
+                                       } else {
+                                           e.printStackTrace();
+                                           Log.d(getClass().getSimpleName(), "Error");
+                                       }
+
+                                   }
+
+                               }
+
+        );
+        //s.dismiss();
+        //s.dismiss();
+    }
+    private void refreshPostList() {
+      // s.show();
+
+       swipeRefreshLayout.setRefreshing(true);
+
+        //s.show();
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
+                "Items");
+
+        ringProgressDialog.show();
+        //setProgressBarIndeterminateVisibility(true);
+       favload();
+        query.findInBackground(new FindCallback<ParseObject>()
+
+                               {
+
+                                   @SuppressWarnings("unchecked")
+                                   @Override
+                                   public void done (List < ParseObject > itemList, ParseException e){
+                                       //setProgressBarIndeterminateVisibility(false);
                                        if (e == null) {
 
 iteminfo.clear();
@@ -236,7 +396,7 @@ iteminfo.clear();
                                                                mAdapter = new MainAdapter(iteminfo);
                                                                mRecyclerView.setAdapter(mAdapter);
                                                                // Close progress dialog
-                                                               s.dismiss();
+                                                               ringProgressDialog.dismiss();
                                                                swipeRefreshLayout.setRefreshing(false);
 
                                                            } else {
@@ -260,7 +420,7 @@ iteminfo.clear();
                                }
 
         );
-  s.dismiss();
+  //s.dismiss();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.Gravity;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,6 +29,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -44,6 +46,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 /*
 Modified by Girish on 15-1-15.
@@ -57,6 +61,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
     private SearchView searchView;
     List<ItemInfo> iteminfo, allItems;
     // on scroll
@@ -107,7 +112,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mRecyclerView.setOnScrollListener(new MainAdapter.EndlessRecyclerOnScrollListener(
                                           (LinearLayoutManager)mLayoutManager) {
             @Override
-            public void onLoadMore(int current_page) {
+            public void onLoadMore() {
                 loadMoreItems();
             }
         });
@@ -289,16 +294,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return false;
     }
 
-    public boolean onClose() {
-
-        return false;
-    }
-
     protected boolean isAlwaysExpanded() {
         return false;
     }
-
-
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
@@ -320,26 +318,41 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             Log.d("test",
                     "4");}
         else if(position==6) {
-            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            View parentView = findViewById(R.id.drawer);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
-           final  View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
+            final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
-                    LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT);
-            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
             btnDismiss.setOnClickListener(new Button.OnClickListener(){
 
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+
                     String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
-                    postfeed(s);
+                    if(!s.isEmpty())
+                    {postfeed(s); popupWindow.dismiss();}
+                    else
+                        Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
+
+                }});
+            ImageButton btnclose=(ImageButton)popupView.findViewById(R.id.close);
+            btnclose.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
                     popupWindow.dismiss();
                 }});
+
+
             popupWindow.setFocusable(true);
             popupWindow.update();
             mNavigationDrawerFragment.closeDrawer();
@@ -394,6 +407,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         swipeRefreshLayout.setRefreshing(true);
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Items");
         ringProgressDialog.show();
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @SuppressWarnings("unchecked")
             @Override
@@ -401,7 +415,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 if (e == null) {
                     // If there are results, update the list of posts and notify the adapter
                     iteminfo.clear();
-                    allItems.clear();
+                    //allItems.clear();
+                    allItems = new ArrayList<ItemInfo>(itemList.size());
+                    for (int i = 0; i < itemList.size(); ++i) allItems.add(null);
                     ival = 0;
                     loadLimit = 3;
                     for (int i = 0; i < itemList.size(); ++i) {
@@ -413,53 +429,33 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                             @Override
                             public void done(byte[] bytes, ParseException e) {
                                 if (e == null) {
-
-                                    if(cat==null){cat="";}
-                                    if(item.getString("category").equals(cat) || cat=="") {
-
-
-                                        Log.d("test",
-                                                item.getString("category"));
-                                        ++county;
-                                        // Decode the Byte[] into Bitmap
-                                        CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                        Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                        ItemInfo newItem = new ItemInfo(
-                                                item.getObjectId(),
-                                                item.getString("name").toUpperCase(),
-                                                "Posted by: " + item.getString("postedby").toUpperCase(),
-                                                item.getString("description"),
-                                                d,
-                                                "Rs. " + item.getString("price"),
-                                                item.getString("category")
-                                        );
-                                        if (index < allItems.size()) allItems.set(index, newItem);
-                                        else allItems.add(newItem);
-
-                                        if (index < loadLimit)
-                                            if (index < iteminfo.size())
-                                                iteminfo.set(index, newItem);
-                                            else iteminfo.add(newItem);
-
-                                        /*// At the end of loading give the values from allItems into iteminfo
-                                        if (allItems.size() == itemList.size()) {
-                                            iteminfo = allItems.subList(ival,
-                                                    Math.min(loadLimit, allItems.size()));
-                                            ringProgressDialog.dismiss();
-                                            // Close progress dialog
-                                            swipeRefreshLayout.setRefreshing(false);
-                                        }*/
-
-                                    }
-                                        if (ringProgressDialog.isShowing()) {
-                                            ringProgressDialog.dismiss();
-                                            swipeRefreshLayout.setRefreshing(false);
-                                        }
+                                    // Decode the Byte[] into Bitmap
+                                    CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                    ItemInfo newItem = new ItemInfo(
+                                            item.getObjectId(),
+                                            item.getString("name").toUpperCase(),
+                                            "Posted by: " + item.getString("postedby").toUpperCase(),
+                                            item.getString("description"),
+                                            d,
+                                            "Rs. " + item.getString("price"),
+                                            item.getString("category")
+                                    );
+                                    ++county;
+                                    allItems.set(index, newItem);
+                                    if (county == itemList.size()) {
+                                        Arrays.sort(allItems.toArray());
+                                        int j;
+                                        for (j = 0; j < allItems.size() && iteminfo.size() <= loadLimit; ++j)
+                                            if(cat==null || allItems.get(j).getCat().equals(cat))
+                                                iteminfo.add(allItems.get(j));
+                                        ival = j;
+                                        ringProgressDialog.dismiss();
+                                        // Close progress dialog
+                                        swipeRefreshLayout.setRefreshing(false);
                                         mAdapter.notifyDataSetChanged();
                                     }
-
-
-                                 else {
+                                } else {
                                     e.printStackTrace();
                                     Log.d("test", "There was a problem downloading the data.");
                                 }
@@ -498,13 +494,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     }
 
     private void loadMoreItems() {
-        if (iteminfo.size() < allItems.size()) {
+        Log.e("vals", "ival-"+ival+";loadlimit-"+loadLimit+";iteminfo size-"+iteminfo.size()+";allitems size-"+allItems.size());
+        if (ival < allItems.size()) {
             Toast.makeText(this, "Loading more items", Toast.LENGTH_SHORT).show();
-            ival = loadLimit;
             loadLimit += ITEMS_PER_PAGE;
             if (loadLimit > allItems.size()) loadLimit = allItems.size();
-            for (int i = ival; i < loadLimit; ++i)
-                iteminfo.add(allItems.get(i));
+            int i;
+            for (i = ival; i < allItems.size() && iteminfo.size() <= loadLimit; ++i)
+                if (cat==null || allItems.get(i).getCat().equals(cat))
+                    iteminfo.add(allItems.get(i));
+            ival = i;
             mAdapter.notifyDataSetChanged();
         }
     }

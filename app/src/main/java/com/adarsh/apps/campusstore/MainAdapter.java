@@ -76,13 +76,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     public abstract static class EndlessRecyclerOnScrollListener extends
             RecyclerView.OnScrollListener {
 
-        private int previousTotal = 0;
-        private boolean loading = true;
-        private int visibleThreshold = 5;
-        int lastVisibleItem, visibleItemCount, totalItemCount;
-
-        private int current_page = 1;
-
+        int lastVisibleItem, totalItemCount;
         private LinearLayoutManager mLinearLayoutManager;
 
         public EndlessRecyclerOnScrollListener(
@@ -94,27 +88,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
 
-            //visibleItemCount = recyclerView.getChildCount();
             totalItemCount = mLinearLayoutManager.getItemCount();
             lastVisibleItem = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
-
-            if (loading) {
-                if (totalItemCount > previousTotal) {
-                    loading = false;
-                    previousTotal = totalItemCount;
-                }
-            }
-            if (!loading
-                    && (totalItemCount - visibleItemCount) <= (lastVisibleItem + visibleThreshold)) {
-                // End has been reached
-                current_page++;
-                onLoadMore(current_page);
-                loading = true;
-            }
-            if (totalItemCount == lastVisibleItem + 1) onLoadMore(current_page);
+            if (totalItemCount == lastVisibleItem + 1) onLoadMore();
         }
 
-        public abstract void onLoadMore(int current_page);
+        public abstract void onLoadMore();
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
