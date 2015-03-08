@@ -75,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:entries="@array/category_arrays"
+        android:background="#8A0707"
         android:prompt="@string/category_prompt" />
     <LinearLayout
         android:layout_width="match_parent"
