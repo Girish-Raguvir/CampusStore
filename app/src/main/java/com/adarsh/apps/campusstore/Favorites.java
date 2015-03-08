@@ -83,7 +83,7 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
         mRecyclerView.setAdapter(mAdapter);
         //refreshPostList();
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer1);
-        mNavigationDrawerFragment.setup(R.id.fragment_drawer1, (DrawerLayout) findViewById(R.id.drawer1), mToolbar);
+        mNavigationDrawerFragment.setup(R.id.fragment_drawer1, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.myPrimaryColor);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -205,59 +205,57 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
                                    @SuppressWarnings("unchecked")
                                    @Override
                                    public void done (List < ParseObject > itemList, ParseException e){
-                                       setProgressBarIndeterminateVisibility(false);
-                                       if (e == null) {
+               setProgressBarIndeterminateVisibility(false);
+               if (e == null) {
 
-                                           iteminfo.clear();
-                                           for (final ParseObject item : itemList) {
-                                               Log.d("test","inside");
-                                                   ParseFile imageFile = (ParseFile) item.get("image");
-                                                   imageFile.getDataInBackground(new GetDataCallback() {
-                                                       @Override
-                                                       public void done(byte[] bytes, ParseException e) {
-                                                           if (e == null) {
-                                                               Log.d("test",
-                                                                       "We've got data in data.");
-                                                               Toast.makeText(Favorites.this, "Loaded", Toast.LENGTH_LONG);
-                                                               // Decode the Byte[] into
-                                                               // Bitmap
-                                                               CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                               Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                                               iteminfo.add(new ItemInfo(item.getObjectId(),
-                                                                       item.getString("name").toUpperCase(),
+                   iteminfo.clear();
+                   for (final ParseObject item : itemList) {
+                       Log.d("test","inside");
+                           ParseFile imageFile = (ParseFile) item.get("image");
+                           imageFile.getDataInBackground(new GetDataCallback() {
+                               @Override
+                               public void done(byte[] bytes, ParseException e) {
+                                   if (e == null) {
+                                       Log.d("test",
+                                               "We've got data in data.");
+                                       Toast.makeText(Favorites.this, "Loaded", Toast.LENGTH_LONG);
+                                       // Decode the Byte[] into
+                                       // Bitmap
+                                       CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                       Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                       iteminfo.add(new ItemInfo(item.getObjectId(),
+                                               item.getString("name").toUpperCase(),
 
-                                                                       "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
-                                                                       d,
-                                                                       "Rs. " + item.getString("price"),
-                                                                       item.getString("category")
+                                               "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
+                                               d,
+                                               "Rs. " + item.getString("price"),
+                                               item.getString("category")
 
-                                                               ));
-                                                               mAdapter = new MainAdapter(iteminfo);
-                                                               mRecyclerView.setAdapter(mAdapter);
-                                                               // Close progress dialog
-                                                               s.dismiss();
-                                                               swipeRefreshLayout.setRefreshing(false);
+                                       ));
+                                       mAdapter = new MainAdapter(iteminfo);
+                                       mRecyclerView.setAdapter(mAdapter);
+                                       // Close progress dialog
+                                       s.dismiss();
+                                       swipeRefreshLayout.setRefreshing(false);
 
-                                                           } else {
-                                                               e.printStackTrace();
-                                                               Log.d("test",
-                                                                       "There was a problem downloading the data.");
-                                                           }
-                                                       }
-                                                   });
-
-
-                                           }
-
-                                       } else {
-                                           e.printStackTrace();
-                                           Log.d(getClass().getSimpleName(), "Error");
-                                       }
-
+                                   } else {
+                                       e.printStackTrace();
+                                       Log.d("test",
+                                               "There was a problem downloading the data.");
                                    }
-
                                }
+                           });
 
+
+                   }
+
+               } else {
+                   e.printStackTrace();
+                   Log.d(getClass().getSimpleName(), "Error");
+               }
+               }
+
+           }
         );
         s.dismiss();
     }
