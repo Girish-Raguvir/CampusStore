@@ -91,7 +91,7 @@ public class CreateActivity extends Activity {
                     try {
 
                         outStream = new FileOutputStream(image);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             /* 100 to keep full quality of the image */
 
                         outStream.flush();
@@ -146,7 +146,7 @@ public class CreateActivity extends Activity {
                 {   BitmapDrawable drawable = (BitmapDrawable)imageView.getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bs);
                     byte[] byteArray = bs.toByteArray();
                     imagefile = new ParseFile("image.png", byteArray);
 
@@ -237,7 +237,7 @@ public class CreateActivity extends Activity {
             try {
 
                 outStream = new FileOutputStream(image);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             /* 100 to keep full quality of the image */
 
                 outStream.flush();
@@ -326,6 +326,9 @@ public class CreateActivity extends Activity {
                         setProgressBarIndeterminateVisibility(false);
                         if (e == null) {
                             // Saved successfully.
+                            if(cat==null) {
+                                cat = "Others";
+                            }
                             olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),price,cat);
                             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                             finish();

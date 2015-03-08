@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"
-        android:textColor="@color/myPrimaryColor"
+        android:textColor="#AD0A0A"
         android:text="Please tell us features you would like to see in this app:"
         android:id="@+id/textView" />
 

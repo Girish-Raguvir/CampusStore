@@ -17,8 +17,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class DetailActivity extends FragmentActivity{
     TextView title;
@@ -32,12 +39,15 @@ public class DetailActivity extends FragmentActivity{
     private static final int NUM_PAGES = 3;
     private ViewPager mPager;
     int i=0;
+    String fav;
     private PagerAdapter mPagerAdapter;
+    String  APPLICATION_ID="Go2QLMXo9VPZC597FxSUZvuqIUAJ0xxtu5CHAEla";
+    String CLIENT_KEY="nZ8M2KeOBWCBgcOdFCcX4MSqz9AwlM8mQMjqtQn0";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         setContentView(R.layout.activity_detail);
         ringProgressDialog= ProgressDialog.show(DetailActivity.this, "Please wait ...", "Loading details..", true);
         ringProgressDialog.show();
@@ -83,10 +93,41 @@ public class DetailActivity extends FragmentActivity{
                startActivity(i);
            }
        });
+
         addfav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(getApplicationContext(),idtext,Toast.LENGTH_LONG).show();
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+
+                // Retrieve the object by id
+                query.getInBackground(ParseUser.getCurrentUser().getObjectId(), new GetCallback<ParseObject>() {
+                    public void done(ParseObject post, ParseException e) {
+                        if (e == null) {
+                            // Now let's update it with some new data.
+                            fav=post.getString("favourites");
+                            if(fav==null)fav="";
+                            post.put("favourites",fav + " "+idtext);
+                            Toast.makeText(getApplicationContext(),fav+"hello "+idtext,Toast.LENGTH_LONG).show();
+                            setProgressBarIndeterminateVisibility(true);
+                            post.saveInBackground(new SaveCallback() {
+                                public void done(ParseException e) {
+                                    setProgressBarIndeterminateVisibility(false);
+                                    if (e == null) {
+                                        //ItemInfo olditem = new ItemInfo(name, null, desc, null, price);
+                                        Toast.makeText(getApplicationContext(), "Saved as favourite!", Toast.LENGTH_SHORT).show();
+                                        Log.d("test","Saved");
+                                    } else {
+                                        // The save failed.
+                                        Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                                        Log.d(getClass().getSimpleName(), "User update error: " + e);
+                                    }
+                                }
+                            });
+                        }else{Log.d("test","no item found");}
+                    }
+                });
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {

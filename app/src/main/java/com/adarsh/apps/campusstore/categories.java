@@ -215,9 +215,10 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
         if(position==3){startActivity(new Intent(categories.this,myitems.class));}
         else if(position==2){startActivity(new Intent(categories.this,latestitems.class));}
         else if(position==1){startActivity(new Intent(categories.this,MainActivity.class));}
-
-        else if(position==4){startActivity(new Intent(categories.this,AboutActivity.class));}
-        else if(position==5) {
+        else if(position==4){startActivity(new Intent(categories.this,Favorites.class));
+        }
+        else if(position==5){startActivity(new Intent(categories.this,AboutActivity.class));}
+        else if(position==6) {
             final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -243,7 +244,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==6){ParseUser.logOut();
+        else if(position==7){ParseUser.logOut();
 
             loadLoginView();}
         // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}

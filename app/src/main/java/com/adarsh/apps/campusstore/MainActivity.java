@@ -314,10 +314,12 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));
             Log.d("test",
                     "2");}
-        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));
+        else if(position==4){startActivity(new Intent(MainActivity.this,Favorites.class));
+            }
+        else if(position==5){startActivity(new Intent(MainActivity.this,AboutActivity.class));
             Log.d("test",
                     "4");}
-        else if(position==5) {
+        else if(position==6) {
             final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -343,7 +345,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             mNavigationDrawerFragment.closeDrawer();
             }
 
-        else if(position==6){ParseUser.logOut();
+        else if(position==7){ParseUser.logOut();
 
             loadLoginView();}
 
