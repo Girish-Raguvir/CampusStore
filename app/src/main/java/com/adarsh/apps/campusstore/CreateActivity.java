@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,10 +30,7 @@ import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 
 public class CreateActivity extends Activity {
@@ -41,15 +38,19 @@ public class CreateActivity extends Activity {
     private static final int REQUEST_CODE = 1;
     private static final int CAMERA_PIC_REQUEST = 1337;
     private Bitmap bitmap;
-    private ImageView imageView,imageView1,imageView2;
+    private ImageView imageView[]=new ImageView[3];
     private Button save, capture,capture1,capture2,submit;
     private EditText et1,et2,et3;
     private Spinner spinner1;
-    private ParseFile imagefile;
+    private ParseFile imagefile,imagefile1,imagefile2;
     private CheckBox neg;
     ItemInfo olditem=null;
     static String cat;
+    int im=0;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    String mCurrentPhotoPath;
    // private ItemInfo item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,9 @@ public class CreateActivity extends Activity {
         et2=(EditText)findViewById(R.id.editText3);
         et3=(EditText)findViewById(R.id.editText5);
         neg=(CheckBox)findViewById(R.id.checkBox);
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView[0] = (ImageView) findViewById(R.id.imageView);
+        imageView[1] = (ImageView) findViewById(R.id.imageView1);
+        imageView[2] = (ImageView) findViewById(R.id.imageView2);
         save = (Button) findViewById(R.id.save);
         spinner1 = (Spinner) findViewById(R.id.spinner);
         spinner1.setOnItemSelectedListener(new OnCategorySelected());
@@ -73,10 +76,10 @@ public class CreateActivity extends Activity {
         et1.setText(titletext);
         et2.setText(desctext);
         et3.setText(pricetext);
-        imageView.setImageBitmap(CommonResources.bmp);
-            olditem=new ItemInfo(intent.getStringExtra("noteId"),titletext,nametext,desctext,new BitmapDrawable(getResources(), CommonResources.bmp),pricetext,cat);
+        /*imageView.setImageBitmap(CommonResources.bmp);
+            olditem=new ItemInfo(intent.getStringExtra("noteId"),titletext,nametext,desctext,new BitmapDrawable(getResources(), CommonResources.bmp),pricetext,cat);*/
         }
-        save.setOnClickListener(new View.OnClickListener() {
+        /*save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 {
@@ -94,7 +97,7 @@ public class CreateActivity extends Activity {
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             /* 100 to keep full quality of the image */
 
-                        outStream.flush();
+              /*          outStream.flush();
                         outStream.close();
                         success = true;
                     } catch (FileNotFoundException e) {
@@ -111,13 +114,14 @@ public class CreateActivity extends Activity {
                     }
                 }
             }
-        });
+        });*/
         capture = (Button) findViewById(R.id.capture);
         capture.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
                 {
-                    captureImage();
+                    im=1;
+                    dispatchTakePictureIntent();
                 }
             }
         });
@@ -126,7 +130,8 @@ public class CreateActivity extends Activity {
             @Override
             public void onClick (View v){
                 {
-                    captureImage();
+                    im=3;
+                    dispatchTakePictureIntent();
                 }
             }
         });
@@ -135,7 +140,8 @@ public class CreateActivity extends Activity {
             @Override
             public void onClick (View v){
                 {
-                    captureImage();
+                    im=2;
+                    dispatchTakePictureIntent();
                 }
             }
         });
@@ -143,13 +149,27 @@ public class CreateActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick (View v){
-                {   BitmapDrawable drawable = (BitmapDrawable)imageView.getDrawable();
+                {   BitmapDrawable drawable;
+                    drawable = (BitmapDrawable)imageView[0].getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
                     byte[] byteArray = bs.toByteArray();
+                    BitmapDrawable drawable1;
+                    drawable1 = (BitmapDrawable)imageView[1].getDrawable();
+                    Bitmap bitmap1 = drawable1.getBitmap();
+                    ByteArrayOutputStream bs1 = new ByteArrayOutputStream();
+                    bitmap1.compress(Bitmap.CompressFormat.PNG, 50, bs1);
+                    byte[] byteArray1 = bs1.toByteArray();
+                    BitmapDrawable drawable2;
+                    drawable2 = (BitmapDrawable)imageView[2].getDrawable();
+                    Bitmap bitmap2 = drawable2.getBitmap();
+                    ByteArrayOutputStream bs2 = new ByteArrayOutputStream();
+                    bitmap2.compress(Bitmap.CompressFormat.PNG, 50, bs2);
+                    byte[] byteArray2 = bs2.toByteArray();
                     imagefile = new ParseFile("image.png", byteArray);
-
+                    imagefile1= new ParseFile("image1.png", byteArray1);
+                    imagefile2= new ParseFile("image2.png", byteArray);
                     saveitem();
                     Intent i = new Intent(CreateActivity.this,MainActivity.class);
                     i.putExtra("name1", et1.getText().toString());
@@ -185,20 +205,21 @@ public class CreateActivity extends Activity {
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK)
+        {
+
             if (requestCode == REQUEST_CODE) {
                 try {
                     // We need to recycle unused bitmaps
                     if (bitmap != null) {
                         bitmap.recycle();
                     }
-                    InputStream stream = getContentResolver().openInputStream(
-                            data.getData());
+                    InputStream stream = getContentResolver().openInputStream(data.getData());
                     bitmap = BitmapFactory.decodeStream(stream);
                     stream.close();
-                    imageView.setImageBitmap(bitmap);
+                    imageView[im-1].setImageBitmap(bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -214,16 +235,16 @@ public class CreateActivity extends Activity {
                     Toast.makeText(getApplicationContext(),
                             "No image returned", Toast.LENGTH_LONG).show();
                 else
-                    imageView.setImageBitmap(bitmap);
+                    imageView[im-1].setImageBitmap(bitmap);
 
 
 
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
-    public void onClick(View v) {
+   /* public void onClick(View v) {
         // TODO Auto-generated method stub
         if (v == save) {
             BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
@@ -239,7 +260,7 @@ public class CreateActivity extends Activity {
                 outStream = new FileOutputStream(image);
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
             /* 100 to keep full quality of the image */
-
+/*
                 outStream.flush();
                 outStream.close();
                 success = true;
@@ -259,7 +280,7 @@ public class CreateActivity extends Activity {
             captureImage();
         }
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -382,6 +403,51 @@ public class CreateActivity extends Activity {
                 dialog.show();
             }
         }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK && data!=null) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageView[im-1].setImageBitmap(imageBitmap);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "test"+im;
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
 
     }
 

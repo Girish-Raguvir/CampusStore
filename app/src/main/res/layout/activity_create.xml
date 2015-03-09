@@ -87,7 +87,7 @@
             android:layout_alignParentTop="true"
             android:layout_gravity="center"
             android:background="#fff"
-
+            android:scaleType="centerCrop"
             android:gravity="center"
             android:paddingTop="20dp"
             android:src="@drawable/ic_camera" />
@@ -127,7 +127,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center"
                 android:background="#fff"
-
+                android:scaleType="centerCrop"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:src="@drawable/ic_camera" />
@@ -167,7 +167,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center"
                 android:background="#fff"
-
+                android:scaleType="centerCrop"
                 android:gravity="center"
                 android:paddingTop="20dp"
                 android:src="@drawable/ic_camera" />
