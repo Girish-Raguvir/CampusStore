@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:layout_marginBottom="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginTop="5dp"
-    android:background="#ffffff"
+    android:layout_height="wrap_content"
+     >
 
-    >
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        card_view:cardCornerRadius="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
 
 
     <com.parse.ParseImageView
         android:id="@+id/imageView"
-        android:layout_width="161dp"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
@@ -22,7 +33,21 @@
         android:layout_alignParentTop="true"
 
         android:scaleType="fitXY"
-        android:src="@drawable/photo1" />
+        android:src="@drawable/photo1"
+        android:layout_above="@+id/linearLayout3" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="New Text"
+            android:paddingLeft="5dp"
+            android:id="@+id/price"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_alignBottom="@+id/linearLayout3"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -44,6 +69,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
+
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <RelativeLayout
@@ -53,22 +79,25 @@
                 android:orientation="vertical">
             <TextView
                 android:id="@+id/title"
+                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="15dp"
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
-
+                android:textColor="#AD0A0A"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:text="Large Text"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#ffffff" />
+
+                />
                 <TextView
                     android:id="@+id/cat"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
+                    android:typeface="monospace"
+                    android:textSize="15dp"
                     android:layout_weight="1"
                     android:paddingRight="8dp"
                    android:layout_alignParentRight="true"
@@ -87,7 +116,7 @@
                 android:layout_alignStart="@+id/title"
                 android:layout_below="@+id/title"
 
-                android:textStyle="bold"
+
                 android:text="Small Text"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#ffffff" />
@@ -96,17 +125,8 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:text="New Text"
-        android:paddingLeft="5dp"
-        android:id="@+id/price"
-        android:textColor="#ffffff"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:layout_alignBottom="@+id/linearLayout3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

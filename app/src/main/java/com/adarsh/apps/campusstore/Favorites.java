@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -36,35 +35,33 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 /*
 Modified by Girish on 15-1-15.
  */
 
-public class latestitems extends ActionBarActivity implements NavigationDrawerCallbacks {
+public class Favorites extends ActionBarActivity implements NavigationDrawerCallbacks {
 
     private Toolbar mToolbar;
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    List<ItemInfo> iteminfo;
     SwipeRefreshLayout swipeRefreshLayout;
-    ProgressDialog ringProgressDialog= null;
+    List<ItemInfo> iteminfo;
+    ProgressDialog s=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_myitems);
-        ringProgressDialog= ProgressDialog.show(latestitems.this, "Please wait ...", "Loading details..", true);
-        ringProgressDialog.show();
-        NavigationDrawerFragment.mCurrentSelectedPosition=2;
+        setContentView(R.layout.activity_favorites);
+        s= ProgressDialog.show(Favorites.this, "Please wait ...", "Loading items..", true);
+        s.show();
+        NavigationDrawerFragment.mCurrentSelectedPosition=4;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Latest Items");
+        getSupportActionBar().setTitle("Favorites");
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view1);
         mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
@@ -86,7 +83,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         mRecyclerView.setAdapter(mAdapter);
         //refreshPostList();
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer1);
-        mNavigationDrawerFragment.setup(R.id.fragment_drawer1, (DrawerLayout) findViewById(R.id.drawer1), mToolbar);
+        mNavigationDrawerFragment.setup(R.id.fragment_drawer1, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
         swipeRefreshLayout=(SwipeRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.myPrimaryColor);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -108,11 +105,11 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
 
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==3){startActivity(new Intent(latestitems.this,myitems.class));}
-        else if(position==0){startActivity(new Intent(latestitems.this,categories.class));}
-        else if(position==4){startActivity(new Intent(latestitems.this,Favorites.class));
-        }
-        else if(position==5){startActivity(new Intent(latestitems.this,AboutActivity.class));}
+        if(position==2){startActivity(new Intent(Favorites.this,latestitems.class));}
+        else if(position==3){startActivity(new Intent(Favorites.this,myitems.class));}
+
+        else if(position==5){startActivity(new Intent(Favorites.this,AboutActivity.class));}
+        else if(position==0){startActivity(new Intent(Favorites.this,categories.class));}
         else if(position==6) {
             final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
             LayoutInflater layoutInflater
@@ -121,7 +118,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
             final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
@@ -130,25 +127,10 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
-
                     String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
-                    if(!s.isEmpty())
-                    {postfeed(s); popupWindow.dismiss();}
-                    else
-                        Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
-
-                }});
-            ImageButton btnclose=(ImageButton)popupView.findViewById(R.id.close);
-            btnclose.setOnClickListener(new Button.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    // TODO Auto-generated method stub
-
+                    postfeed(s);
                     popupWindow.dismiss();
                 }});
-
-
             popupWindow.setFocusable(true);
             popupWindow.update();
             mNavigationDrawerFragment.closeDrawer();
@@ -157,13 +139,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         else if(position==7){ParseUser.logOut();
 
             loadLoginView();}
-        else if(position==1){startActivity(new Intent(latestitems.this,MainActivity.class));}
-    }
-    private void loadLoginView() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        else if(position==1){startActivity(new Intent(Favorites.this,MainActivity.class));}
     }
     private void postfeed(String s)
     {
@@ -197,6 +173,13 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         }
     }
 
+    private void loadLoginView() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         if (mNavigationDrawerFragment.isDrawerOpen())
@@ -204,23 +187,15 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
         else
             super.onBackPressed();
     }
-    public int check(ParseObject item)
-    {   Calendar cal= Calendar.getInstance();
-        int i=0;
-        //if(item.getDate("updatedAt").toString().split("")[0].equals(new SimpleDateFormat("MMM").format(cal.getTime()))){++i;}
-        if((cal.getTime().getDate())-item.getCreatedAt().getDate()<=1){++i;
-    }
-       // Log.d("test"," "+item.getCreatedAt().getDate());
-        return i;
-    }
     private void refreshPostList() {
-       //ringProgressDialog.show();
+        s.show();
         swipeRefreshLayout.setRefreshing(true);
 
+        s.show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
-        ringProgressDialog.show();
-        //setProgressBarIndeterminateVisibility(true);
+
+        setProgressBarIndeterminateVisibility(true);
 
 
         query.findInBackground(new FindCallback<ParseObject>()
@@ -230,63 +205,59 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                    @SuppressWarnings("unchecked")
                                    @Override
                                    public void done (List < ParseObject > itemList, ParseException e){
-                                       //setProgressBarIndeterminateVisibility(false);
-                                       if (e == null) {
+               setProgressBarIndeterminateVisibility(false);
+               if (e == null) {
 
-                                           iteminfo.clear();
-                                           for (final ParseObject item : itemList) {
-                                               Log.d("test","inside");
-                                               if (check(item)==1) {
-                                                   Log.d("test","success");
-                                                   ParseFile imageFile = (ParseFile) item.get("image");
-                                                   imageFile.getDataInBackground(new GetDataCallback() {
-                                                       @Override
-                                                       public void done(byte[] bytes, ParseException e) {
-                                                           if (e == null) {
-                                                               Log.d("test",
-                                                                       "We've got data in data.");
-                                                               Toast.makeText(latestitems.this, "Loaded", Toast.LENGTH_LONG);
-                                                               // Decode the Byte[] into
-                                                               // Bitmap
-                                                               CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                               Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
-                                                               iteminfo.add(new ItemInfo(item.getObjectId(),
-                                                                       item.getString("name").toUpperCase(),
+                   iteminfo.clear();
+                   for (final ParseObject item : itemList) {
+                       Log.d("test","inside");
+                           ParseFile imageFile = (ParseFile) item.get("image");
+                           imageFile.getDataInBackground(new GetDataCallback() {
+                               @Override
+                               public void done(byte[] bytes, ParseException e) {
+                                   if (e == null) {
+                                       Log.d("test",
+                                               "We've got data in data.");
+                                       Toast.makeText(Favorites.this, "Loaded", Toast.LENGTH_LONG);
+                                       // Decode the Byte[] into
+                                       // Bitmap
+                                       CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                       Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                       iteminfo.add(new ItemInfo(item.getObjectId(),
+                                               item.getString("name").toUpperCase(),
 
-                                                                       "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
-                                                                       d,
-                                                                       "Rs. " + item.getString("price"),
-                                                                       item.getString("category")
+                                               "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
+                                               d,
+                                               "Rs. " + item.getString("price"),
+                                               item.getString("category")
 
-                                                               ));
-                                                               mAdapter = new MainAdapter(iteminfo);
-                                                               mRecyclerView.setAdapter(mAdapter);
-                                                               // Close progress dialog
-                                                               ringProgressDialog.dismiss();
-                                                               swipeRefreshLayout.setRefreshing(false);
+                                       ));
+                                       mAdapter = new MainAdapter(iteminfo);
+                                       mRecyclerView.setAdapter(mAdapter);
+                                       // Close progress dialog
+                                       s.dismiss();
+                                       swipeRefreshLayout.setRefreshing(false);
 
-                                                           } else {
-                                                               e.printStackTrace();
-                                                               Log.d("test",
-                                                                       "There was a problem downloading the data.");
-                                                           }
-                                                       }
-                                                   });
-
-                                               }
-                                           }
-
-                                       } else {
-                                           e.printStackTrace();
-                                           Log.d(getClass().getSimpleName(), "Error");
-                                       }
-
+                                   } else {
+                                       e.printStackTrace();
+                                       Log.d("test",
+                                               "There was a problem downloading the data.");
                                    }
-
                                }
+                           });
 
+
+                   }
+
+               } else {
+                   e.printStackTrace();
+                   Log.d(getClass().getSimpleName(), "Error");
+               }
+               }
+
+           }
         );
-     //ringProgressDialog.dismiss();
+        s.dismiss();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -296,9 +267,8 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(latestitems.this,"Refreshed",Toast.LENGTH_LONG);
+            Toast.makeText(Favorites.this,"Refreshed",Toast.LENGTH_LONG);
             refreshPostList();
-
             return true;
         }
 

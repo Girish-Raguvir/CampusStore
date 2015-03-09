@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="200dp"
+
     android:background="@drawable/border"
     android:id="@+id/popupview"
     android:weightSum="1">
 
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:id="@+id/close"
+        android:src="@drawable/abc_ic_clear_mtrl_alpha"
+        android:background="@color/myPrimaryColor"
+        android:layout_gravity="right" />
 
     <TextView
 
@@ -13,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.3"
-        android:textColor="@color/myPrimaryColor"
+        android:textColor="#AD0A0A"
         android:text="Please tell us features you would like to see in this app:"
         android:id="@+id/textView" />
 
@@ -36,6 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
+        android:layout_marginBottom="2dp"
+        android:background="#CC8A0707"
         android:text="SEND FEEDBACK"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

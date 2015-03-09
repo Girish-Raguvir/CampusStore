@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -59,8 +60,8 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myitems);
-        s= ProgressDialog.show(myitems.this, "Please wait ...", "Loading items..", true);
-        s.show();
+        ringProgressDialog= ProgressDialog.show(myitems.this, "Please wait ...", "Loading items..", true);
+        ringProgressDialog.show();
         Parse.initialize(this, APPLICATION_ID, CLIENT_KEY);
         NavigationDrawerFragment.mCurrentSelectedPosition=3;
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar1);
@@ -123,7 +124,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             final View popupView = layoutInflater.inflate(R.layout.popuplayout, null);
             final PopupWindow popupWindow = new PopupWindow(
                     popupView,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
@@ -132,10 +133,25 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                 @Override
                 public void onClick(View v) {
                     // TODO Auto-generated method stub
+
                     String s= ((EditText)popupView.findViewById(R.id.editTextfeed)).getText().toString();
-                    postfeed(s);
+                    if(!s.isEmpty())
+                    {postfeed(s); popupWindow.dismiss();}
+                    else
+                    Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
+
+                }});
+            ImageButton btnclose=(ImageButton)popupView.findViewById(R.id.close);
+            btnclose.setOnClickListener(new Button.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    // TODO Auto-generated method stub
+
                     popupWindow.dismiss();
                 }});
+
+
             popupWindow.setFocusable(true);
             popupWindow.update();
             mNavigationDrawerFragment.closeDrawer();
@@ -203,15 +219,16 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
          else return 1;
      }
     public void favload()
-    { s.show();
+    { //s.show();
         Log.d("fav","favload");
         swipeRefreshLayout.setRefreshing(true);
 
-        s.show();
+        //s.show();
 
         ParseQuery<ParseObject> queryfav = new ParseQuery<ParseObject>(
             "Favourites");
-        setProgressBarIndeterminateVisibility(true);
+        ringProgressDialog.show();
+        //setProgressBarIndeterminateVisibility(true);
         fl=0;
         queryfav.findInBackground(new FindCallback<ParseObject>()
 
@@ -220,7 +237,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                       @SuppressWarnings("unchecked")
                                       @Override
                                       public void done (List < ParseObject > itemList, ParseException e){
-                                          setProgressBarIndeterminateVisibility(false);
+                                          //setProgressBarIndeterminateVisibility(false);
 
                                           if (e == null) {
 
@@ -269,7 +286,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                    @SuppressWarnings("unchecked")
                                    @Override
                                    public void done (List < ParseObject > itemList, ParseException e){
-                                       setProgressBarIndeterminateVisibility(false);
+                                      // setProgressBarIndeterminateVisibility(false);
                                        if (e == null) {
 
                                            iteminfo.clear();
@@ -301,7 +318,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                                                mAdapter = new MainAdapter(iteminfo);
                                                                mRecyclerView.setAdapter(mAdapter);
                                                                // Close progress dialog
-                                                               s.dismiss();
+                                                               ringProgressDialog.dismiss();
                                                                swipeRefreshLayout.setRefreshing(false);
 
                                                            } else {
@@ -325,20 +342,20 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                }
 
         );
-        s.dismiss();
+        //s.dismiss();
         //s.dismiss();
     }
     private void refreshPostList() {
-       s.show();
+      // s.show();
 
        swipeRefreshLayout.setRefreshing(true);
 
-        s.show();
+        //s.show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
                 "Items");
 
-
-        setProgressBarIndeterminateVisibility(true);
+        ringProgressDialog.show();
+        //setProgressBarIndeterminateVisibility(true);
        favload();
         query.findInBackground(new FindCallback<ParseObject>()
 
@@ -347,7 +364,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                    @SuppressWarnings("unchecked")
                                    @Override
                                    public void done (List < ParseObject > itemList, ParseException e){
-                                       setProgressBarIndeterminateVisibility(false);
+                                       //setProgressBarIndeterminateVisibility(false);
                                        if (e == null) {
 
 iteminfo.clear();
@@ -379,7 +396,7 @@ iteminfo.clear();
                                                                mAdapter = new MainAdapter(iteminfo);
                                                                mRecyclerView.setAdapter(mAdapter);
                                                                // Close progress dialog
-                                                               s.dismiss();
+                                                               ringProgressDialog.dismiss();
                                                                swipeRefreshLayout.setRefreshing(false);
 
                                                            } else {
@@ -403,7 +420,7 @@ iteminfo.clear();
                                }
 
         );
-  s.dismiss();
+  //s.dismiss();
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

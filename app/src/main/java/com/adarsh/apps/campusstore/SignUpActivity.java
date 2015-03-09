@@ -90,27 +90,16 @@ public class SignUpActivity extends ActionBarActivity {
                 newUser.setUsername(username);
                 newUser.setPassword(password);
                 newUser.setEmail(email);
+
                 final ParseObject u = new ParseObject("Users");
+
                 u.put("username",username);
                 u.put("password",password);
                 u.put("hostel",hostel);
                 u.put("phonenumber",phone);
                 u.put("email",email);
-                u.saveInBackground(new SaveCallback() {
-                    public void done(ParseException e) {
-                        setProgressBarIndeterminateVisibility(false);
-                        if (e == null) {
-                            // Saved successfully.
-                            //ItemInfo item = new ItemInfo(name,null,desc,null,price);
-                            //Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
-                            //finish();
-                        } else {
-                            // The save failed.
-                            //Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
-                            Log.d(getClass().getSimpleName(), "User update error: " + e);
-                        }
-                    }
-                });
+
+
 
 
 
@@ -122,10 +111,7 @@ public class SignUpActivity extends ActionBarActivity {
 
                         if (e == null) {
                             // Success!
-                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+
                         }
                         else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
@@ -134,6 +120,26 @@ public class SignUpActivity extends ActionBarActivity {
                                     .setPositiveButton(android.R.string.ok, null);
                             AlertDialog dialog = builder.create();
                             dialog.show();
+                        }
+                    }
+                });
+                //u.put("objectId",newUser.getObjectId());
+                u.saveInBackground(new SaveCallback() {
+                    public void done(ParseException e) {
+                        setProgressBarIndeterminateVisibility(false);
+                        if (e == null) {
+                            // Saved successfully.
+                            //ItemInfo item = new ItemInfo(name,null,desc,null,price);
+                            //Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
+                            //finish();
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        } else {
+                            // The save failed.
+                            //Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+                            Log.d(getClass().getSimpleName(), "User update error: " + e);
                         }
                     }
                 });

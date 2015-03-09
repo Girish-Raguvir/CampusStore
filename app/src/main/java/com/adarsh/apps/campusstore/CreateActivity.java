@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -65,6 +68,7 @@ public class CreateActivity extends Activity {
         save = (Button) findViewById(R.id.save);
         spinner1 = (Spinner) findViewById(R.id.spinner);
         spinner1.setOnItemSelectedListener(new OnCategorySelected());
+        spinner1.setPopupBackgroundDrawable(new ColorDrawable(Color.parseColor("#900707")));
         Intent intent=getIntent();
         if(intent.getExtras()!=null)
         { final String titletext = intent.getStringExtra("key");
@@ -94,7 +98,7 @@ public class CreateActivity extends Activity {
                     try {
 
                         outStream = new FileOutputStream(image);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             /* 100 to keep full quality of the image */
 
               /*          outStream.flush();
@@ -153,7 +157,7 @@ public class CreateActivity extends Activity {
                     drawable = (BitmapDrawable)imageView[0].getDrawable();
                     Bitmap bitmap = drawable.getBitmap();
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 50, bs);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bs);
                     byte[] byteArray = bs.toByteArray();
                     BitmapDrawable drawable1;
                     drawable1 = (BitmapDrawable)imageView[1].getDrawable();
@@ -258,7 +262,7 @@ public class CreateActivity extends Activity {
             try {
 
                 outStream = new FileOutputStream(image);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
             /* 100 to keep full quality of the image */
 /*
                 outStream.flush();
@@ -347,6 +351,9 @@ public class CreateActivity extends Activity {
                         setProgressBarIndeterminateVisibility(false);
                         if (e == null) {
                             // Saved successfully.
+                            if(cat==null) {
+                                cat = "Others";
+                            }
                             olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),price,cat);
                             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                             finish();

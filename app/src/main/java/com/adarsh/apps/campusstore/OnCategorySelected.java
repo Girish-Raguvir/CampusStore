@@ -13,8 +13,13 @@ package com.adarsh.apps.campusstore;
 public class OnCategorySelected implements OnItemSelectedListener {
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-      CreateActivity.cat=parent.getItemAtPosition(pos).toString();
+        if(parent.getItemAtPosition(pos).toString()==null) {
+            CreateActivity.cat = "Others";
 
+        }
+        else {
+            CreateActivity.cat = parent.getItemAtPosition(pos).toString();
+        }
     }
 
     @Override
