@@ -10,16 +10,18 @@ public class ItemInfo implements Comparable<ItemInfo>{
     String title;
     String user;
     String id;
-    Drawable image;
+    Drawable image,image1,image2;
     String price;
     String desc;
     String cat;
 
-    public ItemInfo(String id,String title, String user, String desc, Drawable image,String price,String cat) {
+    public ItemInfo(String id,String title, String user, String desc, Drawable image,Drawable image1,Drawable image2,String price,String cat) {
         this.title = title;
         this.user = user;
         this.id=id;
         this.image = image;
+        this.image1=image1;
+        this.image2=image2;
         this.price=price;
         this.desc=desc;
         this.cat=cat;
@@ -35,6 +37,12 @@ public class ItemInfo implements Comparable<ItemInfo>{
     public String getDesc() { return desc; }
     public Drawable getImage() {
         return image;
+    }
+    public Drawable getImage1() {
+        return image1;
+    }
+    public Drawable getImage2() {
+        return image2;
     }
     public String getprice(){return price;}
     public String getCat(){return cat;}

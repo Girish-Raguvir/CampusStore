@@ -1,6 +1,7 @@
 package com.adarsh.apps.campusstore;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.widget.ImageView;
  */
 public class ScreenSlidePageFragment extends Fragment {
     public static final String ARG_PAGE = "page";
-
+    public static Bitmap bmp=null;
+    public static Bitmap bmp1=null;
+    public static Bitmap bmp2=null;
     /**
      * The fragment's page number, which is set to the argument value for {@link #ARG_PAGE}.
      */
@@ -47,11 +50,11 @@ public class ScreenSlidePageFragment extends Fragment {
 
         // Set the title view to show the page number.
         switch (getPageNumber()) {
-            case 0:((ImageView) rootView.findViewById(R.id.sliding_image)).setImageResource(R.drawable.ic_launcher);
+            case 0:((ImageView) rootView.findViewById(R.id.sliding_image)).setImageBitmap(bmp);
                 break;
-            case 1:((ImageView) rootView.findViewById(R.id.sliding_image)).setImageResource(R.drawable.ic_action_search);
+            case 1:((ImageView) rootView.findViewById(R.id.sliding_image)).setImageBitmap(bmp1);
                 break;
-            case 2:((ImageView) rootView.findViewById(R.id.sliding_image)).setImageResource(R.drawable.ic_launcher);
+            case 2:((ImageView) rootView.findViewById(R.id.sliding_image)).setImageBitmap(bmp2);
                 break;
         }
 

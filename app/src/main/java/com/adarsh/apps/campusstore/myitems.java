@@ -99,7 +99,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             }
         });
        // refreshPostList();
-        favload();
+        refreshPostList();
     }
 
     @Override
@@ -218,7 +218,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
       return 0;
          else return 1;
      }
-    public void favload()
+    /*public void favload()
     { //s.show();
         Log.d("fav","favload");
         swipeRefreshLayout.setRefreshing(true);
@@ -270,7 +270,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                               ).show();
                                               Log.d("fav",a[fl]);
                                           }
-                                          Log.d("fav","favload1");*/
+                                          Log.d("fav","favload1");
                                       }
 
                                   }
@@ -294,6 +294,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                                                Log.d("test","inside");
                                                if (found(item.getObjectId().toString())==1) {
                                                    Log.d("test","success");
+
                                                    ParseFile imageFile = (ParseFile) item.get("image");
                                                    imageFile.getDataInBackground(new GetDataCallback() {
                                                        @Override
@@ -344,7 +345,8 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
         );
         //s.dismiss();
         //s.dismiss();
-    }
+    }*/
+    Drawable d2,d1;
     private void refreshPostList() {
       // s.show();
 
@@ -356,7 +358,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
 
         ringProgressDialog.show();
         //setProgressBarIndeterminateVisibility(true);
-       favload();
+       //favload();
         query.findInBackground(new FindCallback<ParseObject>()
 
                                {
@@ -372,6 +374,37 @@ iteminfo.clear();
                                                Log.d("test","inside");
                                                if (ParseUser.getCurrentUser().getUsername().toUpperCase().equals(item.getString("postedby").toUpperCase())) {
                                                    Log.d("test","success");
+                                                   ParseFile imageFile1 = (ParseFile) item.get("image1");
+                                                   imageFile1.getDataInBackground(new GetDataCallback() {
+                                                       @Override
+                                                       public void done(byte[] bytes, ParseException e) {
+                                                           if (e == null) {
+                                                               // Decode the Byte[] into Bitmap
+                                                               CommonResources.bmp1 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                               d1 = new BitmapDrawable(getResources(), CommonResources.bmp1);
+
+
+                                                           } else {
+                                                               e.printStackTrace();
+                                                               Log.d("test", "There was a problem downloading the data.");
+                                                           }
+                                                       }
+                                                   });
+                                                   ParseFile imageFile2 = (ParseFile) item.get("image2");
+                                                   imageFile2.getDataInBackground(new GetDataCallback() {
+                                                       @Override
+                                                       public void done(byte[] bytes, ParseException e) {
+                                                           if (e == null) {
+                                                               // Decode the Byte[] into Bitmap
+                                                               CommonResources.bmp2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                               d2 = new BitmapDrawable(getResources(), CommonResources.bmp2);
+
+                                                           } else {
+                                                               e.printStackTrace();
+                                                               Log.d("test", "There was a problem downloading the data.");
+                                                           }
+                                                       }
+                                                   });
                                                    ParseFile imageFile = (ParseFile) item.get("image");
                                                    imageFile.getDataInBackground(new GetDataCallback() {
                                                        @Override
@@ -388,7 +421,7 @@ iteminfo.clear();
                                                                        item.getString("name").toUpperCase(),
 
                                                                        "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
-                                                                       d,
+                                                                       d,d1,d2,
                                                                        "Rs. " + item.getString("price"),
                                                                        item.getString("category")
 

@@ -213,6 +213,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
        // Log.d("test"," "+item.getCreatedAt().getDate());
         return i;
     }
+    Drawable d1,d2;
     private void refreshPostList() {
        //ringProgressDialog.show();
         swipeRefreshLayout.setRefreshing(true);
@@ -238,6 +239,37 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                                Log.d("test","inside");
                                                if (check(item)==1) {
                                                    Log.d("test","success");
+                                                   ParseFile imageFile1 = (ParseFile) item.get("image1");
+                                                   imageFile1.getDataInBackground(new GetDataCallback() {
+                                                       @Override
+                                                       public void done(byte[] bytes, ParseException e) {
+                                                           if (e == null) {
+                                                               // Decode the Byte[] into Bitmap
+                                                               CommonResources.bmp1 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                               d1 = new BitmapDrawable(getResources(), CommonResources.bmp1);
+
+
+                                                           } else {
+                                                               e.printStackTrace();
+                                                               Log.d("test", "There was a problem downloading the data.");
+                                                           }
+                                                       }
+                                                   });
+                                                   ParseFile imageFile2 = (ParseFile) item.get("image2");
+                                                   imageFile2.getDataInBackground(new GetDataCallback() {
+                                                       @Override
+                                                       public void done(byte[] bytes, ParseException e) {
+                                                           if (e == null) {
+                                                               // Decode the Byte[] into Bitmap
+                                                               CommonResources.bmp2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                               d2 = new BitmapDrawable(getResources(), CommonResources.bmp2);
+
+                                                           } else {
+                                                               e.printStackTrace();
+                                                               Log.d("test", "There was a problem downloading the data.");
+                                                           }
+                                                       }
+                                                   });
                                                    ParseFile imageFile = (ParseFile) item.get("image");
                                                    imageFile.getDataInBackground(new GetDataCallback() {
                                                        @Override
@@ -254,7 +286,7 @@ public class latestitems extends ActionBarActivity implements NavigationDrawerCa
                                                                        item.getString("name").toUpperCase(),
 
                                                                        "Posted by: " + item.getString("postedby").toUpperCase(), item.getString("description"),
-                                                                       d,
+                                                                       d,d1,d2,
                                                                        "Rs. " + item.getString("price"),
                                                                        item.getString("category")
 

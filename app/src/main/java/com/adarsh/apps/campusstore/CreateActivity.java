@@ -344,6 +344,8 @@ public class CreateActivity extends Activity {
                 post.put("description", desc);
                 post.put("price", price);
                 post.put("image", imagefile);
+                post.put("image1", imagefile1);
+                post.put("image2", imagefile2);
                 post.put("postedby", ParseUser.getCurrentUser().getUsername());
                 setProgressBarIndeterminateVisibility(true);
                 post.saveInBackground(new SaveCallback() {
@@ -354,7 +356,7 @@ public class CreateActivity extends Activity {
                             if(cat==null) {
                                 cat = "Others";
                             }
-                            olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),price,cat);
+                            olditem=new ItemInfo(post.getObjectId(),name,ParseUser.getCurrentUser().getUsername(),desc,new BitmapDrawable(getResources(), CommonResources.bmp),new BitmapDrawable(getResources(), CommonResources.bmp1),new BitmapDrawable(getResources(), CommonResources.bmp2),price,cat);
                             Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {

@@ -402,7 +402,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         else
             super.onBackPressed();
     }
-    int county=0;
+    int county=0;Drawable d2,d1;
     private void refreshPostList() {
         swipeRefreshLayout.setRefreshing(true);
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Items");
@@ -424,6 +424,37 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         final int index = i;
 
                         final ParseObject item = itemList.get(index);
+                        ParseFile imageFile1 = (ParseFile) item.get("image1");
+                        imageFile1.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, ParseException e) {
+                                if (e == null) {
+                                    // Decode the Byte[] into Bitmap
+                                    CommonResources.bmp1 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    d1 = new BitmapDrawable(getResources(), CommonResources.bmp1);
+
+
+                                } else {
+                                    e.printStackTrace();
+                                    Log.d("test", "There was a problem downloading the data.");
+                                }
+                            }
+                        });
+                        ParseFile imageFile2 = (ParseFile) item.get("image2");
+                        imageFile2.getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, ParseException e) {
+                                if (e == null) {
+                                    // Decode the Byte[] into Bitmap
+                                    CommonResources.bmp2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                     d2 = new BitmapDrawable(getResources(), CommonResources.bmp2);
+
+                                } else {
+                                    e.printStackTrace();
+                                    Log.d("test", "There was a problem downloading the data.");
+                                }
+                            }
+                        });
                         ParseFile imageFile = (ParseFile) item.get("image");
                         imageFile.getDataInBackground(new GetDataCallback() {
                             @Override
@@ -437,7 +468,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                             item.getString("name").toUpperCase(),
                                             "Posted by: " + item.getString("postedby").toUpperCase(),
                                             item.getString("description"),
-                                            d,
+                                            d,d1,d2,
                                             "Rs. " + item.getString("price"),
                                             item.getString("category")
                                     );
@@ -461,6 +492,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                 }
                             }
                         });
+
                     }
                 } else {
                     e.printStackTrace();
