@@ -2,8 +2,10 @@ package com.adarsh.apps.campusstore;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +17,6 @@ import android.widget.TextView;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 
@@ -45,6 +46,8 @@ public class LoginActivity extends ActionBarActivity {
         signUpTextView = (TextView)findViewById(R.id.signUpText);
         usernameEditText = (EditText)findViewById(R.id.usernameField);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
+        passwordEditText.setTypeface(Typeface.DEFAULT);
+        passwordEditText.setTransformationMethod(new PasswordTransformationMethod());
         loginButton = (Button)findViewById(R.id.loginButton);
 
         signUpTextView.setOnClickListener(new View.OnClickListener() {

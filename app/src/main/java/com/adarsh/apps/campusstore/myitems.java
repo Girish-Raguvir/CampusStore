@@ -112,9 +112,10 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
 
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(myitems.this,latestitems.class));}
 
-        else if(position==4){startActivity(new Intent(myitems.this,AboutActivity.class));}
+        if(position==4){startActivity(new Intent(myitems.this,AboutActivity.class));}
+        else if(position==3){startActivity(new Intent(myitems.this,Favorites.class));
+        }
         else if(position==0){startActivity(new Intent(myitems.this,categories.class));}
         else if(position==5) {
             final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);

@@ -1,11 +1,9 @@
 package com.adarsh.apps.campusstore;
+
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -20,11 +18,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,7 +47,6 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 /*
 Modified by Girish on 15-1-15.
@@ -303,21 +302,18 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         Log.d("mainactivity",
                 "We're inside onnavigationdraweritemselected");
 
-        if(position==3){startActivity(new Intent(MainActivity.this,myitems.class));
+        if(position==2){startActivity(new Intent(MainActivity.this,myitems.class));
             Log.d("test",
                     "3");}
         else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));
             Log.d("test",
                     "0");}
-        else if(position==2){startActivity(new Intent(MainActivity.this,latestitems.class));
-            Log.d("test",
-                    "2");}
-        else if(position==4){startActivity(new Intent(MainActivity.this,Favorites.class));
+        else if(position==3){startActivity(new Intent(MainActivity.this,Favorites.class));
             }
-        else if(position==5){startActivity(new Intent(MainActivity.this,AboutActivity.class));
+        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));
             Log.d("test",
                     "4");}
-        else if(position==6) {
+        else if(position==5) {
             View parentView = findViewById(R.id.drawer);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -358,7 +354,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             mNavigationDrawerFragment.closeDrawer();
             }
 
-        else if(position==7){ParseUser.logOut();
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
 
@@ -424,37 +420,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         final int index = i;
 
                         final ParseObject item = itemList.get(index);
-                        ParseFile imageFile1 = (ParseFile) item.get("image1");
-                        imageFile1.getDataInBackground(new GetDataCallback() {
-                            @Override
-                            public void done(byte[] bytes, ParseException e) {
-                                if (e == null) {
-                                    // Decode the Byte[] into Bitmap
-                                    CommonResources.bmp1 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    d1 = new BitmapDrawable(getResources(), CommonResources.bmp1);
 
 
-                                } else {
-                                    e.printStackTrace();
-                                    Log.d("test", "There was a problem downloading the data.");
-                                }
-                            }
-                        });
-                        ParseFile imageFile2 = (ParseFile) item.get("image2");
-                        imageFile2.getDataInBackground(new GetDataCallback() {
-                            @Override
-                            public void done(byte[] bytes, ParseException e) {
-                                if (e == null) {
-                                    // Decode the Byte[] into Bitmap
-                                    CommonResources.bmp2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                     d2 = new BitmapDrawable(getResources(), CommonResources.bmp2);
-
-                                } else {
-                                    e.printStackTrace();
-                                    Log.d("test", "There was a problem downloading the data.");
-                                }
-                            }
-                        });
                         ParseFile imageFile = (ParseFile) item.get("image");
                         imageFile.getDataInBackground(new GetDataCallback() {
                             @Override
@@ -463,6 +430,41 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     // Decode the Byte[] into Bitmap
                                     CommonResources.bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                     Drawable d = new BitmapDrawable(getResources(), CommonResources.bmp);
+                                    ParseFile imageFile2 = (ParseFile) item.get("image2");
+                                    CommonResources.bmp2=BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+                                    d2 = new BitmapDrawable(getResources(), CommonResources.bmp1);
+                                    /*imageFile2.getDataInBackground(new GetDataCallback() {
+                                        @Override
+                                        public void done(byte[] bytes, ParseException e) {
+                                            if (e == null) {
+                                                // Decode the Byte[] into Bitmap
+                                                CommonResources.bmp2 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                d2 = new BitmapDrawable(getResources(), CommonResources.bmp2);
+
+                                            } else {
+                                                e.printStackTrace();
+                                                Log.d("test", "There was a problem downloading the data.");
+                                            }
+                                        }
+                                    });*/
+                                    ParseFile imageFile1 = (ParseFile) item.get("image1");
+                                    CommonResources.bmp1=BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+                                    d1 = new BitmapDrawable(getResources(), CommonResources.bmp1);
+                                    imageFile1.getDataInBackground(new GetDataCallback() {
+                                        @Override
+                                        public void done(byte[] bytes, ParseException e) {
+                                            if (e == null) {
+                                                // Decode the Byte[] into Bitmap
+                                                CommonResources.bmp1 = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                d1 = new BitmapDrawable(getResources(), CommonResources.bmp1);
+
+
+                                            } else {
+                                                e.printStackTrace();
+                                                Log.d("test", "There was a problem downloading the data.");
+                                            }
+                                        }
+                                    });
                                     ItemInfo newItem = new ItemInfo(
                                             item.getObjectId(),
                                             item.getString("name").toUpperCase(),

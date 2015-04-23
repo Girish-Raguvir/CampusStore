@@ -1,13 +1,10 @@
 package com.adarsh.apps.campusstore;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Slide;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -177,11 +174,14 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
                 intent.putExtra("key4", price.getText().toString());
                 BitmapDrawable d = (BitmapDrawable) imageView.getDrawable();
                 CommonResources.bmp = d.getBitmap();
-                CommonResources.bmp1=((BitmapDrawable)pojos.get(position).getImage1()).getBitmap();
-                CommonResources.bmp2=((BitmapDrawable)pojos.get(position).getImage2()).getBitmap();
+                //CommonResources.bmp1=((BitmapDrawable)pojos.get(position).getImage1()).getBitmap();
+                //CommonResources.bmp2=((BitmapDrawable)pojos.get(position).getImage2()).getBitmap();
                 ScreenSlidePageFragment.bmp=d.getBitmap();
-                ScreenSlidePageFragment.bmp1=((BitmapDrawable)pojos.get(position).getImage1()).getBitmap();
-                ScreenSlidePageFragment.bmp2=((BitmapDrawable)pojos.get(position).getImage2()).getBitmap();
+                //ScreenSlidePageFragment.bmp1=((BitmapDrawable)pojos.get(position).getImage1()).getBitmap();
+                //ScreenSlidePageFragment.bmp2=((BitmapDrawable)pojos.get(position).getImage2()).getBitmap();
+                //Todo Uncomment the above code and delete the below 2 lines....
+                ScreenSlidePageFragment.bmp1=d.getBitmap();
+                ScreenSlidePageFragment.bmp2=d.getBitmap();
 
                 intent.putExtra("key2", desc.getText().toString());
                 intent.putExtra("key3", pojos.get(position).getDesc());

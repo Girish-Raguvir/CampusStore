@@ -1,51 +1,29 @@
 package com.adarsh.apps.campusstore;
-import com.adarsh.apps.campusstore.MainAdapter;
-
-import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
-import android.widget.Filterable;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -114,10 +92,10 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
 
             categories = new ArrayList<CategoryItemInfo>();
-            categories.add(new CategoryItemInfo("Electronic Gadgets",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("Books and Stationery",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("Cycles and automotive",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("Musical Instruments",getResources().getDrawable(R.drawable.ic_menu_check)));
+            categories.add(new CategoryItemInfo("Electronic Gadgets",getResources().getDrawable(R.drawable.electronics)));
+            categories.add(new CategoryItemInfo("Books and Stationery",getResources().getDrawable(R.drawable.books)));
+            categories.add(new CategoryItemInfo("Cycles and automotive",getResources().getDrawable(R.drawable.cycles)));
+            categories.add(new CategoryItemInfo("Musical Instruments",getResources().getDrawable(R.drawable.drums)));
             categories.add(new CategoryItemInfo("Tickets, Gift vouchers, OPO invites",getResources().getDrawable(R.drawable.ic_menu_check)));
             categories.add(new CategoryItemInfo("Others",getResources().getDrawable(R.drawable.ic_menu_check)));
 
@@ -215,13 +193,12 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==3){startActivity(new Intent(categories.this,myitems.class));}
-        else if(position==2){startActivity(new Intent(categories.this,latestitems.class));}
+        if(position==2){startActivity(new Intent(categories.this,myitems.class));}
         else if(position==1){startActivity(new Intent(categories.this,MainActivity.class));}
-        else if(position==4){startActivity(new Intent(categories.this,Favorites.class));
+        else if(position==3){startActivity(new Intent(categories.this,Favorites.class));
         }
-        else if(position==5){startActivity(new Intent(categories.this,AboutActivity.class));}
-        else if(position==6) {
+        else if(position==4){startActivity(new Intent(categories.this,AboutActivity.class));}
+        else if(position==5) {
             mNavigationDrawerFragment.closeDrawer();
             View parentView = findViewById(R.id.drawer);
 
@@ -264,7 +241,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==7){ParseUser.logOut();
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
         // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}

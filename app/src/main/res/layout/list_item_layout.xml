@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         card_view:cardCornerRadius="10dp"
+        card_view:cardBackgroundColor="#00000000"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp">
@@ -80,9 +81,10 @@
             <TextView
                 android:id="@+id/title"
                 android:textStyle="bold"
+                android:typeface="sans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
+                android:textSize="20sp"
                 android:layout_weight="1"
                 android:paddingLeft="5dp"
                 android:textColor="#AD0A0A"
@@ -96,8 +98,7 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:typeface="monospace"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     android:layout_weight="1"
                     android:paddingRight="8dp"
                    android:layout_alignParentRight="true"

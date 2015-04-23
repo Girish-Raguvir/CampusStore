@@ -82,11 +82,6 @@
             android:label="@string/title_activity_myitems" >
         </activity>
         <activity
-            android:name=".latestitems"
-            android:label="@string/title_activity_latestitems"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>

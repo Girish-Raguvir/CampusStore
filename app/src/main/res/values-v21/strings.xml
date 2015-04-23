@@ -2,7 +2,7 @@
 <resources>
     <string name="password_hint">Enter Password</string>
     <string name="login_button_label">Log In!</string>
-    <string name="sign_up_text"><u>New to Campus Store?? SIGN UP!!</u></string>
+    <string name="sign_up_text"><u>New to Campus Store??\nSIGN UP!!</u></string>
     <string name="Rs">\u20B9</string>
 
     <string name="category_prompt">Choose a country</string>

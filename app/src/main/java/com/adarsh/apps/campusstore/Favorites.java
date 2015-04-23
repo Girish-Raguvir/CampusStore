@@ -105,12 +105,11 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
 
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(Favorites.this,latestitems.class));}
-        else if(position==3){startActivity(new Intent(Favorites.this,myitems.class));}
+        if(position==2){startActivity(new Intent(Favorites.this,myitems.class));}
 
-        else if(position==5){startActivity(new Intent(Favorites.this,AboutActivity.class));}
+        else if(position==4){startActivity(new Intent(Favorites.this,AboutActivity.class));}
         else if(position==0){startActivity(new Intent(Favorites.this,categories.class));}
-        else if(position==6) {
+        else if(position==5) {
             final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -136,7 +135,7 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==7){ParseUser.logOut();
+        else if(position==6){ParseUser.logOut();
 
             loadLoginView();}
         else if(position==1){startActivity(new Intent(Favorites.this,MainActivity.class));}

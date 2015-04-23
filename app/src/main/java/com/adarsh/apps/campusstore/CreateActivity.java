@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -347,6 +346,7 @@ public class CreateActivity extends Activity {
                 post.put("image1", imagefile1);
                 post.put("image2", imagefile2);
                 post.put("postedby", ParseUser.getCurrentUser().getUsername());
+                post.put("category",cat);
                 setProgressBarIndeterminateVisibility(true);
                 post.saveInBackground(new SaveCallback() {
                     public void done(ParseException e) {
