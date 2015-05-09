@@ -53,5 +53,6 @@
         <item>Others</item>
     </string-array>
     <string name="title_activity_favorites">Favorites</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
 </resources>

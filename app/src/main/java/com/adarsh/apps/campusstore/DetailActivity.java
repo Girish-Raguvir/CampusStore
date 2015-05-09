@@ -31,6 +31,7 @@ public class DetailActivity extends FragmentActivity{
     byte[] byteArray;
     //ImageView imageview;
     TextView price;
+    TextView editItem;
     TextView user;
     ImageButton contact,addfav;
     ProgressDialog ringProgressDialog= null;
@@ -57,6 +58,7 @@ public class DetailActivity extends FragmentActivity{
         price=(TextView)findViewById(R.id.price);
         contact=(ImageButton)findViewById(R.id.contact);
         addfav=(ImageButton)findViewById(R.id.addfav);
+        editItem=(TextView)findViewById(R.id.EditItem);
         //imageview=(ImageView)findViewById(R.id.imageView2);
         final String titletext = intent.getStringExtra("key");
         final String nametext = intent.getStringExtra("key2");
@@ -83,6 +85,7 @@ public class DetailActivity extends FragmentActivity{
         imageview.setBackgroundDrawable(ob);*/
         if (ParseUser.getCurrentUser().getUsername().toUpperCase().equals(owner)){
             edit.setVisibility(View.VISIBLE);
+            editItem.setVisibility(View.VISIBLE);
         }
        contact.setOnClickListener(new View.OnClickListener() {
            @Override
