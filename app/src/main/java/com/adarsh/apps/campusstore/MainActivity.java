@@ -66,8 +66,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     // on scroll
     //private static int current_page = 1;
     private int ival = 0;
-    private int loadLimit = 3;  // TODO make these 10
-    private final int ITEMS_PER_PAGE = 3;
+    private int loadLimit = 5;  // TODO make these 10
+    private final int ITEMS_PER_PAGE = 5;
 
 
     ArrayAdapter<ItemInfo> itemAdapter;
@@ -145,13 +145,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 }
             });
 
-            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
-            feedback.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                }
-            });
-
         iteminfo = new ArrayList<ItemInfo>();
         allItems = new ArrayList<ItemInfo>();
 
@@ -176,6 +169,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                Toast.makeText(getApplicationContext(),"Please enter feedback.",Toast.LENGTH_LONG);
                 refreshPostList();
             }
         });
@@ -415,7 +409,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     allItems = new ArrayList<ItemInfo>(itemList.size());
                     for (int i = 0; i < itemList.size(); ++i) allItems.add(null);
                     ival = 0;
-                    loadLimit = 3;
+                    loadLimit = 5;
                     for (int i = 0; i < itemList.size(); ++i) {
                         final int index = i;
 
@@ -467,8 +461,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     });
                                     ItemInfo newItem = new ItemInfo(
                                             item.getObjectId(),
-                                            item.getString("name").toUpperCase(),
-                                            "Posted by: " + item.getString("postedby").toUpperCase(),
+                                            item.getString("name"),
+                                            "Posted by: " + item.getString("postedby"),
                                             item.getString("description"),
                                             d,d1,d2,
                                             "Rs. " + item.getString("price"),

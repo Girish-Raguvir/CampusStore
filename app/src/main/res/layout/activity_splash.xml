@@ -8,8 +8,9 @@
         android:id="@+id/imgLogo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/campusstore" />
+        android:src="@drawable/campusstore"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="fill_parent"
