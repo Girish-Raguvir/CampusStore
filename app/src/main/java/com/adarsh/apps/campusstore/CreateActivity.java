@@ -346,6 +346,7 @@ public class CreateActivity extends Activity {
                 post.put("image1", imagefile1);
                 post.put("image2", imagefile2);
                 post.put("postedby", ParseUser.getCurrentUser().getUsername());
+                if(cat.equals("Choose a Category"))cat="Others";
                 post.put("category",cat);
                 setProgressBarIndeterminateVisibility(true);
                 post.saveInBackground(new SaveCallback() {
