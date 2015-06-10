@@ -473,9 +473,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     if (county == itemList.size()) {
                                         Arrays.sort(allItems.toArray());
                                         int j;
-                                        for (j = 0; j < allItems.size() && iteminfo.size() <= loadLimit; ++j)
-                                            if(cat==null || allItems.get(j).getCat().equals(cat))
+                                        for (j = 0; j < allItems.size() && iteminfo.size() <= loadLimit; ++j) {
+                                            if(cat!=null)
+                                            if (allItems.get(j).getCat().equals(cat))
                                                 iteminfo.add(allItems.get(j));
+                                        }
                                         ival = j;
                                         ringProgressDialog.dismiss();
                                         // Close progress dialog
