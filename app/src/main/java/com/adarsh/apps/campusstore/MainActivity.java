@@ -475,7 +475,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                         int j;
                                         for (j = 0; j < allItems.size() && iteminfo.size() <= loadLimit; ++j) {
                                             if(cat!=null)
-                                            if (allItems.get(j).getCat().equals(cat))
+                                            {if (allItems.get(j).getCat().equals(cat))
+                                                iteminfo.add(allItems.get(j));}
+                                            else
                                                 iteminfo.add(allItems.get(j));
                                         }
                                         ival = j;
