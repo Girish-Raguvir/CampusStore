@@ -118,7 +118,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
         }
         else if(position==0){startActivity(new Intent(myitems.this,categories.class));}
         else if(position==5) {
-            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            View parentView = findViewById(R.id.drawer1);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -127,7 +127,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
                     popupView,
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
             btnDismiss.setOnClickListener(new Button.OnClickListener(){
 

@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,15 +28,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.Parse;
@@ -64,7 +70,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     private SearchView searchView;
     List<ItemInfo> iteminfo, allItems;
     // on scroll
-    //private static int current_page = 1;
+    private static int current_page = 1;
     private int ival = 0;
     private int loadLimit = 5;  // TODO make these 10
     private final int ITEMS_PER_PAGE = 5;
@@ -135,6 +141,32 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 startActivity(i);
             }
         });*/
+
+            final FloatingActionsMenu multiple = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+            multiple.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+
+                @Override
+                public void onMenuExpanded() {
+                    // TODO Auto-generated method stub
+                    FrameLayout overlay=(FrameLayout)findViewById(R.id.mainFrame);
+                    final int color = 0xCCFFFFFF;
+                    final Drawable drawable = new ColorDrawable(color);
+                    overlay.setForeground(drawable);
+                    Animation animation = new AlphaAnimation(0.0f, 1.0f);
+                    animation.setDuration(200);
+                    overlay.startAnimation(animation);
+
+                }
+
+                @Override
+                public void onMenuCollapsed() {
+                    // TODO Auto-generated method stub
+                    FrameLayout overlay=(FrameLayout)findViewById(R.id.mainFrame);
+                    final int color = 0x00000000;
+                    final Drawable drawable = new ColorDrawable(color);
+                    overlay.setForeground(drawable);
+                }
+            });
 
             final FloatingActionButton additem = (FloatingActionButton) findViewById(R.id.additem);
             additem.setOnClickListener(new View.OnClickListener() {

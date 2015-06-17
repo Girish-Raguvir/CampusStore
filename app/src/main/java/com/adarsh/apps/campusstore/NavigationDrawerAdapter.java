@@ -75,7 +75,10 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         );
 
         //TODO: selected menu position, change layout accordingly
-        if (mSelectedPosition == i || mTouchedPosition == i) {
+
+        if (mSelectedPosition == 4 || mTouchedPosition == 4 || mSelectedPosition == 5 || mTouchedPosition == 5){}
+
+        else if (mSelectedPosition == i || mTouchedPosition == i) {
             viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getContext().getResources().getColor(R.color.selected_gray));
             viewHolder.textView.setTextColor(viewHolder.itemView.getContext().getResources().getColor(R.color.myPrimaryColor));
             viewHolder.textView.setTypeface(null, Typeface.BOLD);

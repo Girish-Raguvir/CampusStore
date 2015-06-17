@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +77,8 @@ public class DetailActivity extends FragmentActivity{
         //Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         //ImageView image = (ImageView) findViewById(R.id.imageView2);
         ImageButton edit=(ImageButton)findViewById(R.id.edit);
+        LinearLayout editlayout=(LinearLayout)findViewById(R.id.editlayout);
+        LinearLayout deletelayout=(LinearLayout)findViewById(R.id.deletelayout);
         final Bitmap bmp=CommonResources.bmp;
         //image.setImageBitmap(bmp);
         ringProgressDialog.dismiss();
@@ -84,8 +87,8 @@ public class DetailActivity extends FragmentActivity{
         BitmapDrawable ob = new BitmapDrawable(getResources(), bmp);
         imageview.setBackgroundDrawable(ob);*/
         if (ParseUser.getCurrentUser().getUsername().toUpperCase().equals(owner)){
-            edit.setVisibility(View.VISIBLE);
-            editItem.setVisibility(View.VISIBLE);
+            editlayout.setVisibility(View.VISIBLE);
+            deletelayout.setVisibility(View.VISIBLE);
         }
        contact.setOnClickListener(new View.OnClickListener() {
            @Override
@@ -190,14 +193,14 @@ public class DetailActivity extends FragmentActivity{
         new CountDownTimer(3000, 3000) {
 
             public void onTick(long millisUntilFinished) {
-                slideToImage(i);
+                //slideToImage(i);
             }
 
             public void onFinish() {
                 ++i;
                 if(i==3)
                     i=0;
-                change();
+                //change();
 
 
             }
@@ -234,7 +237,7 @@ public class DetailActivity extends FragmentActivity{
 
         @Override
         public Fragment getItem(int position) {
-            return ScreenSlidePageFragment.create(position);
+            return ScreenSlidePageFragment.create(0);
         }
 
         @Override

@@ -98,7 +98,7 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_categories, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -111,7 +111,7 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
         else if(position==4){startActivity(new Intent(Favorites.this,AboutActivity.class));}
         else if(position==0){startActivity(new Intent(Favorites.this,categories.class));}
         else if(position==5) {
-            final FloatingActionButton feedback = (FloatingActionButton) findViewById(R.id.feedback);
+            View parentView = findViewById(R.id.drawer);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
                     .getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -120,7 +120,7 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
                     popupView,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            popupWindow.showAtLocation(feedback, Gravity.CENTER, 0, 0);
+            popupWindow.showAtLocation(parentView, Gravity.CENTER, 0, 0);
             Button btnDismiss = (Button)popupView.findViewById(R.id.sendfeed);
             btnDismiss.setOnClickListener(new Button.OnClickListener(){
 

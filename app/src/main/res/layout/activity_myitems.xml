@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    android:background="#E3F2FD"    >
+    android:background="#3B3B3B"    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#3B3B3B">
 
         <include
             android:id="@+id/toolbar_actionbar1"
@@ -32,7 +33,7 @@
             android:focusable="true"
             android:fitsSystemWindows="true"
             android:layout_height="match_parent"
-            android:background="#E3F2FD"
+            android:background="#3B3B3B"
              />
         </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -61,14 +62,6 @@
                 app:fab_size="mini"
                 app:fab_colorPressed="@color/white_pressed"/>
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/feedback"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/LoginBackground"
-                app:fab_title="Buy/Ask for an item"
-                app:fab_colorPressed="@color/white_pressed"
-                app:fab_size="mini"/>
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

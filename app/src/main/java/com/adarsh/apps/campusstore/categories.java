@@ -63,6 +63,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
             NavigationDrawerFragment.mCurrentSelectedPosition = 0;
             mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+            mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("Choose a Category");
@@ -96,8 +97,8 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
             categories.add(new CategoryItemInfo("Books and Stationery",getResources().getDrawable(R.drawable.books)));
             categories.add(new CategoryItemInfo("Cycles and automotive",getResources().getDrawable(R.drawable.cycles)));
             categories.add(new CategoryItemInfo("Musical Instruments",getResources().getDrawable(R.drawable.drums)));
-            categories.add(new CategoryItemInfo("Tickets, Gift vouchers, OPO invites",getResources().getDrawable(R.drawable.ic_menu_check)));
-            categories.add(new CategoryItemInfo("Others",getResources().getDrawable(R.drawable.ic_menu_check)));
+            categories.add(new CategoryItemInfo("Tickets, Gift vouchers, OPO invites",getResources().getDrawable(R.drawable.voucher)));
+            categories.add(new CategoryItemInfo("Others",getResources().getDrawable(R.drawable.others)));
 
 
 
@@ -130,7 +131,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.menu_categories, menu);
 
         /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH)
