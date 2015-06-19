@@ -448,13 +448,13 @@ iteminfo.clear();
                                            e.printStackTrace();
                                            Log.d(getClass().getSimpleName(), "Error");
                                        }
-
+                                       ringProgressDialog.dismiss();
                                    }
 
                                }
 
         );
-  //s.dismiss();
+
     }
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

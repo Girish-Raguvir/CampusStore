@@ -348,13 +348,13 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
                                            e.printStackTrace();
                                            Log.d(getClass().getSimpleName(), "Error");
                                        }
-
+                                s.dismiss();
                                    }
 
                                }
 
         );
-       // s.dismiss();
+       //s.dismiss();
 
     }
 

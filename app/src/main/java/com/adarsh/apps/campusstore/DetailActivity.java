@@ -3,9 +3,11 @@ package com.adarsh.apps.campusstore;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.os.CountDownTimer;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
@@ -34,7 +36,7 @@ public class DetailActivity extends FragmentActivity{
     TextView price;
     TextView editItem;
     TextView user;
-    ImageButton contact,addfav;
+    ImageButton contact,addfav,del;
     ProgressDialog ringProgressDialog= null;
     private static final int NUM_PAGES = 3;
     private ViewPager mPager;
@@ -59,6 +61,7 @@ public class DetailActivity extends FragmentActivity{
         price=(TextView)findViewById(R.id.price);
         contact=(ImageButton)findViewById(R.id.contact);
         addfav=(ImageButton)findViewById(R.id.addfav);
+        del=(ImageButton)findViewById(R.id.delitem);
         editItem=(TextView)findViewById(R.id.EditItem);
         //imageview=(ImageView)findViewById(R.id.imageView2);
         final String titletext = intent.getStringExtra("key");
@@ -98,7 +101,33 @@ public class DetailActivity extends FragmentActivity{
                startActivity(i);
            }
        });
+        del.setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View v) {
+               AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DetailActivity.this);
+               alertDialogBuilder.setMessage("Are you sure you want to remove this item from Campus Store?");
 
+               alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface arg0, int arg1) {
+                       ParseObject.createWithoutData("Items", idtext).deleteEventually();
+                       Intent i=new Intent(DetailActivity.this,myitems.class);
+                       startActivity(i);
+                   }
+               });
+
+               alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       finish();
+                   }
+               });
+
+               AlertDialog alertDialog = alertDialogBuilder.create();
+               alertDialog.show();
+
+           }
+       });
         addfav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

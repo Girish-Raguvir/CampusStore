@@ -503,7 +503,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                                     ++county;
                                     allItems.set(index, newItem);
                                     if (county == itemList.size()) {
-                                        Arrays.sort(allItems.toArray());
+                                        //Arrays.sort(allItems.toArray());
                                         int j;
                                         for (j = 0; j < allItems.size() && iteminfo.size() <= loadLimit; ++j) {
                                             if(cat!=null)
@@ -531,10 +531,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     Log.d(getClass().getSimpleName(), "Error");
                     return ;
                 }
+                ringProgressDialog.dismiss();
             }
         });
-        /*ringProgressDialog.dismiss();
-        swipeRefreshLayout.setRefreshing(false);
+
+        /*swipeRefreshLayout.setRefreshing(false);
         mAdapter = new MainAdapter(iteminfo);
         mRecyclerView.setAdapter(mAdapter);*/
     }
