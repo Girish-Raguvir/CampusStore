@@ -52,7 +52,13 @@
         <item>Tickets, Gift vouchers, OPO invites</item>
         <item>Others</item>
     </string-array>
+    <string-array name="tabheadings">
+        <item>MY PROFILE</item>
+        <item>MY ITEMS</item>
+        <item>FAVORITES</item>
+    </string-array>
     <string name="title_activity_favorites">Favorites</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_dashboard">Dashboard</string>
 
 </resources>

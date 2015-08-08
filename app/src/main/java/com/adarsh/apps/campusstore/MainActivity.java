@@ -328,7 +328,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         Log.d("mainactivity",
                 "We're inside onnavigationdraweritemselected");
 
-        if(position==2){startActivity(new Intent(MainActivity.this,myitems.class));
+        if(position==2){startActivity(new Intent(MainActivity.this,DashboardActivity.class));
             Log.d("test",
                     "3");}
         else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));

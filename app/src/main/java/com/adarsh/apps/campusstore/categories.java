@@ -194,7 +194,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(categories.this,myitems.class));}
+        if(position==2){startActivity(new Intent(categories.this,DashboardActivity.class));}
         else if(position==1){startActivity(new Intent(categories.this,MainActivity.class));}
         else if(position==3){startActivity(new Intent(categories.this,Favorites.class));
         }
