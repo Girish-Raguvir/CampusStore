@@ -106,8 +106,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-            if(cat==null)
-        getSupportActionBar().setTitle("Trending Items");
+            if(cat.contentEquals("Trending Items")==true)
+            {getSupportActionBar().setTitle("Trending Items");cat=null;}
             else
                 getSupportActionBar().setTitle(cat);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -328,18 +328,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         Log.d("mainactivity",
                 "We're inside onnavigationdraweritemselected");
 
-        if(position==2){startActivity(new Intent(MainActivity.this,DashboardActivity.class));
+        if(position==1){startActivity(new Intent(MainActivity.this,DashboardActivity.class));
             Log.d("test",
                     "3");}
         else if(position==0){startActivity(new Intent(MainActivity.this,categories.class));
             Log.d("test",
                     "0");}
-        else if(position==3){startActivity(new Intent(MainActivity.this,Favorites.class));
-            }
-        else if(position==4){startActivity(new Intent(MainActivity.this,AboutActivity.class));
+
+        else if(position==2){startActivity(new Intent(MainActivity.this,AboutActivity.class));
             Log.d("test",
                     "4");}
-        else if(position==5) {
+        else if(position==3) {
             View parentView = findViewById(R.id.drawer);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -380,7 +379,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             mNavigationDrawerFragment.closeDrawer();
             }
 
-        else if(position==6){ParseUser.logOut();
+        else if(position==4){ParseUser.logOut();
 
             loadLoginView();}
 

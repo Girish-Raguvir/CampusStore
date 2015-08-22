@@ -93,6 +93,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
 
 
             categories = new ArrayList<CategoryItemInfo>();
+            categories.add(new CategoryItemInfo("Trending Items",getResources().getDrawable(R.drawable.others)));
             categories.add(new CategoryItemInfo("Electronic Gadgets",getResources().getDrawable(R.drawable.electronics)));
             categories.add(new CategoryItemInfo("Books and Stationery",getResources().getDrawable(R.drawable.books)));
             categories.add(new CategoryItemInfo("Cycles and automotive",getResources().getDrawable(R.drawable.cycles)));
@@ -194,12 +195,11 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(categories.this,DashboardActivity.class));}
-        else if(position==1){startActivity(new Intent(categories.this,MainActivity.class));}
-        else if(position==3){startActivity(new Intent(categories.this,Favorites.class));
-        }
-        else if(position==4){startActivity(new Intent(categories.this,AboutActivity.class));}
-        else if(position==5) {
+        if(position==1){startActivity(new Intent(categories.this,DashboardActivity.class));}
+
+
+        else if(position==2){startActivity(new Intent(categories.this,AboutActivity.class));}
+        else if(position==3) {
             mNavigationDrawerFragment.closeDrawer();
             View parentView = findViewById(R.id.drawer);
 
@@ -242,7 +242,7 @@ public class categories extends ActionBarActivity implements NavigationDrawerCal
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==6){ParseUser.logOut();
+        else if(position==4){ParseUser.logOut();
 
             loadLoginView();}
         // else if(position==0){startActivity(new Intent(MainActivity.this,MainActivity.class));}

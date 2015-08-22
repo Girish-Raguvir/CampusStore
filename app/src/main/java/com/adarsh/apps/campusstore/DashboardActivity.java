@@ -79,11 +79,10 @@ public class DashboardActivity extends ActionBarActivity implements NavigationDr
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if(position==0){startActivity(new Intent(DashboardActivity.this,categories.class));}
-        else if(position==1){startActivity(new Intent(DashboardActivity.this,MainActivity.class));}
-        else if(position==3){startActivity(new Intent(DashboardActivity.this,Favorites.class));
-        }
-        else if(position==4){startActivity(new Intent(DashboardActivity.this,AboutActivity.class));}
-        else if(position==5) {
+
+
+        else if(position==2){startActivity(new Intent(DashboardActivity.this,AboutActivity.class));}
+        else if(position==3) {
             mNavigationDrawerFragment.closeDrawer();
             View parentView = findViewById(R.id.drawer);
 
@@ -126,7 +125,7 @@ public class DashboardActivity extends ActionBarActivity implements NavigationDr
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==6) {
+        else if(position==4) {
             ParseUser.logOut();
 
             //loadLoginView();}

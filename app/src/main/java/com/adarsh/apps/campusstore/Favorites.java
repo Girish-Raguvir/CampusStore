@@ -106,11 +106,11 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
 
     public void onNavigationDrawerItemSelected(int position) {
 
-        if(position==2){startActivity(new Intent(Favorites.this,myitems.class));}
 
-        else if(position==4){startActivity(new Intent(Favorites.this,AboutActivity.class));}
+        if(position==1){startActivity(new Intent(Favorites.this,DashboardActivity.class));}
+        else if(position==2){startActivity(new Intent(Favorites.this,AboutActivity.class));}
         else if(position==0){startActivity(new Intent(Favorites.this,categories.class));}
-        else if(position==5) {
+        else if(position==3) {
             View parentView = findViewById(R.id.drawer);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -136,7 +136,7 @@ public class Favorites extends ActionBarActivity implements NavigationDrawerCall
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==6){ParseUser.logOut();
+        else if(position==4){ParseUser.logOut();
 
             loadLoginView();}
         else if(position==1){startActivity(new Intent(Favorites.this,MainActivity.class));}

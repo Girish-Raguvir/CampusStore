@@ -25,7 +25,7 @@
             android:textSize="40dp"
             android:layout_marginTop="10dp"
             android:id="@+id/textView1"
-            android:textColor="#AD0A0A"
+            android:textColor="#FFF"
             android:textStyle="bold" />
         <TextView
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:text="Medium Text"
             android:id="@+id/textView3"
             android:gravity="left"
-            android:textColor="#AD0A0A"
+            android:textColor="#FFF"
             android:layout_margin="10dp"
             android:layout_gravity="center_vertical" />
         <LinearLayout
@@ -69,7 +69,7 @@
             android:text="Large Text"
             android:id="@+id/textView4"
                 android:layout_margin="10dp"
-                android:textColor="#AD0A0A"
+                android:textColor="#FFF"
                 android:layout_gravity="center_vertical"
 
              />
@@ -112,7 +112,7 @@
                 android:padding="3dp"
                 android:id="@+id/textView2"
                 android:layout_margin="10dp"
-                android:textColor="#AD0A0A"
+                android:textColor="#FFF"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 

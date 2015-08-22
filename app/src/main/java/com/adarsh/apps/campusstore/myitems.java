@@ -113,11 +113,10 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
     public void onNavigationDrawerItemSelected(int position) {
 
 
-        if(position==4){startActivity(new Intent(myitems.this,AboutActivity.class));}
-        else if(position==3){startActivity(new Intent(myitems.this,Favorites.class));
-        }
+        if(position==2){startActivity(new Intent(myitems.this,AboutActivity.class));}
+        else if (position==1){startActivity(new Intent(myitems.this,DashboardActivity.class));}
         else if(position==0){startActivity(new Intent(myitems.this,categories.class));}
-        else if(position==5) {
+        else if(position==3) {
             View parentView = findViewById(R.id.drawer1);
             LayoutInflater layoutInflater
                     = (LayoutInflater)getBaseContext()
@@ -158,7 +157,7 @@ public class myitems extends ActionBarActivity implements NavigationDrawerCallba
             mNavigationDrawerFragment.closeDrawer();
         }
 
-        else if(position==6){ParseUser.logOut();
+        else if(position==4){ParseUser.logOut();
 
             loadLoginView();}
         else if(position==1){startActivity(new Intent(myitems.this,MainActivity.class));}
