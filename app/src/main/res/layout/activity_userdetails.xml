@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#3B3B3B"
     tools:context="com.adarsh.apps.campusstore.userdetails">
 
 
@@ -11,12 +11,12 @@
         android:layout_height="match_parent"
         android:layout_margin="16dp"
         android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/userprofile"
-            android:id="@+id/imageView4"
-            android:background="@color/primary_material_light" />
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:src="@drawable/userprofile"-->
+            <!--android:id="@+id/imageView4"-->
+            <!--android:background="@color/primary_material_light" />-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:textSize="40dp"
             android:layout_marginTop="10dp"
             android:id="@+id/textView1"
-            android:textColor="#1976D2"
+            android:textColor="#AD0A0A"
             android:textStyle="bold" />
         <TextView
             android:layout_width="match_parent"
@@ -33,8 +33,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
             android:id="@+id/textView3"
-            android:gravity="right"
-            android:textColor="#1976D2"
+            android:gravity="left"
+            android:textColor="#AD0A0A"
+            android:layout_margin="10dp"
             android:layout_gravity="center_vertical" />
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,9 +51,10 @@
                 android:src="@android:drawable/ic_dialog_email"
                 android:adjustViewBounds="true"
                 android:background="@drawable/email_back"
-
+                android:layout_margin="10dp"
                 android:scaleType="fitCenter"
-                android:elevation="@dimen/elevation_low"
+
+
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
@@ -66,7 +68,8 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:id="@+id/textView4"
-                android:textColor="#1976D2"
+                android:layout_margin="10dp"
+                android:textColor="#AD0A0A"
                 android:layout_gravity="center_vertical"
 
              />
@@ -87,13 +90,14 @@
         <ImageButton
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_margin="10dp"
             android:id="@+id/call"
             android:src="@android:drawable/sym_call_outgoing"
             android:adjustViewBounds="true"
             android:background="@drawable/call_back"
 
             android:scaleType="fitCenter"
-            android:elevation="@dimen/elevation_low"
+
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -107,7 +111,8 @@
                 android:text="Large Text"
                 android:padding="3dp"
                 android:id="@+id/textView2"
-                android:textColor="#1976D2"
+                android:layout_margin="10dp"
+                android:textColor="#AD0A0A"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 

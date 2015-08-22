@@ -60,10 +60,10 @@ public class CreateActivity extends Activity {
         et1=(EditText)findViewById(R.id.editText4);
         et2=(EditText)findViewById(R.id.editText3);
         et3=(EditText)findViewById(R.id.editText5);
-        neg=(CheckBox)findViewById(R.id.checkBox);
-        imageView[0] = (ImageView) findViewById(R.id.imageView);
-        imageView[1] = (ImageView) findViewById(R.id.imageView1);
-        imageView[2] = (ImageView) findViewById(R.id.imageView2);
+//        neg=(CheckBox)findViewById(R.id.checkBox);
+//        imageView[0] = (ImageView) findViewById(R.id.imageView);
+//        imageView[1] = (ImageView) findViewById(R.id.imageView1);
+//        imageView[2] = (ImageView) findViewById(R.id.imageView2);
         save = (Button) findViewById(R.id.save);
         spinner1 = (Spinner) findViewById(R.id.spinner);
         spinner1.setOnItemSelectedListener(new OnCategorySelected());
@@ -128,26 +128,26 @@ public class CreateActivity extends Activity {
                 }
             }
         });
-        capture2 = (Button) findViewById(R.id.capture2);
-        capture2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-                {
-                    im=3;
-                    dispatchTakePictureIntent();
-                }
-            }
-        });
-        capture1 = (Button) findViewById(R.id.capture1);
-        capture1.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick (View v){
-                {
-                    im=2;
-                    dispatchTakePictureIntent();
-                }
-            }
-        });
+//        capture2 = (Button) findViewById(R.id.capture2);
+//        capture2.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick (View v){
+//                {
+//                    im=3;
+//                    dispatchTakePictureIntent();
+//                }
+//            }
+//        });
+//        capture1 = (Button) findViewById(R.id.capture1);
+//        capture1.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick (View v){
+//                {
+//                    im=2;
+//                    dispatchTakePictureIntent();
+//                }
+//            }
+//        });
         submit = (Button) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener(){
             @Override
